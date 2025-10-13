@@ -1,0 +1,116 @@
+<?xml version="1.0" standalone="yes" ?>
+<xs:schema id="SmartData2" targetNamespace="http://www.tempuri.org/SmartData2.xsd" xmlns:mstns="http://www.tempuri.org/SmartData2.xsd"
+	xmlns="http://www.tempuri.org/SmartData2.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+	<xs:element name="SmartData2" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="BHXH">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Employee_ID" type="xs:string" />
+							<xs:element name="Employee_FirstName" type="xs:string" minOccurs="0" />
+							<xs:element name="Employee_LastName" type="xs:string" minOccurs="0" />
+							<xs:element name="BirthDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Sex" type="xs:string" minOccurs="0" />
+							<xs:element name="Address_Temporary" type="xs:string" minOccurs="0" />
+							<xs:element name="Address_Permanent" type="xs:string" minOccurs="0" />
+							<xs:element name="Employee_Status" type="xs:string" minOccurs="0" />
+							<xs:element name="TernimationDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Position_ID" type="xs:string" minOccurs="0" />
+							<xs:element name="SalaryBasic" type="xs:double" minOccurs="0" />
+							<xs:element name="Sum_Allowance" type="xs:double" minOccurs="0" />
+							<xs:element name="CL_Tang" type="xs:double" minOccurs="0" />
+							<xs:element name="CL_Giam" type="xs:double" minOccurs="0" />
+							<xs:element name="TG_Tuthang" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="TG_DenThang" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="TG_TSThang" type="xs:double" minOccurs="0" />
+							<xs:element name="TG_CLTang" type="xs:double" minOccurs="0" />
+							<xs:element name="TG_CLGiam" type="xs:double" minOccurs="0" />
+							<xs:element name="Remark" type="xs:string" minOccurs="0" />
+							<xs:element name="SalaryBasic_New" type="xs:double" minOccurs="0" />
+							<xs:element name="Sum_Allowance_New" type="xs:double" minOccurs="0" />
+							<xs:element name="ID_Key" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="BHXH_Date" type="xs:dateTime" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Summary_LeaveRecord">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Employee_ID" type="xs:string" />
+							<xs:element name="Employee_Name" type="xs:string" minOccurs="0" />
+							<xs:element name="TeamCode" type="xs:string" minOccurs="0" />
+							<xs:element name="Position_ID" type="xs:string" minOccurs="0" />
+							<xs:element name="Leave_Anual" type="xs:double" minOccurs="0" />
+							<xs:element name="Leave_Termination" type="xs:double" minOccurs="0" />
+							<xs:element name="Leave_Pregnance" type="xs:double" minOccurs="0" />
+							<xs:element name="Leave_MedicalChecking" type="xs:double" minOccurs="0" />
+							<xs:element name="Leave_Married" type="xs:double" minOccurs="0" />
+							<xs:element name="Leave_Sick" type="xs:double" minOccurs="0" />
+							<xs:element name="Leave_WaitingForWork" type="xs:double" minOccurs="0" />
+							<xs:element name="Leave_NonPaid" type="xs:double" minOccurs="0" />
+							<xs:element name="Leave_Accident" type="xs:double" minOccurs="0" />
+							<xs:element name="Starteddate" type="xs:dateTime" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SmartBooks_Employee_History">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="RecordDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="Employee_ID" type="xs:string" />
+							<xs:element name="Employee_Firstname" type="xs:string" minOccurs="0" />
+							<xs:element name="Employee_LastName" type="xs:string" minOccurs="0" />
+							<xs:element name="BirthDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="ID_number" type="xs:string" minOccurs="0" />
+							<xs:element name="Employee_Status" type="xs:string" minOccurs="0" />
+							<xs:element name="StartedDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="TernimationDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="DepartmentCode" type="xs:string" minOccurs="0" />
+							<xs:element name="SectionCode" type="xs:string" minOccurs="0" />
+							<xs:element name="TeamCode" type="xs:string" minOccurs="0" />
+							<xs:element name="PositionCategory_ID" type="xs:string" minOccurs="0" />
+							<xs:element name="SalaryBasic" type="xs:double" minOccurs="0" />
+							<xs:element name="SalaryProbation" type="xs:double" minOccurs="0" />
+							<xs:element name="Allowance_Salary" type="xs:double" minOccurs="0" />
+							<xs:element name="Allowance_Meal" type="xs:double" minOccurs="0" />
+							<xs:element name="Allowance_Gas" type="xs:double" minOccurs="0" />
+							<xs:element name="Allowance_Other" type="xs:double" minOccurs="0" />
+							<xs:element name="ContractType" type="xs:string" minOccurs="0" />
+							<xs:element name="Card_No" type="xs:string" minOccurs="0" />
+							<xs:element name="Remark" type="xs:string" minOccurs="0" />
+							<xs:element name="ExpiredDate" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="key" msdata:ReadOnly="true" msdata:AutoIncrement="true" type="xs:int" />
+							<xs:element name="Allowance_Ontime" type="xs:double" minOccurs="0" />
+							<xs:element name="LabourContract_Date" type="xs:dateTime" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="RegistHistory">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ID" type="xs:string" minOccurs="0" />
+							<xs:element name="LeaveType" type="xs:string" minOccurs="0" />
+							<xs:element name="RDate" type="xs:date" minOccurs="0" />
+							<xs:element name="Note" type="xs:string" minOccurs="0" />
+							<xs:element name="Employee_ID" type="xs:string" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="SmartData2Key1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:BHXH" />
+			<xs:field xpath="mstns:ID_Key" />
+		</xs:unique>
+		<xs:unique name="SmartData2Key2" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:Summary_LeaveRecord" />
+			<xs:field xpath="mstns:Employee_ID" />
+		</xs:unique>
+		<xs:unique name="Constraint1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:SmartBooks_Employee_History" />
+			<xs:field xpath="mstns:key" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

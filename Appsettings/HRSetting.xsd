@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="yes" ?>
+<xs:schema id="HRSetting" targetNamespace="http://www.tempuri.org/HRSetting.xsd" xmlns:mstns="http://www.tempuri.org/HRSetting.xsd"
+	xmlns="http://www.tempuri.org/HRSetting.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" attributeFormDefault="qualified" elementFormDefault="qualified">
+	<xs:element name="HRSetting" msdata:IsDataSet="true">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="HROption">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="OptionID" type="xs:int" />
+							<xs:element name="RoundTimeType" type="xs:int" />
+							<xs:element name="RoundType" type="xs:int" />
+							<xs:element name="FilterMinutes" type="xs:int" />
+							<xs:element name="NightTimeFrom" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="NightTimeTo" type="xs:dateTime" minOccurs="0" />
+							<xs:element name="OvertimeSalaryRate" type="xs:int" minOccurs="0" />
+							<xs:element name="NighttimeSalaryRate" type="xs:int" minOccurs="0" />
+							<xs:element name="SundaySalaryRate" type="xs:int" minOccurs="0" />
+							<xs:element name="HolidaySalaryRate" type="xs:int" minOccurs="0" />
+							<xs:element name="AcceptWorkingEarlyTime" type="xs:boolean" minOccurs="0" />
+							<xs:element name="MinimumSalaryBasic" type="xs:double" minOccurs="0" />
+							<xs:element name="UnionFee" type="xs:double" minOccurs="0" />
+							<xs:element name="ProbationSalaryPercent" type="xs:int" minOccurs="0" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+		<xs:unique name="HRSettingKey1" msdata:PrimaryKey="true">
+			<xs:selector xpath=".//mstns:HROption" />
+			<xs:field xpath="mstns:OptionID" />
+		</xs:unique>
+	</xs:element>
+</xs:schema>

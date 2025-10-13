@@ -1,0 +1,14 @@
+ else if @TypeOfReport = 7 begin
+		select null as ID, empl.Employee_ID, dbo.udf_FullName(empl.Employee_Firstname,empl.Employee_LastName) as FullName, 'PLHD' + empl.Employee_ID + cast(Year(@fromdate) as nvarchar(4)) as Contract_ID, @fromdate as CL_RegisterDate
+				, null as CL_ExpiredDate, @fromdate as CL_StartDate, null as [Status], 'PLHD' as [Type], ctl.Contract_ID as CL_FatherID, Null as Remark, 'AutoPLHD' as InsertSource
+		from
+		udf_EmployeeFilter ('VN',null,null,null,null,null,null,null,@todate) empl
+		left join
+		(
+			select *, ROW_NUMBER () over (partition by Employee_ID order by CL_StartDate) as rn
+			from
+			[dbo].[udf_HopDongTuSinh]('1900-01-01',@todate,1,@LAN,@fact,@dept,@sect,@team,@pos,@posc,@Empl) ctl
+		) ctl
+		on empl.Employee_ID = ctl.Employee_ID and rn = 1
+		where empl.StartedDate < @todate and isnull(empl.TernimationDate,@todate + 1) > @todate
+	end

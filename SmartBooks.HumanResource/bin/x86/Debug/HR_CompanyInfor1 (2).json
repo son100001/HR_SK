@@ -1,0 +1,77 @@
+{
+  "CompanyInfor": [
+    {
+      "id": "1",
+      "name": "Standard",
+      "code": "sl7Ai4B5gFZXE7g8pWY1rgyjhJr3jpQMuH4lhByjQ=",
+      "serverName": "s4E1lptKXmEa3Nl0evVFslS+MRq15F8TOB4EQ4DuL3yATWMJbszr8q8bIWFr61DpgC0cDtrKwA1m9/h9iraE5iw==",
+      "databaseName": "sKiU/edxPKXwU3GjJngxXjK0XxW0kptnGwvMLWUfOkJM=",
+      "userID": "srWNz9z7fyRBM/Hgwstt0Ig==",
+      "password": "sh3Nw/Hfd64T5AboUDIxARw=="
+    },
+    {
+      "id": "2",
+      "name": "WOOSIN",
+      "code": "sdhB3zu6EUfCcaGU9E8Kzsw==",
+      "serverName": "sW4MoY7XPgE3/c/CPZO+OIGOoLpcWgru3FlzyfH9KtcjaFsimdq4rtmqsyTcRf6Jr",
+      "databaseName": "s8gDLg79xtX0KzG5glNUsPHTAj6ejlO75y/aFtDQJ0rU=",
+      "userID": "srWNz9z7fyRBM/Hgwstt0Ig==",
+      "password": "sh3Nw/Hfd64T5AboUDIxARw=="
+    },
+    {
+      "id": "3",
+      "name": "FINETECH",
+      "code": "srtIp0utPA3TCplKMqk8QFPMI1VxXFfBCfNHaTqjDY=",
+      "serverName": "s7DVpf/wdfTIot70BnNXHRjOQ8iCIcGOKqkt2cotycXo=",
+      "databaseName": "sa1B0uc9NmW932LBuK1uwihNZ+vUXCNhlXfZIduuV8HQ=",
+      "userID": "srWNz9z7fyRBM/Hgwstt0Ig==",
+      "password": "sh3Nw/Hfd64T5AboUDIxARw=="
+    },
+    {
+      "id": "4",
+      "name": "GWFNV",
+      "code": "suJ6DObqjKw5LlJ7XauVOA==",
+      "serverName": "stGfMY+f9Hxv2rD0sQ7qGwHrIZPJvw3StGVrvYjFQcSuFBg3S0vVuaNEKJt4WMopnWhoaCNlHwS+aDUb9fNJyhA==",
+      "databaseName": "sxnhlQDoWPN0IwfbBN8kn0wOgSPJVicaERHCh+9Z8SS8=",
+      "userID": "s0w/FzVbUaM7IGsm4lZzd8Q==",
+      "password": "sRQtokop0z/WzI1Z9EFsLQJsrT/RJ8Quwd1+F9IWoPeU="
+    },
+    {
+      "id": "5",
+        "name": "HR_Woosin",
+        "code": "s8gDLg79xtX0KzG5glNUsPHTAj6ejlO75yaFtDQJ0rU=",
+        "serverName": "stGfMY+f9Hxv2rD0sQ7qGwHrIZPJvw3StGVrvYjFQcSuFBg3S0vVuaNEKJt4WMopnWhoaCNlHwS+aDUb9fNJyhA==",
+        "databaseName": "s8gDLg79xtX0KzG5glNUsPHTAj6ejlO75y/aFtDQJ0rU=",
+        "userID": "s0w/FzVbUaM7IGsm4lZzd8Q==",
+        "password": "sRQtokop0z/WzI1Z9EFsLQJsrT/RJ8Quwd1+F9IWoPeU="
+    },
+    {
+      "id": "6",
+        "name": "SangA",
+        "code": "sOJPKt7UsgwgyDVai4wzBQ==",
+        "serverName": "stGfMY+f9Hxv2rD0sQ7qGwHrIZPJvw3StGVrvYjFQcSuFBg3S0vVuaNEKJt4WMopnWhoaCNlHwS+aDUb9fNJyhA==",
+        "databaseName": "shXIYCa5wA6aOQ/sG1x818NefikQLF70/P6qprZpjliA=",
+        "userID": "s0w/FzVbUaM7IGsm4lZzd8Q==",
+        "password": "sRQtokop0z/WzI1Z9EFsLQJsrT/RJ8Quwd1+F9IWoPeU="
+    },
+    {
+      "id": "7",
+        "name": "HR_Shinsung",
+        "code": "sErsxivQy40Gbln5BPkUm47uM1ipmAA02OHJ1grZF40k=",
+        "serverName": "swPKn69YLUuwZEeY5e+6J4Oom9i3sINyC8aCx1QbDA6qNOZAcoeH2ynZfhlypbr1j",
+        "databaseName": "sErsxivQy40Gbln5BPkUm47uM1ipmAA02OHJ1grZF40k=",
+        "userID": "srWNz9z7fyRBM/Hgwstt0Ig==",
+        "password": "sh3Nw/Hfd64T5AboUDIxARw=="
+    },
+    {
+      "id": "7",
+        "name": "HR_Shinsung_server",
+        "code": "sErsxivQy40Gbln5BPkUm49MhaScJP7m3Pw7d6gjREDWVSn0N5cWyr8y5ZHYZykyY",
+        "serverName": "stGfMY+f9Hxv2rD0sQ7qGwHrIZPJvw3StGVrvYjFQcSuFBg3S0vVuaNEKJt4WMopnWhoaCNlHwS+aDUb9fNJyhA==",
+        "databaseName": "sErsxivQy40Gbln5BPkUm47uM1ipmAA02OHJ1grZF40k=",
+        "userID": "s0w/FzVbUaM7IGsm4lZzd8Q==",
+        "password": "sGLFN65woKcnLRPR+hf/F9AHdbxV67Hg6irVxAMcsRWQ="
+    }
+  ],
+  "Id": 0
+}

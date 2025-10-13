@@ -1,0 +1,23 @@
+{
+  "CompanyInfor": [
+    {
+      "id": "1",
+      "name": "Standard",
+      "code": "sl7Ai4B5gFZXE7g8pWY1rgyjhJr3jpQMuH4lhByjQ=",
+      "serverName": "s4E1lptKXmEa3Nl0evVFslS+MRq15F8TOB4EQ4DuL3yATWMJbszr8q8bIWFr61DpgC0cDtrKwA1m9/h9iraE5iw==",
+      "databaseName": "sKiU/edxPKXwU3GjJngxXjK0XxW0kptnGwvMLWUfOkJM=",
+      "userID": "srWNz9z7fyRBM/Hgwstt0Ig==",
+      "password": "sh3Nw/Hfd64T5AboUDIxARw=="
+    },
+	{
+      "id": "2",
+      "name": "HR_SnK_Dev",
+      "code": "s1RWYLm44o4mCcttzTksl1OlLLb5Jx2tCnHGZouktQB0=",
+      "serverName": "sAn13C5J1oePuDFBMo6juja15EFj6wbpH13Ww0CPBoNs=",
+      "databaseName": "s1RWYLm44o4mCcttzTksl1OlLLb5Jx2tCnHGZouktQB0=",
+      "userID": "sXX4Q9d6SgjNe3j8ZzB4BAA==",
+      "password": "sNdfPLK8C+ob4pPHlIyiLkRfn3xKbxOzEd4W8mFcyCpA="
+    }
+  ],
+  "Id": 0
+}

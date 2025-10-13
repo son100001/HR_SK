@@ -1,0 +1,1656 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4038E0EB-0755-4299-BF2A-DFD03F337F7C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>SmartBooks.HumanResource.My.MyApplication</StartupObject>
+    <RootNamespace>SmartBooks.HumanResource</RootNamespace>
+    <AssemblyName>SmartBooks.HumanResource</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <ApplicationIcon>MainIcon.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>SmartBooks.HumanResource.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42024,42025,42030,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>SmartBooks.HumanResource.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42024,42025,42030,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DocumentationFile>SmartBooks.HumanResource.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42024,42025,42030,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DocumentationFile>SmartBooks.HumanResource.xml</DocumentationFile>
+    <Optimize>true</Optimize>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42024,42025,42030,42032,42036,42099,42104,42105,42106,42107,42108,42109,42353,42354,42355</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AxInterop.AcroPDFLib, Version=1.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\AxInterop.AcroPDFLib.dll</HintPath>
+    </Reference>
+    <Reference Include="AxInterop.ActiveToolBars, Version=5.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\AxInterop.ActiveToolBars.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Design, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.BonusSkins.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.BonusSkins.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Charts.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Charts.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.CodeParser.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.CodeParser.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Data.Desktop.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Data.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Data.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.DataAccess.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Images.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Images.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Mvvm.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Office.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Office.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Pdf.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Pdf.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.PivotGrid.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.PivotGrid.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Printing.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Printing.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.RichEdit.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.RichEdit.v20.1.Export, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.RichEdit.v20.1.Export.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Sparkline.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Sparkline.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Utils.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Utils.v20.1.UI, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Utils.v20.1.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpo.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.Xpo.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraBars.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraCharts.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraCharts.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraEditors.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGauges.v20.1.Core, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraGauges.v20.1.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraGrid.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraLayout.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraPrinting.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraReports.v20.1.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.XtraReports.v20.1.Extensions, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\DevExpress.XtraReports.v20.1.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\CommonLib\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="FINDNET, Version=1.0.2919.20919, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\FINDNET.dll</HintPath>
+    </Reference>
+    <Reference Include="gopal.data.transform, Version=1.0.1425.38924, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\gopal.data.transform.dll</HintPath>
+    </Reference>
+    <Reference Include="Infragistics.Excel.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Excel.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Shared.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Shared.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.UltraChart.Resources.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.UltraChart.Resources.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.UltraChart.v5.1.Design, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.UltraChart.v5.1.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.Misc.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.Misc.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinCalcManager.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinCalcManager.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinCalcManager.v5.1.FormulaBuilder, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinCalcManager.v5.1.FormulaBuilder.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinChart.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinChart.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinDataSource.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinDataSource.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinDataSource.v5.1.Design, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinDataSource.v5.1.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinDock.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinDock.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinEditors.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinEditors.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinExplorerBar.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinExplorerBar.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinGrid.ExcelExport.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinGrid.ExcelExport.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinGrid.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinGrid.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinGrid.v5.1.Design, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinGrid.v5.1.Design.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinInkProvider.Ink17.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinInkProvider.Ink17.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinInkProvider.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinInkProvider.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinListBar.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinListBar.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinMaskedEdit.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinMaskedEdit.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinPrintPreviewDialog.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinPrintPreviewDialog.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinSchedule.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinSchedule.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinStatusBar.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinStatusBar.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinTabbedMdi.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinTabbedMdi.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinTabControl.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinTabControl.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinToolbars.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinToolbars.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.UltraWinTree.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.UltraWinTree.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Infragistics.Win.v5.1, Version=5.1.20051.37, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Infragistics.Win.v5.1.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Interop.AcroPDFLib, Version=1.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.AcroPDFLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.ActiveToolBars, Version=5.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.ActiveToolBars.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.AppHostAdminLibrary, Version=1.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.AppHostAdminLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.Microsoft.Office.Core, Version=2.7.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.Microsoft.Office.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.Microsoft.Office.Interop.Excel, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.MSChart20Lib, Version=2.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.MSChart20Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.PVCOMBOLib, Version=1.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.PVCOMBOLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.SQLDMO, Version=8.5.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.SQLDMO.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.StdType, Version=2.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Interop.StdType.dll</HintPath>
+    </Reference>
+    <Reference Include="Janus.Windows.ButtonBar.v2, Version=2.0.1197.0, Culture=neutral, PublicKeyToken=21d5517571b185bf">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Janus.Windows.ButtonBar.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Janus.Windows.CalendarCombo.v2, Version=2.0.1197.0, Culture=neutral, PublicKeyToken=21d5517571b185bf">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Janus.Windows.CalendarCombo.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Janus.Windows.Common.v2, Version=2.0.1197.0, Culture=neutral, PublicKeyToken=21d5517571b185bf">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Janus.Windows.Common.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Janus.Windows.ExplorerBar.v2, Version=2.0.1197.0, Culture=neutral, PublicKeyToken=21d5517571b185bf">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Janus.Windows.ExplorerBar.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Janus.Windows.GridEX.v2, Version=2.0.1197.0, Culture=neutral, PublicKeyToken=21d5517571b185bf">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Janus.Windows.GridEX.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Janus.Windows.Schedule.v2, Version=2.0.1197.0, Culture=neutral, PublicKeyToken=21d5517571b185bf">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Janus.Windows.Schedule.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="Janus.Windows.UI.v2, Version=2.0.1197.0, Culture=neutral, PublicKeyToken=21d5517571b185bf">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Janus.Windows.UI.v2.dll</HintPath>
+    </Reference>
+    <Reference Include="JSON.NET, Version=1.0.2476.26599, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\JSON.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Microsoft.ApplicationBlocks.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Microsoft.Office.Interop.Word.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Vbe.Interop, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Microsoft.Vbe.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="MSDATASRC, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\MSDATASRC.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="office, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\office.dll</HintPath>
+    </Reference>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\stdole.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ThuVienC, Version=1.0.5834.26680, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\ThuVienC.dll</HintPath>
+    </Reference>
+    <Reference Include="VBReport, Version=5.0.0.2128, Culture=neutral, PublicKeyToken=1bb4493bf8f7052d">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\VBReport.dll</HintPath>
+    </Reference>
+    <Reference Include="VBReport.XlsCrt, Version=5.0.0.2128, Culture=neutral, PublicKeyToken=cf9444a2eda782e2">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\VBReport.XlsCrt.dll</HintPath>
+    </Reference>
+    <Reference Include="VBReport.XlsPDF, Version=5.0.0.2128, Culture=neutral, PublicKeyToken=8ca261be8eaece38">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\VBReport.XlsPDF.dll</HintPath>
+    </Reference>
+    <Reference Include="vnConvert, Version=1.0.2423.39611, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CommonLib\vnConvert.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaoHiem\frmBaoCaoBaoHiem.Designer.vb">
+      <DependentUpon>frmBaoCaoBaoHiem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BaoHiem\frmBaoCaoBaoHiem.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaoHiem\frmEmpNonRegisInsurance.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaoHiem\frmInsurance.Designer.vb">
+      <DependentUpon>frmInsurance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BaoHiem\frmInsurance.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaoHiem\frmInsuranceInformation.Designer.vb">
+      <DependentUpon>frmInsuranceInformation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BaoHiem\frmInsuranceInformation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaoHiem\frmTheBHYT.Designer.vb">
+      <DependentUpon>frmTheBHYT.vb</DependentUpon>
+    </Compile>
+    <Compile Include="BaoHiem\frmTheBHYT.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\Accessdb.vb" />
+    <Compile Include="BaseForms\frmParaBaoCaoCong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\frmParaDanhSachCong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\frmParaGetTabInForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\frmParaLoaiNghi.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\frmParaMonth.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\frmParaXuLyCongTheoLuat.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\frmPBar.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\frmShow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForms\PublicFunction.vb" />
+    <Compile Include="BaseForms\ReportCommon.vb" />
+    <Compile Include="BaseForms\ReportViewer.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="bin\x86\Debug\Teamleate\Card.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="bin\x86\Debug\Teamleate\Detail_Of_Allow_Payment.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="bin\x86\Debug\Teamleate\Labour_Contract_CKH.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="bin\x86\Debug\Teamleate\Labour_Contract_KKH.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="bin\x86\Debug\Teamleate\Labour_Contract_Temp.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="bin\x86\Debug\Teamleate\List_of_Employee_By_Contract_ExpiriedDate.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="bin\x86\Debug\Teamleate\List_Of_Employee_Information_Probation.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DBConnection.vb" />
+    <Compile Include="DBTasks.vb" />
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAbout.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmServerLogin.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmAward.Designer.vb">
+      <DependentUpon>frmAward.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmAward.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmCapPhatAo.designer.vb">
+      <DependentUpon>frmCapPhatAo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmCapPhatAo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmChuyenChucVu.Designer.vb">
+      <DependentUpon>frmChuyenChucVu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmChuyenChucVu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmChuyenViTri.Designer.vb">
+      <DependentUpon>frmChuyenViTri.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmChuyenViTri.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmDisable.Designer.vb">
+      <DependentUpon>frmDisable.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmDisable.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmDiscipline.Designer.vb">
+      <DependentUpon>frmDiscipline.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmDiscipline.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmDiseasesRecord.Designer.vb">
+      <DependentUpon>frmDiseasesRecord.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmDiseasesRecord.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmEmployeeInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmFamily.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmHealthCheck.Designer.vb">
+      <DependentUpon>frmHealthCheck.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmHealthCheck.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmHeavyAndToxic.Designer.vb">
+      <DependentUpon>frmHeavyAndToxic.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmHeavyAndToxic.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmLicense.Designer.vb">
+      <DependentUpon>frmLicense.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmLicense.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmQuanLyTheTu.Designer.vb">
+      <DependentUpon>frmQuanLyTheTu.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmQuanLyTheTu.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmQuaTrinhHocTapCongTac.designer.vb">
+      <DependentUpon>frmQuaTrinhHocTapCongTac.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmQuaTrinhHocTapCongTac.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmSurgeryHistory.Designer.vb">
+      <DependentUpon>frmSurgeryHistory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmSurgeryHistory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmTerminationAsignment.Designer.vb">
+      <DependentUpon>frmTerminationAsignment.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmTerminationAsignment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\frmTrainingRecord.Designer.vb">
+      <DependentUpon>frmTrainingRecord.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\frmTrainingRecord.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\Holidays_Plan.Designer.vb">
+      <DependentUpon>Holidays_Plan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Froms\Holidays_Plan.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\Para\frmparaSalaryComponent.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\Para\frmViewPDF.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\Para\para_LocGridex.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Froms\Para\para_NhanVienActive.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmBacTayNghe.Designer.vb">
+      <DependentUpon>frmBacTayNghe.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmBacTayNghe.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmBacTayNgheNhanVien.Designer.vb">
+      <DependentUpon>frmBacTayNgheNhanVien.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmBacTayNgheNhanVien.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmBaoCaoLuong.Designer.vb">
+      <DependentUpon>frmBaoCaoLuong.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmBaoCaoLuong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmCaiDatPhuCap.designer.vb">
+      <DependentUpon>frmCaiDatPhuCap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmCaiDatPhuCap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmContractList.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmDanhSachNguoiPhuThuoc.designer.vb">
+      <DependentUpon>frmDanhSachNguoiPhuThuoc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmDanhSachNguoiPhuThuoc.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmEmpRegisParameter.Designer.vb">
+      <DependentUpon>frmEmpRegisParameter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmEmpRegisParameter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmLuongCoDinh.Designer.vb">
+      <DependentUpon>frmLuongCoDinh.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmLuongCoDinh.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmMucLuong.designer.vb">
+      <DependentUpon>frmMucLuong.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmMucLuong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmMucLuongNhanVien.Designer.vb">
+      <DependentUpon>frmMucLuongNhanVien.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmMucLuongNhanVien.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmSalaryComponent.Designer.vb">
+      <DependentUpon>frmSalaryComponent.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmSalaryComponent.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\para_PhieuLuong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\para_Salary.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\BlockFunction.Designer.vb">
+      <DependentUpon>BlockFunction.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\BlockFunction.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\BlockFunction_Nhap.Designer.vb">
+      <DependentUpon>BlockFunction_Nhap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\BlockFunction_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmCompanyInformation.Designer.vb">
+      <DependentUpon>frmCompanyInformation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmCompanyInformation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmContract.Designer.vb">
+      <DependentUpon>frmContract.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmContract.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmContractFlow.Designer.vb">
+      <DependentUpon>frmContractFlow.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmContractFlow.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmHazardCategory.Designer.vb">
+      <DependentUpon>frmHazardCategory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmHazardCategory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmJobCodeCategory.Designer.vb">
+      <DependentUpon>frmJobCodeCategory.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmJobCodeCategory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmRegisterUser.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmRunQuerySQL.Designer.vb">
+      <DependentUpon>frmRunQuerySQL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmRunQuerySQL.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmSetUp.Designer.vb">
+      <DependentUpon>frmSetUp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmSetUp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmShiftsSetting2.Designer.vb">
+      <DependentUpon>frmShiftsSetting2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmShiftsSetting2.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test.Designer.vb">
+      <DependentUpon>Test.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Test.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmBaoCaoCong.designer.vb">
+      <DependentUpon>frmBaoCaoCong.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmBaoCaoCong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmCongBatThuong.Designer.vb">
+      <DependentUpon>frmCongBatThuong.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmCongBatThuong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmDangKyCaTheoNhom.Designer.vb">
+      <DependentUpon>frmDangKyCaTheoNhom.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmDangKyCaTheoNhom.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmDangKyPhepTheoGio.Designer.vb">
+      <DependentUpon>frmDangKyPhepTheoGio.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmDangKyPhepTheoGio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmDanhSachDangKyDiLam.Designer.vb">
+      <DependentUpon>frmDanhSachDangKyDiLam.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmDanhSachDangKyDiLam.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmRoundShift.Designer.vb">
+      <DependentUpon>frmRoundShift.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmRoundShift.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmRoundShiftDetail_Nhap.Designer.vb">
+      <DependentUpon>frmRoundShiftDetail_Nhap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmRoundShiftDetail_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmTienCom.Designer.vb">
+      <DependentUpon>frmTienCom.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmTienCom.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\para_TimeKeeping_Data2.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\para_TimeKeeping_Date.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmQuyetToanThueTNCN.Designer.vb">
+      <DependentUpon>frmQuyetToanThueTNCN.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmHR_Hospital.Designer.vb">
+      <DependentUpon>frmHR_Hospital.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmHR_Hospital.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmLoaiCong.Designer.vb">
+      <DependentUpon>frmLoaiCong.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmLoaiCong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmMayChamCong.Designer.vb">
+      <DependentUpon>frmMayChamCong.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmMayChamCong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmSalary_Name.Designer.vb">
+      <DependentUpon>frmSalary_Name.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmSalary_Name.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmSetUpFollowDate.Designer.vb">
+      <DependentUpon>frmSetUpFollowDate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmSetUpFollowDate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmTaoDieuChinhDanhMucLuong.Designer.vb">
+      <DependentUpon>frmTaoDieuChinhDanhMucLuong.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmTaoDieuChinhDanhMucLuong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmUsers.Designer.vb">
+      <DependentUpon>frmUsers.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmUsers.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmUsers_Nhap.Designer.vb">
+      <DependentUpon>frmUsers_Nhap.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmUsers_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\HR_Category.Designer.vb">
+      <DependentUpon>HR_Category.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\HR_Category.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Payroll\frmEmpRegisterNumberOfWDPerMonth.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\frmQuyetToanThueTNCN.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\Reports\frmBangKeThueTNCN.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\Reports\para_BHXH.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Payroll\Salary_Parameter.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\frmCreateReportTemplate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\frmCreateReportTemplate_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\frmParaViewAllField.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\frmReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Report\frmReportPermission.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\DatabaseBackup.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\DatabaseRestore.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmContractFlow_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmDepartment.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmFactory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmPosition.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmPositionCategory.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmSection.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmSetupPermission.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmTaoDieuChinhChucDanh.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmTaoDieuChinhLoaiNghi.Designer.vb">
+      <DependentUpon>frmTaoDieuChinhLoaiNghi.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup\frmTaoDieuChinhLoaiNghi.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmTeam.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup\frmVungMien.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ThuVienChucNang.vb" />
+    <Compile Include="TimeKeeping\frmDangKyNghiSinh.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmEmpRegisLeave.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmEmpRegisLeave_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmEmpRegisPregnant.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmEmpRegisTimeSheet.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmGoOut.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmHourLeaveException.Designer.vb">
+      <DependentUpon>frmHourLeaveException.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmHourLeaveException.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmHourLeaveException_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmHR_MaxOvertimeInPeriod.Designer.vb">
+      <DependentUpon>frmHR_MaxOvertimeInPeriod.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmHR_MaxOvertimeInPeriod.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmHR_MaxOvertimeInPeriod_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmNhapDuLieuQuet.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmRegisMaxOvertime.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmWorkingDaySpecial.Designer.vb">
+      <DependentUpon>frmWorkingDaySpecial.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmWorkingDaySpecial.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmWorkingTimeCompensation.Designer.vb">
+      <DependentUpon>frmWorkingTimeCompensation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmWorkingTimeCompensation.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\frmWorkingTimeCompensation_Nhap.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\Reports\para_BangLoaiGioCong.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\Reports\para_DanhSachLoaiNghiPhep.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\Reports\para_DieuKienPhepNam.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeKeeping\Reports\para_LocGioCongTheoGio.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ToolBar\NamedObject.vb" />
+    <Compile Include="Views\Employees.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Teams.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BaoHiem\frmBaoCaoBaoHiem.resx">
+      <DependentUpon>frmBaoCaoBaoHiem.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaoHiem\frmEmpNonRegisInsurance.resx">
+      <DependentUpon>frmEmpNonRegisInsurance.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaoHiem\frmInsurance.resx">
+      <DependentUpon>frmInsurance.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaoHiem\frmInsuranceInformation.resx">
+      <DependentUpon>frmInsuranceInformation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaoHiem\frmTheBHYT.resx">
+      <DependentUpon>frmTheBHYT.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\frmParaBaoCaoCong.resx">
+      <DependentUpon>frmParaBaoCaoCong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\frmParaDanhSachCong.resx">
+      <DependentUpon>frmParaDanhSachCong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\frmParaGetTabInForm.resx">
+      <DependentUpon>frmParaGetTabInForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\frmParaLoaiNghi.resx">
+      <DependentUpon>frmParaLoaiNghi.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\frmParaMonth.resx">
+      <DependentUpon>frmParaMonth.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\frmParaXuLyCongTheoLuat.resx">
+      <DependentUpon>frmParaXuLyCongTheoLuat.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\frmPBar.resx">
+      <DependentUpon>frmPBar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\frmShow.resx">
+      <DependentUpon>frmShow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForms\ReportViewer.resx">
+      <DependentUpon>ReportViewer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAbout.resx">
+      <DependentUpon>frmAbout.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmServerLogin.resx">
+      <DependentUpon>frmServerLogin.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmAward.resx">
+      <DependentUpon>frmAward.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmCapPhatAo.resx">
+      <DependentUpon>frmCapPhatAo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmChuyenChucVu.resx">
+      <DependentUpon>frmChuyenChucVu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmChuyenViTri.resx">
+      <DependentUpon>frmChuyenViTri.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmDisable.resx">
+      <DependentUpon>frmDisable.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmDiscipline.resx">
+      <DependentUpon>frmDiscipline.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmDiseasesRecord.resx">
+      <DependentUpon>frmDiseasesRecord.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmEmployeeInfo.resx">
+      <DependentUpon>frmEmployeeInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmFamily.resx">
+      <DependentUpon>frmFamily.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmHealthCheck.resx">
+      <DependentUpon>frmHealthCheck.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmHeavyAndToxic.resx">
+      <DependentUpon>frmHeavyAndToxic.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmLicense.resx">
+      <DependentUpon>frmLicense.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmQuanLyTheTu.resx">
+      <DependentUpon>frmQuanLyTheTu.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmQuaTrinhHocTapCongTac.resx">
+      <DependentUpon>frmQuaTrinhHocTapCongTac.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmSurgeryHistory.resx">
+      <DependentUpon>frmSurgeryHistory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmTerminationAsignment.resx">
+      <DependentUpon>frmTerminationAsignment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\frmTrainingRecord.resx">
+      <DependentUpon>frmTrainingRecord.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\Holidays_Plan.resx">
+      <DependentUpon>Holidays_Plan.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\Para\frmparaSalaryComponent.resx">
+      <DependentUpon>frmparaSalaryComponent.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\Para\frmViewPDF.resx">
+      <DependentUpon>frmViewPDF.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\Para\para_LocGridex.resx">
+      <DependentUpon>para_LocGridex.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Froms\Para\para_NhanVienActive.resx">
+      <DependentUpon>para_NhanVienActive.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmBacTayNghe.resx">
+      <DependentUpon>frmBacTayNghe.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmBacTayNgheNhanVien.resx">
+      <DependentUpon>frmBacTayNgheNhanVien.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmBaoCaoLuong.resx">
+      <DependentUpon>frmBaoCaoLuong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmCaiDatPhuCap.resx">
+      <DependentUpon>frmCaiDatPhuCap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmContractList.resx">
+      <DependentUpon>frmContractList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmDanhSachNguoiPhuThuoc.resx">
+      <DependentUpon>frmDanhSachNguoiPhuThuoc.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmEmpRegisParameter.resx">
+      <DependentUpon>frmEmpRegisParameter.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmLuongCoDinh.resx">
+      <DependentUpon>frmLuongCoDinh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmMucLuong.resx">
+      <DependentUpon>frmMucLuong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmMucLuongNhanVien.resx">
+      <DependentUpon>frmMucLuongNhanVien.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmSalaryComponent.resx">
+      <DependentUpon>frmSalaryComponent.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\para_PhieuLuong.resx">
+      <DependentUpon>para_PhieuLuong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\para_Salary.resx">
+      <DependentUpon>para_Salary.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\BlockFunction.resx">
+      <DependentUpon>BlockFunction.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\BlockFunction_Nhap.resx">
+      <DependentUpon>BlockFunction_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmCompanyInformation.resx">
+      <DependentUpon>frmCompanyInformation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmContract.resx">
+      <DependentUpon>frmContract.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmContractFlow.resx">
+      <DependentUpon>frmContractFlow.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmHazardCategory.resx">
+      <DependentUpon>frmHazardCategory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmJobCodeCategory.resx">
+      <DependentUpon>frmJobCodeCategory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmRegisterUser.resx">
+      <DependentUpon>frmRegisterUser.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmRunQuerySQL.resx">
+      <DependentUpon>frmRunQuerySQL.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmSetUp.resx">
+      <DependentUpon>frmSetUp.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmShiftsSetting2.resx">
+      <DependentUpon>frmShiftsSetting2.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test.resx">
+      <DependentUpon>Test.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmBaoCaoCong.resx">
+      <DependentUpon>frmBaoCaoCong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmCongBatThuong.resx">
+      <DependentUpon>frmCongBatThuong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmDangKyCaTheoNhom.resx">
+      <DependentUpon>frmDangKyCaTheoNhom.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmDangKyPhepTheoGio.resx">
+      <DependentUpon>frmDangKyPhepTheoGio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmDanhSachDangKyDiLam.resx">
+      <DependentUpon>frmDanhSachDangKyDiLam.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmRoundShift.resx">
+      <DependentUpon>frmRoundShift.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmRoundShiftDetail_Nhap.resx">
+      <DependentUpon>frmRoundShiftDetail_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmTienCom.resx">
+      <DependentUpon>frmTienCom.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\para_TimeKeeping_Data2.resx">
+      <DependentUpon>para_TimeKeeping_Data2.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\para_TimeKeeping_Date.resx">
+      <DependentUpon>para_TimeKeeping_Date.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmHR_Hospital.resx">
+      <DependentUpon>frmHR_Hospital.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmLoaiCong.resx">
+      <DependentUpon>frmLoaiCong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmMayChamCong.resx">
+      <DependentUpon>frmMayChamCong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmSalary_Name.resx">
+      <DependentUpon>frmSalary_Name.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmSetUpFollowDate.resx">
+      <DependentUpon>frmSetUpFollowDate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmTaoDieuChinhDanhMucLuong.resx">
+      <DependentUpon>frmTaoDieuChinhDanhMucLuong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmUsers.resx">
+      <DependentUpon>frmUsers.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmUsers_Nhap.resx">
+      <DependentUpon>frmUsers_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\HR_Category.resx">
+      <DependentUpon>HR_Category.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\licenses.licx" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmEmpRegisterNumberOfWDPerMonth.resx">
+      <DependentUpon>frmEmpRegisterNumberOfWDPerMonth.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\frmQuyetToanThueTNCN.resx">
+      <DependentUpon>frmQuyetToanThueTNCN.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\Reports\frmBangKeThueTNCN.resx">
+      <DependentUpon>frmBangKeThueTNCN.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\Reports\para_BHXH.resx">
+      <DependentUpon>para_BHXH.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Payroll\Salary_Parameter.resx">
+      <DependentUpon>Salary_Parameter.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\frmCreateReportTemplate.resx">
+      <DependentUpon>frmCreateReportTemplate.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\frmCreateReportTemplate_Nhap.resx">
+      <DependentUpon>frmCreateReportTemplate_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\frmParaViewAllField.resx">
+      <DependentUpon>frmParaViewAllField.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\frmReport.resx">
+      <DependentUpon>frmReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Report\frmReportPermission.resx">
+      <DependentUpon>frmReportPermission.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\DatabaseBackup.resx">
+      <DependentUpon>DatabaseBackup.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\DatabaseRestore.resx">
+      <DependentUpon>DatabaseRestore.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmContractFlow_Nhap.resx">
+      <DependentUpon>frmContractFlow_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmDepartment.resx">
+      <DependentUpon>frmDepartment.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmFactory.resx">
+      <DependentUpon>frmFactory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmPosition.resx">
+      <DependentUpon>frmPosition.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmPositionCategory.resx">
+      <DependentUpon>frmPositionCategory.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmSection.resx">
+      <DependentUpon>frmSection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmSetupPermission.resx">
+      <DependentUpon>frmSetupPermission.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmTaoDieuChinhChucDanh.resx">
+      <DependentUpon>frmTaoDieuChinhChucDanh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmTaoDieuChinhLoaiNghi.resx">
+      <DependentUpon>frmTaoDieuChinhLoaiNghi.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmTeam.resx">
+      <DependentUpon>frmTeam.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup\frmVungMien.resx">
+      <DependentUpon>frmVungMien.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmDangKyNghiSinh.resx">
+      <DependentUpon>frmDangKyNghiSinh.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmEmpRegisLeave.resx">
+      <DependentUpon>frmEmpRegisLeave.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmEmpRegisLeave_Nhap.resx">
+      <DependentUpon>frmEmpRegisLeave_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmEmpRegisPregnant.resx">
+      <DependentUpon>frmEmpRegisPregnant.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmEmpRegisTimeSheet.resx">
+      <DependentUpon>frmEmpRegisTimeSheet.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmGoOut.resx">
+      <DependentUpon>frmGoOut.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmHourLeaveException.resx">
+      <DependentUpon>frmHourLeaveException.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmHourLeaveException_Nhap.resx">
+      <DependentUpon>frmHourLeaveException_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmHR_MaxOvertimeInPeriod.resx">
+      <DependentUpon>frmHR_MaxOvertimeInPeriod.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmHR_MaxOvertimeInPeriod_Nhap.resx">
+      <DependentUpon>frmHR_MaxOvertimeInPeriod_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmNhapDuLieuQuet.resx">
+      <DependentUpon>frmNhapDuLieuQuet.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmRegisMaxOvertime.resx">
+      <DependentUpon>frmRegisMaxOvertime.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmWorkingDaySpecial.resx">
+      <DependentUpon>frmWorkingDaySpecial.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmWorkingTimeCompensation.resx">
+      <DependentUpon>frmWorkingTimeCompensation.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmWorkingTimeCompensation_Nhap.resx">
+      <DependentUpon>frmWorkingTimeCompensation_Nhap.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\Reports\para_BangLoaiGioCong.resx">
+      <DependentUpon>para_BangLoaiGioCong.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\Reports\para_DanhSachLoaiNghiPhep.resx">
+      <DependentUpon>para_DanhSachLoaiNghiPhep.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\Reports\para_DieuKienPhepNam.resx">
+      <DependentUpon>para_DieuKienPhepNam.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\Reports\para_LocGioCongTheoGio.resx">
+      <DependentUpon>para_LocGioCongTheoGio.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Employees.resx">
+      <DependentUpon>Employees.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Teams.resx">
+      <DependentUpon>Teams.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="BaseForms\vssver2.scc" />
+    <None Include="bin\x86\Debug\HuongDanSuDungPhanMemNhanSu.chm" />
+    <None Include="bin\x86\Debug\TempImport\BangMau.xls" />
+    <None Include="bin\x86\Debug\TempImport\BangMauPhieuLuong.xls" />
+    <None Include="bin\x86\Debug\TempImport\NhapPhep.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempBangBucLuongCoBan.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempBangHDLD.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempBangLuongCoBan.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempBangPhuCap.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempBangThanhPhanLuongBienDong.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempBangThemGioCongNgoaiLe.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempBangThongTinSoBaoHiem.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempCapNhatThongTinNhanVien.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempCapNhatThongTinNhanVien_All.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempDangKyCaLamViec.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempDangKyNguoiPhuThuoc.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempDangKyNhanVien.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempDangKyTangCa.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempDanhSachMaNhanVienCanInVanBan.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempDanhSachNhanVienCanIn.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempDanhSachNhanVienDongBaoHiemXaHoi.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempEmpGoOut.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempGiaDinh.xls" />
+    <None Include="bin\x86\Debug\TempImport\TemplateVaoRa.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempLuongBoSung.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempPhepTon.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempPhuCapKhac.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempQuaTet.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempTayNghe.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempThanhPhanLuong.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempThanhPhanLuongCoDinh.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempThanhPhanLuongCoDinhRiengBiet.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempTienComTangCa.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempTienSinhNhatCongNhanVien.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempTraTienBaoHiem.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempTruyThuBaoHiem.xls" />
+    <None Include="bin\x86\Debug\TempImport\TempXepLoai.xls" />
+    <None Include="bin\x86\Debug\TempReport\BangThongTinSoBaoHiem.xls" />
+    <None Include="bin\x86\Debug\TempReport\DanhSachNghiViec.xls" />
+    <None Include="bin\x86\Debug\TempReport\DanhSachNhanVienMoi.xls" />
+    <None Include="bin\x86\Debug\TempSalary\Bangluong.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\Doosung_Worker.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\JSI_Vina.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\Line.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\O2.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\O2_CongThuc.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\Overtime_CongThuc.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\QCPCWM.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\QCPCWM_CongThuc.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\SO1T.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\SO1T_CongThuc.xls" />
+    <None Include="bin\x86\Debug\TempSalary\CongThuc\TotalRealSalary_CongThuc.xls" />
+    <None Include="Payroll\Reports\vssver2.scc" />
+    <None Include="Payroll\vssver2.scc" />
+    <None Include="Setup\ShowReports\vssver2.scc" />
+    <None Include="Setup\vssver2.scc" />
+    <None Include="TimeKeeping\Reports\vssver2.scc" />
+    <None Include="TimeKeeping\vssver2.scc" />
+    <None Include="ToolBar\vssver2.scc" />
+    <None Include="Views\vssver2.scc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\x86\Debug\AppConfig.xml" />
+    <Content Include="bin\x86\Debug\Config.xml" />
+    <Content Include="bin\x86\Debug\ENLayout.xml" />
+    <Content Include="bin\x86\Debug\KRLayout.xml" />
+    <Content Include="bin\x86\Debug\login.xml" />
+    <Content Include="bin\x86\Debug\MainIcon.ico" />
+    <Content Include="bin\x86\Debug\SmartBooks.HumanResource.vshost.exe" />
+    <Content Include="bin\x86\Debug\VNlayout.xml" />
+    <Content Include="MainIcon.ico" />
+    <Content Include="Resources\browser.PNG" />
+    <None Include="Resources\logout16.png" />
+    <None Include="Resources\contact161.png" />
+    <None Include="Resources\excel16.png" />
+    <None Include="bin\x86\Debug\Teamleate\Card.rpt" />
+    <None Include="bin\x86\Debug\Teamleate\Detail_Of_Allow_Payment.rpt" />
+    <None Include="bin\x86\Debug\Teamleate\Labour_Contract_CKH.rpt" />
+    <None Include="bin\x86\Debug\Teamleate\Labour_Contract_KKH.rpt" />
+    <None Include="bin\x86\Debug\Teamleate\Labour_Contract_Temp.rpt" />
+    <None Include="bin\x86\Debug\Teamleate\List_of_Employee_By_Contract_ExpiriedDate.rpt" />
+    <None Include="bin\x86\Debug\Teamleate\List_Of_Employee_Information_Probation.rpt" />
+    <None Include="Froms\Para\vssver2.scc" />
+    <None Include="Froms\vssver2.scc" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Froms\Report\" />
+    <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Appsettings\Appsettings.vbproj">
+      <Project>{5ef13e08-c00a-4fec-94d0-7fd2a6b17bd1}</Project>
+      <Name>Appsettings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Entity\Entity.vbproj">
+      <Project>{7b44b408-71d2-4316-ba3d-ef42b09780c0}</Project>
+      <Name>Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartBooks.BL.TimeKeeping\SmartBooks.BL.TimeKeeping.vbproj">
+      <Project>{f2bb2086-06f1-4c38-84f5-8bae218dba14}</Project>
+      <Name>SmartBooks.BL.TimeKeeping</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartBooks.BusinessLogic\SmartBooks.BusinessLogic.vbproj">
+      <Project>{fc1f013f-9182-4c70-bfd2-66a7bfa6f189}</Project>
+      <Name>SmartBooks.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsControlLibrary\WindowsControlLibrary.vbproj">
+      <Project>{5b340ac7-d61d-48e5-9513-8fa70b72b9c6}</Project>
+      <Name>WindowsControlLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

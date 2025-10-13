@@ -1,0 +1,57 @@
+<?xml version="1.0" standalone="yes"?>
+<users>
+  <user>
+    <username>admin</username>
+    <accountserver />
+    <password />
+    <database />
+    <fromdate>09/10/2025</fromdate>
+    <todate>31/01/2006</todate>
+    <startdate>25-11-2006</startdate>
+    <expiredate>26-Jan-01</expiredate>
+    <CExDay>0</CExDay>
+    <CExDay_MAX>45</CExDay_MAX>
+    <path />
+    <CompanyCode>HR_SnK_Dev</CompanyCode>
+    <UseInforOnline>False</UseInforOnline>
+    <CompanyID />
+    <Factory />
+    <PP_IN />
+    <C_M />
+    <C_Y />
+    <Terminal />
+    <ConnectionType />
+    <SQLServer />
+    <SQLUser />
+    <SQLPassword />
+    <SQLDatabase />
+    <AccessFilePath />
+    <AccessPassword />
+    <EmployeeTable />
+    <EmployeeID />
+    <EmployeeBirthday />
+    <EmployeeAddressTemporary />
+    <EmployeeStartDate />
+    <EmployeeFirstName />
+    <EmployeeMiddleName />
+    <EmployeeLastName />
+    <EmployeeIDNumber />
+    <EmployeeIDPlace />
+    <EmployeeIDDate />
+    <EmployeeGender />
+    <TimekeepingTable />
+    <TimekeepingEmployee />
+    <TimekeepingDate />
+    <TimekeepingMapSQL />
+    <lang>VN</lang>
+    <TimekeepingAccessTime />
+    <UsingSecond />
+    <full8h />
+    <isConfigsalary />
+    <tkpdb />
+    <tkpdb1 />
+    <tkpdb2 />
+    <tkpdb3 />
+    <tkpdb4 />
+  </user>
+</users>

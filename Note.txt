@@ -1,0 +1,34 @@
+Don't understand:
+	+) CheckGridEX_CellUpdated() (Đã comment)
+	+) DropDownInOut - ThuVienChucNang (5030 > 5032) - Đã comment
+	+) exportLangText() - PublicFunction (224) - Đã comment
+
+Replace:
+	+) Me.CancelButton = Me.WindowsUIButtonPanel1.Buttons.Item("btnClose") > 'Me.CancelButton = Me.WindowsUIButtonPanel1.Buttons.Item("btnClose")
+	+) Me.AcceptButton = Me.WindowsUIButtonPanel1.Buttons.Item("btnSave") > 'Me.AcceptButton = Me.WindowsUIButtonPanel1.Buttons.Item("btnSave")
+
+Not fix:
+   -) HRFORM:
+	+) G.SetDataBinding(Table, "") (line: 412)
+	+) tvcn.NhapDuLieuTuGridLenFormNhap (line: 767)
+	+) btnAdd_Click() (line: 1286) - comment
+	+) btnEdit_Click() (line: 1291) - comment
+
+   -) ThuVienChucNang:
+	+) AddNewOrEdit() (line: 268) Đang tạo form theo mẫu có sẵn Janus
+	+) LayTemplate() (line: 592) Comment
+	+) XuatExcelTheoGridex_RowCheckedEPPlus() - comment 1851 > 1962
+	+) XuatFileWord - comment 4472 > 4538
+	+) SaveWordToPDF - comment 4542 > 4565
+	+) TaoDropDowTrenGrid() - comment 4924 > 4952
+
+Replace:
+   -) GridEx = GridControl + GridView
+   -) MultiColumnCombo = LookUpEdit
+   -) CalendarCombo = DateTimeOffsetEdit (Change Editor Type: Date Edit)
+   -) UltraDateTimeEditor = DateTimeOffsetEdit (Change Editor Type: Date Edit)
+   -) UltraComboEditor = ComboBoxEdit
+
+
+Note:
+   -) Handle translate form: ChangeLangForm (PublicFunction: 258)

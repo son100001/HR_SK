@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<svg x="0px" y="0px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" id="Layer_1" style="enable-background:new 0 0 32 32">
+  <style type="text/css">
+	.Yellow{fill:#FFB115;}
+	.Red{fill:#D11C1C;}
+	.Blue{fill:#1177D7;}
+	.Green{fill:#039C23;}
+	.Black{fill:#727272;}
+	.White{fill:#FFFFFF;}
+	.st0{opacity:0.5;}
+	.st1{display:none;}
+	.st2{display:inline;fill:#039C23;}
+	.st3{display:inline;fill:#D11C1C;}
+	.st4{display:inline;fill:#727272;}
+</style>
+  <g id="Categorize">
+    <path d="M10,8H4V2h6V8z M18,2h-6v6h6V2z M10,10H4v6h6V10z" class="Yellow" />
+    <path d="M10,24H4v-6h6V24z M18,10h-6v6h6V10z" class="Green" />
+    <path d="M26,8h-6V2h6V8z M26,10h-6v6h6V10z" class="Red" />
+    <path d="M26,24h-6v-6h6V24z M18,18h-6v6h6V18z" class="Blue" />
+    <g class="st0">
+      <rect x="4" y="10" width="6" height="6" rx="0" ry="0" class="Green" />
+      <path d="M18,8h-6V2h6V8z M26,18h-6v6h6V18z" class="Red" />
+      <path d="M26,16h-6v-6h6V16z M18,10h-6v6h6V10z" class="Blue" />
+    </g>
+    <g class="st0">
+      <rect x="20" y="18" width="6" height="6" rx="0" ry="0" class="Blue" />
+    </g>
+  </g>
+</svg>
