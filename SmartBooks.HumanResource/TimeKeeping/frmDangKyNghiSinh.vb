@@ -793,6 +793,7 @@ Public Class frmDangKyNghiSinh
         Me.HRFORM_Gridview = Me.GridView1
         Me.HRFORM_SaveStore = "usp_InsertUpdateHR_EmployeeRegisMaternityLeave"
         Me.HRFORM_TableName = "HR_EmployeeRegisMaternityLeave"
+        Me.HRFORM_VisibleControl_GetTemplate = False
         Me.HRFORM_VisibleControl_Sua = False
         Me.HRFORM_VisibleControl_ThemMoi = False
         Me.HRFORM_XtraTabControl = Me.XtraTabControl1
@@ -856,18 +857,19 @@ Public Class frmDangKyNghiSinh
     End Sub
 
     Private Sub GridView1_RowCellStyle(sender As Object, e As DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs) Handles GridView1.RowCellStyle
-        If e.Column Is Nothing Then
-            Return
-        End If
+        Grid_Rowstyle(sender, e)
+        'If e.Column Is Nothing Then
+        '    Return
+        'End If
 
-        Dim colName As String = e.Column.FieldName
-        Dim dt As DateTime
-        If DateTime.TryParse(colName, dt) Then
-            If dt.DayOfWeek = DayOfWeek.Saturday OrElse dt.DayOfWeek = DayOfWeek.Sunday Then
-                e.Appearance.BackColor = Color.Snow
-                e.Appearance.ForeColor = Color.Black
-            End If
-        End If
+        'Dim colName As String = e.Column.FieldName
+        'Dim dt As DateTime
+        'If DateTime.TryParse(colName, dt) Then
+        '    If dt.DayOfWeek = DayOfWeek.Saturday OrElse dt.DayOfWeek = DayOfWeek.Sunday Then
+        '        e.Appearance.BackColor = Color.Snow
+        '        e.Appearance.ForeColor = Color.Black
+        '    End If
+        'End If
     End Sub
 
     Public Overrides Sub AfterViewForm()
@@ -975,8 +977,8 @@ Public Class frmDangKyNghiSinh
     End Sub
 
     Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search()
-        TinhPN()
+        'Search()
+        'TinhPN()
     End Sub
 
     Private Sub GridView1_RowCellClick(sender As Object, e As RowCellClickEventArgs) Handles GridView1.RowCellClick

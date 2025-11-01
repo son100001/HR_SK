@@ -533,7 +533,7 @@ Public Class ThuVienChucNang
 
     Public Sub LayTemplateEPPlus(ByVal TableName As String, ByVal FirtsRow As Integer, ByVal FileTemplate As String, Optional ByVal FRM As Form = Nothing)
         Dim fileChooser As SaveFileDialog = New SaveFileDialog
-        fileChooser.FileName = FileTemplate
+        fileChooser.FileName = FRM.Text
         Dim result As DialogResult = fileChooser.ShowDialog()
         fileChooser.CheckFileExists = False
         If result = DialogResult.OK Then

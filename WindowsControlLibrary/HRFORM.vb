@@ -484,7 +484,7 @@ Public Class HRFORM
             'RemoveHandler _HRFORM_GridControl.MouseWheel, AddressOf GridControl_MouseWheel
             AddHandler _HRFORM_GridControl.MouseWheel, AddressOf GridControl_MouseWheel
 
-            Dim columnsDropdownFromCategoryCodeName = {"EMPLOYEE_STATUS", "GRADUATED", "TONGIAO", "QUALIFICATION", "QUANHEGIADINH", "SEX", "MARITALSTATUS", "NATIONALITY", "TYPEOFHIRING"}
+            Dim columnsDropdownFromCategoryCodeName = {"EMPLOYEE_STATUS", "QUANHEGIADINH", "SEX", "MARITALSTATUS", "NATIONALITY", "TYPEOFHIRING"}
             If IsNothing(G.GetDataRow(0)) Or bReloadGridDesign = True Then 'G.GetDataRow(0)
                 Dim tableColumn As DataTable = kn.ReadData("SELECT Column_Name from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME = N'" + HRFORM_TableName + "'", "table")
 
@@ -499,7 +499,7 @@ Public Class HRFORM
                 Dim columnsDisableVisible = {"EMPLOYEE_ID1", "ID", "RN"}
                 Dim columnsDisableEdit = {"USERNAME", "APPROVAL", "INSERTSOURCE", "PASSWORD"}
                 Dim columnsNotDisableEdit As New List(Of String)()
-                Dim columnsSum = {"System.Double", "System.Int32"}
+                Dim columnsSum = {"System.Double", "System.Int32", "System.Decimal"}
                 Dim numericTypes As Type() = {GetType(Double), GetType(Int32), GetType(Decimal)}
 
                 For i = 0 To tableColumn.Rows.Count - 1
@@ -525,7 +525,8 @@ Public Class HRFORM
                         riDatetime.AllowMouseWheel = False
                         col.ColumnEdit = riDatetime
                     ElseIf numericTypes.Contains(col.ColumnType) Then
-                        col.DisplayFormat.FormatString = "{0:#,##0.##}".Replace(",", ".")
+                        col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+                        col.DisplayFormat.FormatString = "n2"
                     End If
                     If col.FieldName.ToUpper = "FACTORY_ID" And HRFORM_TableName.ToUpper <> "HR_Factory".ToUpper And HRFORM_TableName.ToUpper <> "SmartBooks_Department".ToUpper And HRFORM_TableName.ToUpper <> "SmartBooks_Team".ToUpper And HRFORM_TableName.ToUpper <> "SmartBooks_Section".ToUpper Then
                         Dim tab As DataTable = kn.ReadData("select * from [dbo].[udf_Factory]('" + obj.Lan + "')", "table")
@@ -548,9 +549,9 @@ Public Class HRFORM
                     ElseIf col.FieldName.ToUpper = "CHUCDANH" And HRFORM_TableName.ToUpper <> "HR_ChucDanh".ToUpper Then
                         Dim tab As DataTable = kn.ReadData("select ChucDanh as Code,Name" + obj.Lan + " as Name from HR_ChucDanh", "table")
                         tvcn.TaoDropDowTrenGrid(G, col.FieldName, tab)
-                    ElseIf col.FieldName.ToUpper = "NATION" Then
-                        Dim tab As DataTable = kn.ReadData("select MaDanToc as Code,TenDanToc as Name from HR_DanToc", "table")
-                        tvcn.TaoDropDowTrenGrid(G, col.FieldName, tab)
+                        'ElseIf col.FieldName.ToUpper = "NATION" Then
+                        '    Dim tab As DataTable = kn.ReadData("select MaDanToc as Code,TenDanToc as Name from HR_DanToc", "table")
+                        '    tvcn.TaoDropDowTrenGrid(G, col.FieldName, tab)
                     ElseIf col.FieldName.ToUpper = "CONTRACTFLOW" Then
                         Dim tab As DataTable = kn.ReadData("select distinct [ContractFlow] as Code, [ContractFlow] as Name from [HR_ContractFlow]", "tab")
                         tvcn.TaoDropDowTrenGrid(G, col.FieldName, tab)
@@ -690,9 +691,14 @@ Public Class HRFORM
             ' Nếu cột là số
             If numericTypes1.Contains(cl.ColumnType) Then
                 If cl.FieldName.ToUpper() <> "ID" Then
-                    cl.SummaryItem.SummaryType = SummaryItemType.Sum
-                    ' Hiển thị có dấu chấm phân cách nghìn
-                    cl.SummaryItem.DisplayFormat = "{0:#,##0.##}".Replace(",", ".")
+                    ' Hiển thị dữ liệu
+                    cl.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+                    cl.DisplayFormat.FormatString = "n2"
+
+                    ' Hiển thị dòng tổng
+                    cl.SummaryItem.SummaryType = DevExpress.Data.SummaryItemType.Sum
+                    cl.SummaryItem.DisplayFormat = "{0:#,0.00}"
+                    cl.UnboundType = DevExpress.Data.UnboundColumnType.Decimal
                 End If
             End If
 
@@ -1346,6 +1352,25 @@ Public Class HRFORM
 
     Public Sub GridControl_MouseWheel(sender As Object, e As MouseEventArgs)
         _HRFORM_GridControl.FocusedView.CloseEditor()
+    End Sub
+
+    Public Sub Grid_Rowstyle(sender As Object, e As DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs)
+        If e.Column Is Nothing Then
+            Return
+        End If
+
+        Dim colName As String = e.Column.FieldName
+        Dim dt As DateTime
+        If DateTime.TryParse(colName, dt) Then
+            If dt.DayOfWeek = DayOfWeek.Saturday Then
+                e.Appearance.BackColor = Color.LemonChiffon
+                e.Appearance.ForeColor = Color.Black
+            End If
+            If dt.DayOfWeek = DayOfWeek.Sunday Then
+                e.Appearance.BackColor = Color.Orchid
+                e.Appearance.ForeColor = Color.Black
+            End If
+        End If
     End Sub
 
 #End Region

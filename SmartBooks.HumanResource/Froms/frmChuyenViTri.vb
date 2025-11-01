@@ -222,34 +222,34 @@ Public Class frmChuyenViTri
         Employee_ID.Select()
     End Sub
 
-    Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged 
-        Dim EmID As String
-        If Not IsNothing(Employee_ID.EditValue) Then
-            EmID = Employee_ID.EditValue.ToString.Trim
-        Else
-            Exit Sub
-        End If
-        If Employee_ID.EditValue.ToString.Trim <> String.Empty Then
-            Dim tab As DataTable = kn.ReadData("select Position,ChucDanh,JobCode,PositionCategory_ID,Position_ID from udf_EmployeeFilter('" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "',getdate())", "table")
-            If tab.Rows.Count > 0 Then
-                If Not IsDBNull(tab.Rows(0)("Position")) Then
-                    OldPosition.EditValue = tab.Rows(0)("Position")
-                End If
-                If Not IsDBNull(tab.Rows(0)("ChucDanh")) Then
-                    OldChucDanh.EditValue = tab.Rows(0)("ChucDanh")
-                End If
-                If Not IsDBNull(tab.Rows(0)("JobCode")) Then
-                    OldJobCode.EditValue = tab.Rows(0)("JobCode")
-                End If
-                If Not IsDBNull(tab.Rows(0)("PositionCategory_ID")) Then
-                    OldPositionCategory_ID.EditValue = tab.Rows(0)("PositionCategory_ID")
-                End If
-                If Not IsDBNull(tab.Rows(0)("Position_ID")) Then
-                    OldPosition_ID.EditValue = tab.Rows(0)("Position_ID")
-                End If
-            End If
-        End If
-        Search()
+    Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
+        'Dim EmID As String
+        'If Not IsNothing(Employee_ID.EditValue) Then
+        '    EmID = Employee_ID.EditValue.ToString.Trim
+        'Else
+        '    Exit Sub
+        'End If
+        'If Employee_ID.EditValue.ToString.Trim <> String.Empty Then
+        '    Dim tab As DataTable = kn.ReadData("select Position,ChucDanh,JobCode,PositionCategory_ID,Position_ID from udf_EmployeeFilter('" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "',getdate())", "table")
+        '    If tab.Rows.Count > 0 Then
+        '        If Not IsDBNull(tab.Rows(0)("Position")) Then
+        '            OldPosition.EditValue = tab.Rows(0)("Position")
+        '        End If
+        '        If Not IsDBNull(tab.Rows(0)("ChucDanh")) Then
+        '            OldChucDanh.EditValue = tab.Rows(0)("ChucDanh")
+        '        End If
+        '        If Not IsDBNull(tab.Rows(0)("JobCode")) Then
+        '            OldJobCode.EditValue = tab.Rows(0)("JobCode")
+        '        End If
+        '        If Not IsDBNull(tab.Rows(0)("PositionCategory_ID")) Then
+        '            OldPositionCategory_ID.EditValue = tab.Rows(0)("PositionCategory_ID")
+        '        End If
+        '        If Not IsDBNull(tab.Rows(0)("Position_ID")) Then
+        '            OldPosition_ID.EditValue = tab.Rows(0)("Position_ID")
+        '        End If
+        '    End If
+        'End If
+        'Search()
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click 

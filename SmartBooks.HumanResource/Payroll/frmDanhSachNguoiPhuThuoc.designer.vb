@@ -30,6 +30,7 @@ Partial Class frmDanhSachNguoiPhuThuoc
         Me.GridView1 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.TableLayoutPanel2 = New System.Windows.Forms.TableLayoutPanel()
         Me.pnSearch = New System.Windows.Forms.Panel()
+        Me.btnSearch = New DevExpress.XtraEditors.SimpleButton()
         Me.Employee_ID = New DevExpress.XtraEditors.LookUpEdit()
         Me.lblEmployee_ID = New System.Windows.Forms.Label()
         Me.pnDuLieuNhap = New System.Windows.Forms.Panel()
@@ -78,7 +79,6 @@ Partial Class frmDanhSachNguoiPhuThuoc
         Me.lblRelatedName = New System.Windows.Forms.Label()
         Me.pnLuu = New System.Windows.Forms.Panel()
         Me.btnSave = New DevExpress.XtraEditors.SimpleButton()
-        Me.btnSearch = New DevExpress.XtraEditors.SimpleButton()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.XtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.XtraTabControl1.SuspendLayout()
@@ -181,6 +181,14 @@ Partial Class frmDanhSachNguoiPhuThuoc
         Me.pnSearch.Name = "pnSearch"
         Me.pnSearch.Size = New System.Drawing.Size(307, 120)
         Me.pnSearch.TabIndex = 1320
+        '
+        'btnSearch
+        '
+        Me.btnSearch.Location = New System.Drawing.Point(10, 65)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(60, 20)
+        Me.btnSearch.TabIndex = 1225
+        Me.btnSearch.Text = "Tìm"
         '
         'Employee_ID
         '
@@ -699,14 +707,6 @@ Partial Class frmDanhSachNguoiPhuThuoc
         Me.btnSave.TabIndex = 60
         Me.btnSave.Text = "Lưu"
         '
-        'btnSearch
-        '
-        Me.btnSearch.Location = New System.Drawing.Point(10, 65)
-        Me.btnSearch.Name = "btnSearch"
-        Me.btnSearch.Size = New System.Drawing.Size(60, 20)
-        Me.btnSearch.TabIndex = 1225
-        Me.btnSearch.Text = "Tìm"
-        '
         'frmDanhSachNguoiPhuThuoc
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -719,6 +719,7 @@ Partial Class frmDanhSachNguoiPhuThuoc
         Me.HRFORM_MainFormName = "frmDanhSachNguoiPhuThuoc"
         Me.HRFORM_SaveStore = "usp_InsertUpdateHR_DanhSachNguoiPhuThuoc"
         Me.HRFORM_TableName = "HR_DanhSachNguoiPhuThuoc"
+        Me.HRFORM_VisibleControl_GetTemplate = False
         Me.HRFORM_VisibleControl_Sua = False
         Me.HRFORM_VisibleControl_ThemMoi = False
         Me.HRFORM_XtraTabControl = Me.XtraTabControl1

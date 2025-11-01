@@ -140,7 +140,7 @@ Public Class frmRegisMaxOvertime
     End Sub
 
     Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search(TypeOfReport)
+        'Search(TypeOfReport)
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
@@ -222,5 +222,20 @@ Public Class frmRegisMaxOvertime
         If tvcn.SaveByStore(QuyenHRFORM, HRFORM_TableName, "[dbo].[sp_InsertUpdateHR_TangCaNgoaiLe_SK1]", XtraTabControl1, ErrorProvider1) Then
             Search(TypeOfReport)
         End If
+    End Sub
+    Private Sub GridView1_RowCellStyle(sender As Object, e As DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs) Handles GridView1.RowCellStyle
+        Grid_Rowstyle(sender, e)
+        'If e.Column Is Nothing Then
+        '    Return
+        'End If
+
+        'Dim colName As String = e.Column.FieldName
+        'Dim dt As DateTime
+        'If DateTime.TryParse(colName, dt) Then
+        '    If dt.DayOfWeek = DayOfWeek.Saturday OrElse dt.DayOfWeek = DayOfWeek.Sunday Then
+        '        e.Appearance.BackColor = Color.Snow
+        '        e.Appearance.ForeColor = Color.Black
+        '    End If
+        'End If
     End Sub
 End Class

@@ -947,7 +947,7 @@ Public Class para_TimeKeeping_Data2
     End Sub
 
     Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search(TypeOfReport)
+        'Search(TypeOfReport)
     End Sub
 
     Private Sub Search(ByVal TypeOfReport As Integer)

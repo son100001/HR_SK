@@ -119,10 +119,10 @@ Public Class para_Salary
         Me.GridControl10 = New DevExpress.XtraGrid.GridControl()
         Me.GridView10 = New DevExpress.XtraGrid.Views.Grid.GridView()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.CongGoc = New System.Windows.Forms.CheckBox()
-        Me.CongDM = New System.Windows.Forms.CheckBox()
         Me.CongDiff = New System.Windows.Forms.CheckBox()
+        Me.CongDM = New System.Windows.Forms.CheckBox()
+        Me.CongGoc = New System.Windows.Forms.CheckBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
         CType(Me.PayDate.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PayDate.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.XtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -175,6 +175,7 @@ Public Class para_Salary
         Me.lblPayDate.TabIndex = 1009
         Me.lblPayDate.Text = "Ngày thanh toán"
         Me.lblPayDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblPayDate.Visible = False
         '
         'cbXoaNgayThanhToan
         '
@@ -184,6 +185,7 @@ Public Class para_Salary
         Me.cbXoaNgayThanhToan.Size = New System.Drawing.Size(15, 14)
         Me.cbXoaNgayThanhToan.TabIndex = 1011
         Me.cbXoaNgayThanhToan.UseVisualStyleBackColor = True
+        Me.cbXoaNgayThanhToan.Visible = False
         '
         'lblXoaNgayThanhToan
         '
@@ -194,6 +196,7 @@ Public Class para_Salary
         Me.lblXoaNgayThanhToan.TabIndex = 1012
         Me.lblXoaNgayThanhToan.Text = "Xóa ngày thanh toán"
         Me.lblXoaNgayThanhToan.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblXoaNgayThanhToan.Visible = False
         '
         'PayDate
         '
@@ -211,6 +214,7 @@ Public Class para_Salary
         Me.PayDate.Properties.UseMaskAsDisplayFormat = True
         Me.PayDate.Size = New System.Drawing.Size(114, 20)
         Me.PayDate.TabIndex = 1013
+        Me.PayDate.Visible = False
         '
         'btnCapNhat
         '
@@ -219,6 +223,7 @@ Public Class para_Salary
         Me.btnCapNhat.Size = New System.Drawing.Size(80, 19)
         Me.btnCapNhat.TabIndex = 1014
         Me.btnCapNhat.Text = "Cập nhật"
+        Me.btnCapNhat.Visible = False
         '
         'btnKhoa
         '
@@ -483,25 +488,15 @@ Public Class para_Salary
         Me.Panel1.Size = New System.Drawing.Size(1120, 32)
         Me.Panel1.TabIndex = 1018
         '
-        'Panel2
+        'CongDiff
         '
-        Me.Panel2.Controls.Add(Me.btnKhoa)
-        Me.Panel2.Controls.Add(Me.btnMoKhoa)
-        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Right
-        Me.Panel2.Location = New System.Drawing.Point(909, 0)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(211, 32)
-        Me.Panel2.TabIndex = 1017
-        '
-        'CongGoc
-        '
-        Me.CongGoc.AutoSize = True
-        Me.CongGoc.Location = New System.Drawing.Point(460, 7)
-        Me.CongGoc.Name = "CongGoc"
-        Me.CongGoc.Size = New System.Drawing.Size(51, 17)
-        Me.CongGoc.TabIndex = 1296
-        Me.CongGoc.Text = "Công"
-        Me.CongGoc.UseVisualStyleBackColor = True
+        Me.CongDiff.AutoSize = True
+        Me.CongDiff.Location = New System.Drawing.Point(592, 7)
+        Me.CongDiff.Name = "CongDiff"
+        Me.CongDiff.Size = New System.Drawing.Size(49, 17)
+        Me.CongDiff.TabIndex = 1298
+        Me.CongDiff.Text = "DIFF"
+        Me.CongDiff.UseVisualStyleBackColor = True
         '
         'CongDM
         '
@@ -514,15 +509,25 @@ Public Class para_Salary
         Me.CongDM.Text = "Công DM"
         Me.CongDM.UseVisualStyleBackColor = True
         '
-        'CongDiff
+        'CongGoc
         '
-        Me.CongDiff.AutoSize = True
-        Me.CongDiff.Location = New System.Drawing.Point(592, 7)
-        Me.CongDiff.Name = "CongDiff"
-        Me.CongDiff.Size = New System.Drawing.Size(49, 17)
-        Me.CongDiff.TabIndex = 1298
-        Me.CongDiff.Text = "DIFF"
-        Me.CongDiff.UseVisualStyleBackColor = True
+        Me.CongGoc.AutoSize = True
+        Me.CongGoc.Location = New System.Drawing.Point(460, 7)
+        Me.CongGoc.Name = "CongGoc"
+        Me.CongGoc.Size = New System.Drawing.Size(51, 17)
+        Me.CongGoc.TabIndex = 1296
+        Me.CongGoc.Text = "Công"
+        Me.CongGoc.UseVisualStyleBackColor = True
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.btnKhoa)
+        Me.Panel2.Controls.Add(Me.btnMoKhoa)
+        Me.Panel2.Dock = System.Windows.Forms.DockStyle.Right
+        Me.Panel2.Location = New System.Drawing.Point(909, 0)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(211, 32)
+        Me.Panel2.TabIndex = 1017
         '
         'para_Salary
         '
@@ -535,6 +540,8 @@ Public Class para_Salary
         Me.HRFORM_GridControl = Me.GridControl1
         Me.HRFORM_Gridview = Me.GridView1
         Me.HRFORM_TableName = "SmartBooks_Salary"
+        Me.HRFORM_VisibleControl_GetTemplate = False
+        Me.HRFORM_VisibleControl_ImportExcel = False
         Me.HRFORM_VisibleControl_Sua = False
         Me.HRFORM_VisibleControl_ThemMoi = False
         Me.HRFORM_XtraTabControl = Me.XtraTabControl1

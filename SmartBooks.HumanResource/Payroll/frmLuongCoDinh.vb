@@ -159,7 +159,7 @@ Public Class frmLuongCoDinh
         If Not IsNothing(Employee_ID.EditValue) Then
             EmID = Employee_ID.EditValue.ToString.Trim
         End If
-        Dim QR As String = "[dbo].[sp_BangLuongCoDinh] '" + CDate(fromdate.EditValue).ToString("yyyy-MM-dd") + "','" + CDate(fromdate.EditValue).ToString("yyyy-MM-dd") + "',3,'" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "'"
+        Dim QR As String = "[dbo].[sp_BangLuongCoDinh] '" + CDate(fromdate.EditValue).ToString("yyyy-MM-dd") + "','" + CDate(fromdate.EditValue).ToString("yyyy-MM-dd") + "'," + If(EmID = "", "3", "2") + ",'" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "'"
         Xem(QR, False, HRFORM_GridControl, HRFORM_Gridview)
         HRFORM_QueryView = QR
     End Sub
@@ -190,10 +190,10 @@ Public Class frmLuongCoDinh
     End Sub
 
     Private Sub Employee_ID_TextChanged_1(sender As Object, e As EventArgs)
-        Search()
+        'Search()
     End Sub
 
-    Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search()
-    End Sub
+    'Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
+    '    Search()
+    'End Sub
 End Class

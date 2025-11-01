@@ -401,6 +401,7 @@ Partial Class frmEmpRegisPregnant
         Me.HRFORM_Gridview = Me.GridView1
         Me.HRFORM_SaveStore = "usp_InsertUpdateHR_EmployeeRegisPregnant"
         Me.HRFORM_TableName = "HR_EmployeeRegisPregnant"
+        Me.HRFORM_VisibleControl_GetTemplate = False
         Me.HRFORM_VisibleControl_Sua = False
         Me.HRFORM_VisibleControl_ThemMoi = False
         Me.HRFORM_XtraTabControl = Me.XtraTabControl1

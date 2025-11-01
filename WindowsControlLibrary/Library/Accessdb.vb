@@ -442,7 +442,7 @@ Public Class connect
             With sparTodate
                 .ParameterName = "@Todate"
                 .SqlDbType = SqlDbType.DateTime
-                .Value = Fromdate
+                .Value = ToDate
             End With
             cmd.Parameters.Add(sparTodate)
 

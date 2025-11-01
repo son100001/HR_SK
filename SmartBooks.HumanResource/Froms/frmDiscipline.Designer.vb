@@ -203,7 +203,7 @@ Partial Class frmDiscipline
         'SalaryIncreaseDate
         '
         Me.SalaryIncreaseDate.EditValue = Nothing
-        Me.SalaryIncreaseDate.Location = New System.Drawing.Point(795, 64)
+        Me.SalaryIncreaseDate.Location = New System.Drawing.Point(793, 17)
         Me.SalaryIncreaseDate.Name = "SalaryIncreaseDate"
         Me.SalaryIncreaseDate.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.SalaryIncreaseDate.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -216,11 +216,12 @@ Partial Class frmDiscipline
         Me.SalaryIncreaseDate.Properties.UseMaskAsDisplayFormat = True
         Me.SalaryIncreaseDate.Size = New System.Drawing.Size(120, 20)
         Me.SalaryIncreaseDate.TabIndex = 19
+        Me.SalaryIncreaseDate.Visible = False
         '
         'ViolationDate
         '
         Me.ViolationDate.EditValue = Nothing
-        Me.ViolationDate.Location = New System.Drawing.Point(795, 41)
+        Me.ViolationDate.Location = New System.Drawing.Point(115, 64)
         Me.ViolationDate.Name = "ViolationDate"
         Me.ViolationDate.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.ViolationDate.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -231,13 +232,13 @@ Partial Class frmDiscipline
         Me.ViolationDate.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered
         Me.ViolationDate.Properties.MaskSettings.Set("mask", "d")
         Me.ViolationDate.Properties.UseMaskAsDisplayFormat = True
-        Me.ViolationDate.Size = New System.Drawing.Size(120, 20)
+        Me.ViolationDate.Size = New System.Drawing.Size(201, 20)
         Me.ViolationDate.TabIndex = 17
         '
         'DisciplineEnd
         '
         Me.DisciplineEnd.EditValue = Nothing
-        Me.DisciplineEnd.Location = New System.Drawing.Point(795, 18)
+        Me.DisciplineEnd.Location = New System.Drawing.Point(796, 44)
         Me.DisciplineEnd.Name = "DisciplineEnd"
         Me.DisciplineEnd.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.DisciplineEnd.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -250,11 +251,12 @@ Partial Class frmDiscipline
         Me.DisciplineEnd.Properties.UseMaskAsDisplayFormat = True
         Me.DisciplineEnd.Size = New System.Drawing.Size(120, 20)
         Me.DisciplineEnd.TabIndex = 15
+        Me.DisciplineEnd.Visible = False
         '
         'DisciplineBegin
         '
         Me.DisciplineBegin.EditValue = Nothing
-        Me.DisciplineBegin.Location = New System.Drawing.Point(472, 9)
+        Me.DisciplineBegin.Location = New System.Drawing.Point(115, 38)
         Me.DisciplineBegin.Name = "DisciplineBegin"
         Me.DisciplineBegin.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.DisciplineBegin.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -265,7 +267,7 @@ Partial Class frmDiscipline
         Me.DisciplineBegin.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered
         Me.DisciplineBegin.Properties.MaskSettings.Set("mask", "d")
         Me.DisciplineBegin.Properties.UseMaskAsDisplayFormat = True
-        Me.DisciplineBegin.Size = New System.Drawing.Size(120, 20)
+        Me.DisciplineBegin.Size = New System.Drawing.Size(201, 20)
         Me.DisciplineBegin.TabIndex = 9
         '
         'BehaviorCode
@@ -282,7 +284,7 @@ Partial Class frmDiscipline
         'lblReason
         '
         Me.lblReason.BackColor = System.Drawing.SystemColors.Control
-        Me.lblReason.Location = New System.Drawing.Point(6, 53)
+        Me.lblReason.Location = New System.Drawing.Point(335, 15)
         Me.lblReason.Name = "lblReason"
         Me.lblReason.Size = New System.Drawing.Size(103, 30)
         Me.lblReason.TabIndex = 1285
@@ -290,7 +292,7 @@ Partial Class frmDiscipline
         '
         'Reason
         '
-        Me.Reason.Location = New System.Drawing.Point(115, 53)
+        Me.Reason.Location = New System.Drawing.Point(444, 12)
         Me.Reason.Name = "Reason"
         Me.Reason.Size = New System.Drawing.Size(201, 42)
         Me.Reason.TabIndex = 7
@@ -299,7 +301,7 @@ Partial Class frmDiscipline
         'lblProcAsign
         '
         Me.lblProcAsign.BackColor = System.Drawing.SystemColors.Control
-        Me.lblProcAsign.Location = New System.Drawing.Point(341, 75)
+        Me.lblProcAsign.Location = New System.Drawing.Point(665, 71)
         Me.lblProcAsign.Name = "lblProcAsign"
         Me.lblProcAsign.Size = New System.Drawing.Size(125, 20)
         Me.lblProcAsign.TabIndex = 1283
@@ -308,26 +310,26 @@ Partial Class frmDiscipline
         '
         'Remark
         '
-        Me.Remark.Location = New System.Drawing.Point(472, 31)
+        Me.Remark.Location = New System.Drawing.Point(444, 60)
         Me.Remark.Name = "Remark"
-        Me.Remark.Size = New System.Drawing.Size(173, 38)
+        Me.Remark.Size = New System.Drawing.Size(201, 38)
         Me.Remark.TabIndex = 11
         Me.Remark.Text = ""
         '
         'lblRemark
         '
         Me.lblRemark.BackColor = System.Drawing.SystemColors.Control
-        Me.lblRemark.Location = New System.Drawing.Point(341, 40)
+        Me.lblRemark.Location = New System.Drawing.Point(335, 63)
         Me.lblRemark.Name = "lblRemark"
-        Me.lblRemark.Size = New System.Drawing.Size(125, 16)
+        Me.lblRemark.Size = New System.Drawing.Size(103, 16)
         Me.lblRemark.TabIndex = 1272
         Me.lblRemark.Text = "Ghi chú"
         '
         'ProcAsign
         '
-        Me.ProcAsign.Location = New System.Drawing.Point(472, 75)
+        Me.ProcAsign.Location = New System.Drawing.Point(796, 70)
         Me.ProcAsign.Name = "ProcAsign"
-        Me.ProcAsign.Size = New System.Drawing.Size(173, 21)
+        Me.ProcAsign.Size = New System.Drawing.Size(129, 21)
         Me.ProcAsign.TabIndex = 13
         Me.ProcAsign.Visible = False
         '
@@ -344,20 +346,21 @@ Partial Class frmDiscipline
         '
         Me.lblSalaryIncreaseDate.BackColor = System.Drawing.SystemColors.Control
         Me.lblSalaryIncreaseDate.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSalaryIncreaseDate.Location = New System.Drawing.Point(674, 63)
+        Me.lblSalaryIncreaseDate.Location = New System.Drawing.Point(672, 16)
         Me.lblSalaryIncreaseDate.Name = "lblSalaryIncreaseDate"
         Me.lblSalaryIncreaseDate.Size = New System.Drawing.Size(115, 20)
         Me.lblSalaryIncreaseDate.TabIndex = 1281
         Me.lblSalaryIncreaseDate.Text = "Ngày tăng lương"
         Me.lblSalaryIncreaseDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblSalaryIncreaseDate.Visible = False
         '
         'lblDisciplineBegin
         '
         Me.lblDisciplineBegin.BackColor = System.Drawing.SystemColors.Control
-        Me.lblDisciplineBegin.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDisciplineBegin.Location = New System.Drawing.Point(341, 9)
+        Me.lblDisciplineBegin.Font = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.lblDisciplineBegin.Location = New System.Drawing.Point(6, 37)
         Me.lblDisciplineBegin.Name = "lblDisciplineBegin"
-        Me.lblDisciplineBegin.Size = New System.Drawing.Size(108, 20)
+        Me.lblDisciplineBegin.Size = New System.Drawing.Size(103, 20)
         Me.lblDisciplineBegin.TabIndex = 1270
         Me.lblDisciplineBegin.Text = "Ngày lập BB"
         Me.lblDisciplineBegin.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -365,10 +368,10 @@ Partial Class frmDiscipline
         'lblViolationDate
         '
         Me.lblViolationDate.BackColor = System.Drawing.SystemColors.Control
-        Me.lblViolationDate.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblViolationDate.Location = New System.Drawing.Point(674, 40)
+        Me.lblViolationDate.Font = New System.Drawing.Font("Tahoma", 8.25!)
+        Me.lblViolationDate.Location = New System.Drawing.Point(6, 62)
         Me.lblViolationDate.Name = "lblViolationDate"
-        Me.lblViolationDate.Size = New System.Drawing.Size(115, 20)
+        Me.lblViolationDate.Size = New System.Drawing.Size(103, 20)
         Me.lblViolationDate.TabIndex = 1279
         Me.lblViolationDate.Text = "Ngày vi phạm"
         Me.lblViolationDate.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -377,12 +380,13 @@ Partial Class frmDiscipline
         '
         Me.lblDisciplineEnd.BackColor = System.Drawing.SystemColors.Control
         Me.lblDisciplineEnd.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDisciplineEnd.Location = New System.Drawing.Point(671, 17)
+        Me.lblDisciplineEnd.Location = New System.Drawing.Point(672, 43)
         Me.lblDisciplineEnd.Name = "lblDisciplineEnd"
         Me.lblDisciplineEnd.Size = New System.Drawing.Size(118, 20)
         Me.lblDisciplineEnd.TabIndex = 1277
         Me.lblDisciplineEnd.Text = "Ngày kết thúc BB"
         Me.lblDisciplineEnd.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblDisciplineEnd.Visible = False
         '
         'pnNhap
         '

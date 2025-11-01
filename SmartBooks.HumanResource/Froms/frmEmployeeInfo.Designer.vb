@@ -29,6 +29,12 @@ Partial Class frmEmployeeInfo
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.XtraTabControl2 = New DevExpress.XtraTab.XtraTabControl()
         Me.MainInformation = New DevExpress.XtraTab.XtraTabPage()
+        Me.Nation = New System.Windows.Forms.TextBox()
+        Me.lblisTanTat = New System.Windows.Forms.Label()
+        Me.isTanTat = New System.Windows.Forms.CheckBox()
+        Me.Graduated = New System.Windows.Forms.TextBox()
+        Me.TonGiao = New System.Windows.Forms.TextBox()
+        Me.lblsectioncode1 = New System.Windows.Forms.Label()
         Me.BirthPlace = New System.Windows.Forms.TextBox()
         Me.NativePlace = New System.Windows.Forms.TextBox()
         Me.btnChup = New DevExpress.XtraEditors.SimpleButton()
@@ -75,16 +81,13 @@ Partial Class frmEmployeeInfo
         Me.ResonTerminated = New System.Windows.Forms.TextBox()
         Me.ContractFlow = New DevExpress.XtraEditors.LookUpEdit()
         Me.ID_date = New DevExpress.XtraEditors.DateEdit()
-        Me.TonGiao = New DevExpress.XtraEditors.LookUpEdit()
         Me.MaritalStatus = New DevExpress.XtraEditors.LookUpEdit()
         Me.Sex = New DevExpress.XtraEditors.LookUpEdit()
         Me.BirthDate = New DevExpress.XtraEditors.DateEdit()
         Me.QuanHeVoiChuHo = New DevExpress.XtraEditors.LookUpEdit()
-        Me.Nation = New DevExpress.XtraEditors.LookUpEdit()
         Me.Nationality = New DevExpress.XtraEditors.LookUpEdit()
         Me.NgayTGCongDoan = New DevExpress.XtraEditors.DateEdit()
         Me.Qualification = New DevExpress.XtraEditors.LookUpEdit()
-        Me.Graduated = New DevExpress.XtraEditors.LookUpEdit()
         Me.GraduatedFrom = New System.Windows.Forms.TextBox()
         Me.DebitAccount = New System.Windows.Forms.TextBox()
         Me.BankCode = New System.Windows.Forms.TextBox()
@@ -226,7 +229,6 @@ Partial Class frmEmployeeInfo
         Me.btnDoiMaNV = New DevExpress.XtraEditors.SimpleButton()
         Me.lblMaMoi = New System.Windows.Forms.Label()
         Me.lblMaCu = New System.Windows.Forms.Label()
-        Me.lblsectioncode1 = New System.Windows.Forms.Label()
         CType(Me.XtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.XtraTabControl1.SuspendLayout()
         Me.General.SuspendLayout()
@@ -248,18 +250,15 @@ Partial Class frmEmployeeInfo
         CType(Me.ContractFlow.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ID_date.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ID_date.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TonGiao.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MaritalStatus.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Sex.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BirthDate.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.BirthDate.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.QuanHeVoiChuHo.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Nation.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Nationality.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NgayTGCongDoan.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.NgayTGCongDoan.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Qualification.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Graduated.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Employee_Status.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PlanTernimationDate.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PlanTernimationDate.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -352,6 +351,11 @@ Partial Class frmEmployeeInfo
         Me.MainInformation.Appearance.PageClient.BackColor = System.Drawing.Color.White
         Me.MainInformation.Appearance.PageClient.Options.UseBackColor = True
         Me.MainInformation.AutoScroll = True
+        Me.MainInformation.Controls.Add(Me.Nation)
+        Me.MainInformation.Controls.Add(Me.lblisTanTat)
+        Me.MainInformation.Controls.Add(Me.isTanTat)
+        Me.MainInformation.Controls.Add(Me.Graduated)
+        Me.MainInformation.Controls.Add(Me.TonGiao)
         Me.MainInformation.Controls.Add(Me.lblsectioncode1)
         Me.MainInformation.Controls.Add(Me.BirthPlace)
         Me.MainInformation.Controls.Add(Me.NativePlace)
@@ -399,16 +403,13 @@ Partial Class frmEmployeeInfo
         Me.MainInformation.Controls.Add(Me.ResonTerminated)
         Me.MainInformation.Controls.Add(Me.ContractFlow)
         Me.MainInformation.Controls.Add(Me.ID_date)
-        Me.MainInformation.Controls.Add(Me.TonGiao)
         Me.MainInformation.Controls.Add(Me.MaritalStatus)
         Me.MainInformation.Controls.Add(Me.Sex)
         Me.MainInformation.Controls.Add(Me.BirthDate)
         Me.MainInformation.Controls.Add(Me.QuanHeVoiChuHo)
-        Me.MainInformation.Controls.Add(Me.Nation)
         Me.MainInformation.Controls.Add(Me.Nationality)
         Me.MainInformation.Controls.Add(Me.NgayTGCongDoan)
         Me.MainInformation.Controls.Add(Me.Qualification)
-        Me.MainInformation.Controls.Add(Me.Graduated)
         Me.MainInformation.Controls.Add(Me.GraduatedFrom)
         Me.MainInformation.Controls.Add(Me.DebitAccount)
         Me.MainInformation.Controls.Add(Me.BankCode)
@@ -533,6 +534,56 @@ Partial Class frmEmployeeInfo
         Me.MainInformation.Name = "MainInformation"
         Me.MainInformation.Size = New System.Drawing.Size(1203, 741)
         Me.MainInformation.Text = "Main Information"
+        '
+        'Nation
+        '
+        Me.Nation.Location = New System.Drawing.Point(291, 374)
+        Me.Nation.Name = "Nation"
+        Me.Nation.Size = New System.Drawing.Size(90, 21)
+        Me.Nation.TabIndex = 1560
+        '
+        'lblisTanTat
+        '
+        Me.lblisTanTat.BackColor = System.Drawing.Color.Transparent
+        Me.lblisTanTat.Location = New System.Drawing.Point(618, 313)
+        Me.lblisTanTat.Name = "lblisTanTat"
+        Me.lblisTanTat.Size = New System.Drawing.Size(99, 20)
+        Me.lblisTanTat.TabIndex = 1559
+        Me.lblisTanTat.Text = "Bị tàn tật"
+        Me.lblisTanTat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'isTanTat
+        '
+        Me.isTanTat.AutoSize = True
+        Me.isTanTat.Location = New System.Drawing.Point(734, 318)
+        Me.isTanTat.Name = "isTanTat"
+        Me.isTanTat.Size = New System.Drawing.Size(15, 14)
+        Me.isTanTat.TabIndex = 1558
+        Me.isTanTat.UseVisualStyleBackColor = True
+        '
+        'Graduated
+        '
+        Me.Graduated.Location = New System.Drawing.Point(1020, 277)
+        Me.Graduated.Name = "Graduated"
+        Me.Graduated.Size = New System.Drawing.Size(190, 21)
+        Me.Graduated.TabIndex = 1557
+        '
+        'TonGiao
+        '
+        Me.TonGiao.Location = New System.Drawing.Point(481, 375)
+        Me.TonGiao.Name = "TonGiao"
+        Me.TonGiao.Size = New System.Drawing.Size(107, 21)
+        Me.TonGiao.TabIndex = 1556
+        '
+        'lblsectioncode1
+        '
+        Me.lblsectioncode1.BackColor = System.Drawing.Color.Transparent
+        Me.lblsectioncode1.Location = New System.Drawing.Point(299, 161)
+        Me.lblsectioncode1.Name = "lblsectioncode1"
+        Me.lblsectioncode1.Size = New System.Drawing.Size(122, 19)
+        Me.lblsectioncode1.TabIndex = 1555
+        Me.lblsectioncode1.Text = "Loại chức vụ"
+        Me.lblsectioncode1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'BirthPlace
         '
@@ -665,7 +716,7 @@ Partial Class frmEmployeeInfo
         'lblIsManager
         '
         Me.lblIsManager.BackColor = System.Drawing.Color.Transparent
-        Me.lblIsManager.Location = New System.Drawing.Point(618, 307)
+        Me.lblIsManager.Location = New System.Drawing.Point(618, 288)
         Me.lblIsManager.Name = "lblIsManager"
         Me.lblIsManager.Size = New System.Drawing.Size(99, 20)
         Me.lblIsManager.TabIndex = 1540
@@ -675,7 +726,7 @@ Partial Class frmEmployeeInfo
         'isManager
         '
         Me.isManager.AutoSize = True
-        Me.isManager.Location = New System.Drawing.Point(734, 311)
+        Me.isManager.Location = New System.Drawing.Point(734, 292)
         Me.isManager.Name = "isManager"
         Me.isManager.Size = New System.Drawing.Size(15, 14)
         Me.isManager.TabIndex = 1539
@@ -746,7 +797,7 @@ Partial Class frmEmployeeInfo
         'CCCDCu_Date
         '
         Me.CCCDCu_Date.EditValue = Nothing
-        Me.CCCDCu_Date.Location = New System.Drawing.Point(693, 374)
+        Me.CCCDCu_Date.Location = New System.Drawing.Point(481, 398)
         Me.CCCDCu_Date.Name = "CCCDCu_Date"
         Me.CCCDCu_Date.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.CCCDCu_Date.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -762,17 +813,17 @@ Partial Class frmEmployeeInfo
         '
         'CCCDCu_Place
         '
-        Me.CCCDCu_Place.Location = New System.Drawing.Point(693, 401)
+        Me.CCCDCu_Place.Location = New System.Drawing.Point(702, 399)
         Me.CCCDCu_Place.Name = "CCCDCu_Place"
-        Me.CCCDCu_Place.Size = New System.Drawing.Size(106, 21)
+        Me.CCCDCu_Place.Size = New System.Drawing.Size(88, 21)
         Me.CCCDCu_Place.TabIndex = 1531
         '
         'lblCCCDCu_Place
         '
         Me.lblCCCDCu_Place.BackColor = System.Drawing.Color.Transparent
-        Me.lblCCCDCu_Place.Location = New System.Drawing.Point(608, 400)
+        Me.lblCCCDCu_Place.Location = New System.Drawing.Point(598, 398)
         Me.lblCCCDCu_Place.Name = "lblCCCDCu_Place"
-        Me.lblCCCDCu_Place.Size = New System.Drawing.Size(79, 19)
+        Me.lblCCCDCu_Place.Size = New System.Drawing.Size(98, 19)
         Me.lblCCCDCu_Place.TabIndex = 1530
         Me.lblCCCDCu_Place.Text = "Đ/C CCCD cũ"
         Me.lblCCCDCu_Place.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -780,7 +831,7 @@ Partial Class frmEmployeeInfo
         'lblCCCDCu_Date
         '
         Me.lblCCCDCu_Date.BackColor = System.Drawing.Color.Transparent
-        Me.lblCCCDCu_Date.Location = New System.Drawing.Point(608, 376)
+        Me.lblCCCDCu_Date.Location = New System.Drawing.Point(392, 399)
         Me.lblCCCDCu_Date.Name = "lblCCCDCu_Date"
         Me.lblCCCDCu_Date.Size = New System.Drawing.Size(79, 19)
         Me.lblCCCDCu_Date.TabIndex = 1528
@@ -789,15 +840,15 @@ Partial Class frmEmployeeInfo
         '
         'CCCDCu
         '
-        Me.CCCDCu.Location = New System.Drawing.Point(496, 400)
+        Me.CCCDCu.Location = New System.Drawing.Point(291, 397)
         Me.CCCDCu.Name = "CCCDCu"
-        Me.CCCDCu.Size = New System.Drawing.Size(106, 21)
+        Me.CCCDCu.Size = New System.Drawing.Size(90, 21)
         Me.CCCDCu.TabIndex = 1527
         '
         'lblCCCDCu
         '
         Me.lblCCCDCu.BackColor = System.Drawing.Color.Transparent
-        Me.lblCCCDCu.Location = New System.Drawing.Point(407, 400)
+        Me.lblCCCDCu.Location = New System.Drawing.Point(202, 397)
         Me.lblCCCDCu.Name = "lblCCCDCu"
         Me.lblCCCDCu.Size = New System.Drawing.Size(79, 19)
         Me.lblCCCDCu.TabIndex = 1526
@@ -864,7 +915,7 @@ Partial Class frmEmployeeInfo
         'IsSeasonWorker
         '
         Me.IsSeasonWorker.AutoSize = True
-        Me.IsSeasonWorker.Location = New System.Drawing.Point(734, 333)
+        Me.IsSeasonWorker.Location = New System.Drawing.Point(947, 620)
         Me.IsSeasonWorker.Name = "IsSeasonWorker"
         Me.IsSeasonWorker.Size = New System.Drawing.Size(15, 14)
         Me.IsSeasonWorker.TabIndex = 1519
@@ -874,7 +925,7 @@ Partial Class frmEmployeeInfo
         'lblSeasonWorker
         '
         Me.lblSeasonWorker.BackColor = System.Drawing.Color.Transparent
-        Me.lblSeasonWorker.Location = New System.Drawing.Point(618, 329)
+        Me.lblSeasonWorker.Location = New System.Drawing.Point(831, 616)
         Me.lblSeasonWorker.Name = "lblSeasonWorker"
         Me.lblSeasonWorker.Size = New System.Drawing.Size(99, 20)
         Me.lblSeasonWorker.TabIndex = 1518
@@ -886,7 +937,7 @@ Partial Class frmEmployeeInfo
         '
         Me.EndOfSeasonWorker.EditValue = Nothing
         Me.EndOfSeasonWorker.Enabled = False
-        Me.EndOfSeasonWorker.Location = New System.Drawing.Point(726, 259)
+        Me.EndOfSeasonWorker.Location = New System.Drawing.Point(726, 263)
         Me.EndOfSeasonWorker.Name = "EndOfSeasonWorker"
         Me.EndOfSeasonWorker.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.EndOfSeasonWorker.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -903,7 +954,7 @@ Partial Class frmEmployeeInfo
         'lblEndOfSeasonWorker
         '
         Me.lblEndOfSeasonWorker.BackColor = System.Drawing.Color.Transparent
-        Me.lblEndOfSeasonWorker.Location = New System.Drawing.Point(618, 258)
+        Me.lblEndOfSeasonWorker.Location = New System.Drawing.Point(618, 262)
         Me.lblEndOfSeasonWorker.Name = "lblEndOfSeasonWorker"
         Me.lblEndOfSeasonWorker.Size = New System.Drawing.Size(99, 19)
         Me.lblEndOfSeasonWorker.TabIndex = 1516
@@ -999,17 +1050,6 @@ Partial Class frmEmployeeInfo
         Me.ID_date.Size = New System.Drawing.Size(172, 20)
         Me.ID_date.TabIndex = 1507
         '
-        'TonGiao
-        '
-        Me.TonGiao.Location = New System.Drawing.Point(496, 376)
-        Me.TonGiao.Name = "TonGiao"
-        Me.TonGiao.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
-        Me.TonGiao.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.TonGiao.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains
-        Me.TonGiao.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard
-        Me.TonGiao.Size = New System.Drawing.Size(106, 20)
-        Me.TonGiao.TabIndex = 1506
-        '
         'MaritalStatus
         '
         Me.MaritalStatus.Location = New System.Drawing.Point(195, 258)
@@ -1061,17 +1101,6 @@ Partial Class frmEmployeeInfo
         Me.QuanHeVoiChuHo.TabIndex = 1502
         Me.QuanHeVoiChuHo.Visible = False
         '
-        'Nation
-        '
-        Me.Nation.Location = New System.Drawing.Point(100, 398)
-        Me.Nation.Name = "Nation"
-        Me.Nation.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
-        Me.Nation.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.Nation.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains
-        Me.Nation.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard
-        Me.Nation.Size = New System.Drawing.Size(90, 20)
-        Me.Nation.TabIndex = 1501
-        '
         'Nationality
         '
         Me.Nationality.Location = New System.Drawing.Point(100, 375)
@@ -1111,17 +1140,6 @@ Partial Class frmEmployeeInfo
         Me.Qualification.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard
         Me.Qualification.Size = New System.Drawing.Size(190, 20)
         Me.Qualification.TabIndex = 1498
-        '
-        'Graduated
-        '
-        Me.Graduated.Location = New System.Drawing.Point(1020, 280)
-        Me.Graduated.Name = "Graduated"
-        Me.Graduated.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
-        Me.Graduated.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
-        Me.Graduated.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains
-        Me.Graduated.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard
-        Me.Graduated.Size = New System.Drawing.Size(190, 20)
-        Me.Graduated.TabIndex = 1497
         '
         'GraduatedFrom
         '
@@ -1428,14 +1446,14 @@ Partial Class frmEmployeeInfo
         '
         'Email
         '
-        Me.Email.Location = New System.Drawing.Point(304, 398)
+        Me.Email.Location = New System.Drawing.Point(100, 397)
         Me.Email.Name = "Email"
-        Me.Email.Size = New System.Drawing.Size(88, 21)
+        Me.Email.Size = New System.Drawing.Size(90, 21)
         Me.Email.TabIndex = 1469
         '
         'Tel
         '
-        Me.Tel.Location = New System.Drawing.Point(304, 375)
+        Me.Tel.Location = New System.Drawing.Point(702, 375)
         Me.Tel.Name = "Tel"
         Me.Tel.Size = New System.Drawing.Size(88, 21)
         Me.Tel.TabIndex = 1468
@@ -1731,13 +1749,11 @@ Partial Class frmEmployeeInfo
         '
         'TanTat
         '
-        Me.TanTat.Enabled = False
-        Me.TanTat.Location = New System.Drawing.Point(724, 283)
+        Me.TanTat.Location = New System.Drawing.Point(724, 339)
         Me.TanTat.Name = "TanTat"
         Me.TanTat.Size = New System.Drawing.Size(168, 23)
         Me.TanTat.TabIndex = 1436
         Me.TanTat.Text = ""
-        Me.TanTat.Visible = False
         '
         'lblComStartedDate
         '
@@ -1763,18 +1779,17 @@ Partial Class frmEmployeeInfo
         'lblTanTat
         '
         Me.lblTanTat.BackColor = System.Drawing.Color.Transparent
-        Me.lblTanTat.Location = New System.Drawing.Point(616, 283)
+        Me.lblTanTat.Location = New System.Drawing.Point(616, 339)
         Me.lblTanTat.Name = "lblTanTat"
         Me.lblTanTat.Size = New System.Drawing.Size(84, 19)
         Me.lblTanTat.TabIndex = 1433
         Me.lblTanTat.Text = "Tàn tật"
         Me.lblTanTat.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.lblTanTat.Visible = False
         '
         'lblTonGiao
         '
         Me.lblTonGiao.BackColor = System.Drawing.Color.Transparent
-        Me.lblTonGiao.Location = New System.Drawing.Point(407, 375)
+        Me.lblTonGiao.Location = New System.Drawing.Point(392, 375)
         Me.lblTonGiao.Name = "lblTonGiao"
         Me.lblTonGiao.Size = New System.Drawing.Size(91, 19)
         Me.lblTonGiao.TabIndex = 1432
@@ -2009,9 +2024,9 @@ Partial Class frmEmployeeInfo
         'lblEmail
         '
         Me.lblEmail.BackColor = System.Drawing.Color.Transparent
-        Me.lblEmail.Location = New System.Drawing.Point(200, 399)
+        Me.lblEmail.Location = New System.Drawing.Point(15, 397)
         Me.lblEmail.Name = "lblEmail"
-        Me.lblEmail.Size = New System.Drawing.Size(98, 19)
+        Me.lblEmail.Size = New System.Drawing.Size(79, 19)
         Me.lblEmail.TabIndex = 1406
         Me.lblEmail.Text = "Email"
         Me.lblEmail.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -2019,7 +2034,7 @@ Partial Class frmEmployeeInfo
         'lblTel
         '
         Me.lblTel.BackColor = System.Drawing.Color.Transparent
-        Me.lblTel.Location = New System.Drawing.Point(200, 375)
+        Me.lblTel.Location = New System.Drawing.Point(598, 375)
         Me.lblTel.Name = "lblTel"
         Me.lblTel.Size = New System.Drawing.Size(98, 19)
         Me.lblTel.TabIndex = 1405
@@ -2029,7 +2044,7 @@ Partial Class frmEmployeeInfo
         'lblNation
         '
         Me.lblNation.BackColor = System.Drawing.Color.Transparent
-        Me.lblNation.Location = New System.Drawing.Point(14, 398)
+        Me.lblNation.Location = New System.Drawing.Point(205, 374)
         Me.lblNation.Name = "lblNation"
         Me.lblNation.Size = New System.Drawing.Size(80, 19)
         Me.lblNation.TabIndex = 1404
@@ -2521,16 +2536,6 @@ Partial Class frmEmployeeInfo
         Me.lblMaCu.Text = "Mã cũ"
         Me.lblMaCu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
-        'lblsectioncode1
-        '
-        Me.lblsectioncode1.BackColor = System.Drawing.Color.Transparent
-        Me.lblsectioncode1.Location = New System.Drawing.Point(299, 161)
-        Me.lblsectioncode1.Name = "lblsectioncode1"
-        Me.lblsectioncode1.Size = New System.Drawing.Size(122, 19)
-        Me.lblsectioncode1.TabIndex = 1555
-        Me.lblsectioncode1.Text = "Loại chức vụ"
-        Me.lblsectioncode1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        '
         'frmEmployeeInfo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2574,18 +2579,15 @@ Partial Class frmEmployeeInfo
         CType(Me.ContractFlow.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ID_date.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ID_date.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TonGiao.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MaritalStatus.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Sex.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BirthDate.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.BirthDate.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.QuanHeVoiChuHo.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Nation.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Nationality.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NgayTGCongDoan.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.NgayTGCongDoan.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Qualification.Properties, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Graduated.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Employee_Status.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PlanTernimationDate.Properties.CalendarTimeProperties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PlanTernimationDate.Properties, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2656,16 +2658,13 @@ Partial Class frmEmployeeInfo
     Friend WithEvents ResonTerminated As TextBox
     Friend WithEvents ContractFlow As DevExpress.XtraEditors.LookUpEdit
     Friend WithEvents ID_date As DevExpress.XtraEditors.DateEdit
-    Friend WithEvents TonGiao As DevExpress.XtraEditors.LookUpEdit
     Friend WithEvents MaritalStatus As DevExpress.XtraEditors.LookUpEdit
     Friend WithEvents Sex As DevExpress.XtraEditors.LookUpEdit
     Friend WithEvents BirthDate As DevExpress.XtraEditors.DateEdit
     Friend WithEvents QuanHeVoiChuHo As DevExpress.XtraEditors.LookUpEdit
-    Friend WithEvents Nation As DevExpress.XtraEditors.LookUpEdit
     Friend WithEvents Nationality As DevExpress.XtraEditors.LookUpEdit
     Friend WithEvents NgayTGCongDoan As DevExpress.XtraEditors.DateEdit
     Friend WithEvents Qualification As DevExpress.XtraEditors.LookUpEdit
-    Friend WithEvents Graduated As DevExpress.XtraEditors.LookUpEdit
     Friend WithEvents GraduatedFrom As TextBox
     Friend WithEvents DebitAccount As TextBox
     Friend WithEvents BankCode As TextBox
@@ -2826,4 +2825,9 @@ Partial Class frmEmployeeInfo
     Friend WithEvents BirthPlace As TextBox
     Friend WithEvents NativePlace As TextBox
     Friend WithEvents lblsectioncode1 As Label
+    Friend WithEvents TonGiao As TextBox
+    Friend WithEvents Graduated As TextBox
+    Friend WithEvents lblisTanTat As Label
+    Friend WithEvents isTanTat As CheckBox
+    Friend WithEvents Nation As TextBox
 End Class

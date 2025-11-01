@@ -23,6 +23,7 @@
 		<text key="BaoHiem.frmInsuranceInformation">Insurance Information</text>
 		<text key="BaoHiem.frmInsuranceInformation.UltraTabControl1.InsuranceBook">Social Insurance Books</text>
 		<text key="BaoHiem.frmTheBHYT">Health Insurance Card Management</text>
+		<text key="EmployeeInformation.BankAccountOfEmployee">Staff Bank Account</text>
 		<text key="EmployeeInformation.frmAward">Award</text>
 		<text key="EmployeeInformation.frmBankAccountOfEmployee">Staff Bank Account</text>
 		<text key="EmployeeInformation.frmCapPhatAo">Protective Clothes Distribution</text>
@@ -118,6 +119,7 @@
 		<text key="General.BabyCareStartDate">Started Date of Child Allowance</text>
 		<text key="General.Bac">Workmanship level</text>
 		<text key="General.BankAccount">Bank Account</text>
+		<text key="General.BankAccountOfEmployee">Staff Bank Account</text>
 		<text key="General.BankCode">Bank Code</text>
 		<text key="General.BankName">Bank Name</text>
 		<text key="General.BaseOnRegisterMaxOverTime">Timekeeping Based on Overtime Registration</text>
@@ -158,6 +160,7 @@
 		<text key="General.ChonAnh">Choose Picture</text>
 		<text key="General.ChonAnhCCCD">Select ID Photo</text>
 		<text key="General.ChucDanh">Job Titles</text>
+		<text key="General.ChucDanhName">Job Titles</text>
 		<text key="General.ChucNang">Function</text>
 		<text key="General.ChuyenViTri">Location Change</text>
 		<text key="General.CL_By">Create by</text>
@@ -265,6 +268,7 @@
 		<text key="General.FileTemplate">Template File</text>
 		<text key="General.ForeignerStatus">Foreigner Status</text>
 		<text key="General.ForeignStatus">Foreigner Status</text>
+		<text key="General.frmBankAccountOfEmployee">Staff Bank Account</text>
 		<text key="General.Fromdate">From Date</text>
 		<text key="General.FromTime">From Time</text>
 		<text key="General.FromTime_Edit">From Time</text>
@@ -384,6 +388,7 @@
 		<text key="General.LoaiCong">Workday type</text>
 		<text key="General.LoaiHD5">Type of Contract</text>
 		<text key="General.LoaiKhaiBao">Types of Insurance Declaration</text>
+		<text key="General.LoaiTanTat">Type of Disabled</text>
 		<text key="General.LongTermLeaving">Long term</text>
 		<text key="General.LuongThoiViec">Resignation Salary</text>
 		<text key="General.Luu">(&amp;S) Save</text>
@@ -514,7 +519,7 @@
 		<text key="General.Position_NameEN">Name (EN)</text>
 		<text key="General.Position_NameKR">Name (KR)</text>
 		<text key="General.Position_NameVN">Name (VN)</text>
-		<text key="General.PositionCategory_ID">Type of Position</text>
+		<text key="General.PositionCategory_ID">Position</text>
 		<text key="General.PositionCategory_NameEN">Name (EN)</text>
 		<text key="General.PositionCategory_NameKR">Name (KR)</text>
 		<text key="General.PositionCategory_NameVN">Name (VN)</text>
@@ -608,9 +613,12 @@
 		<text key="General.SurgeryReason">Surgery Reason</text>
 		<text key="General.TabAccessTime">General</text>
 		<text key="General.TableName">Function</text>
+		<text key="General.TangCaNgoaiLe_SK1">SK1</text>
+		<text key="General.TangCaNgoaiLe_SK2">SK2</text>
 		<text key="General.TanTat">Disable</text>
 		<text key="General.TCABC">ABC Allowance</text>
 		<text key="General.TCBHXH">Social Insurance Allowance (1: Yes, 2: No)</text>
+		<text key="General.TCC">Attendance Bonus</text>
 		<text key="General.TCNT">Meal Allowance (Manual Entry)</text>
 		<text key="General.TCTruoc">Tăng ca trước</text>
 		<text key="General.TCTU">Bonus (Not Advanced)</text>
@@ -685,6 +693,7 @@
 		<text key="General.TuNgay">From Date</text>
 		<text key="General.TuNgayDenNgay2">From date to date</text>
 		<text key="General.Type">Type of Contract</text>
+		<text key="General.TypeOfDisable">Type Of Disable</text>
 		<text key="General.TypeOfDiseases">Type Of Diseases</text>
 		<text key="General.TypeOfHiring">Type of Hiring</text>
 		<text key="General.TypeOfLeave">Late in/Early out</text>
@@ -1182,6 +1191,7 @@
 		<text key="TopMenu.Form1.Exit1">Exit</text>
 		<text key="TopMenu.Form1.Factory">Create/Adjust Factory</text>
 		<text key="TopMenu.Form1.File">System</text>
+		<text key="TopMenu.Form1.frmBankAccountOfEmployee">Staff Bank Account</text>
 		<text key="TopMenu.Form1.gioithieu">Introduction to Smartbooks - Human Resource</text>
 		<text key="TopMenu.Form1.GoOut">Employee Request to Go Outside</text>
 		<text key="TopMenu.Form1.Group">Group</text>
@@ -1305,6 +1315,7 @@
 		<text key="BaoHiem.frmInsuranceInformation">보험 정보</text>
 		<text key="BaoHiem.frmInsuranceInformation.UltraTabControl1.InsuranceBook">사회보험증</text>
 		<text key="BaoHiem.frmTheBHYT">의로보험카드관리</text>
+		<text key="EmployeeInformation.BankAccountOfEmployee">직원 은행 계좌</text>
 		<text key="EmployeeInformation.frmAward">상점현황</text>
 		<text key="EmployeeInformation.frmBankAccountOfEmployee">직원 은행 계좌</text>
 		<text key="EmployeeInformation.frmCapPhatAo">작업복 지급</text>
@@ -1400,6 +1411,7 @@
 		<text key="General.BabyCareStartDate">육아수당 지급시작일</text>
 		<text key="General.Bac">숙련 등급</text>
 		<text key="General.BankAccount">계좌번호</text>
+		<text key="General.BankAccountOfEmployee">직원 은행 계좌</text>
 		<text key="General.BankCode">은행코드</text>
 		<text key="General.BankName">은행명</text>
 		<text key="General.BaseOnRegisterMaxOverTime">초과수당 등록에 따른 출퇴근기록</text>
@@ -1440,6 +1452,7 @@
 		<text key="General.ChonAnh">사진을 선택하십시오</text>
 		<text key="General.ChonAnhCCCD">사진 선택</text>
 		<text key="General.ChucDanh">직무</text>
+		<text key="General.ChucDanhName">직무</text>
 		<text key="General.ChucNang">기능</text>
 		<text key="General.ChuyenViTri">인사이동</text>
 		<text key="General.CL_By">계약서 승인자</text>
@@ -1547,6 +1560,7 @@
 		<text key="General.FileTemplate">템플릿 파일</text>
 		<text key="General.ForeignerStatus">Foreigner Status</text>
 		<text key="General.ForeignStatus">Foreigner Status</text>
+		<text key="General.frmBankAccountOfEmployee">직원 은행 계좌</text>
 		<text key="General.Fromdate">시작일</text>
 		<text key="General.FromTime">시작시간</text>
 		<text key="General.FromTime_Edit">시작시간</text>
@@ -1666,6 +1680,7 @@
 		<text key="General.LoaiCong">근무 유형</text>
 		<text key="General.LoaiHD5">계약 종류</text>
 		<text key="General.LoaiKhaiBao">보험 신고 유형</text>
+		<text key="General.LoaiTanTat">장애 유형</text>
 		<text key="General.LongTermLeaving">장기</text>
 		<text key="General.LuongThoiViec">퇴직금</text>
 		<text key="General.Luu">(&amp;S) 저장</text>
@@ -1890,9 +1905,12 @@
 		<text key="General.SurgeryReason">수술원인</text>
 		<text key="General.TabAccessTime">개요</text>
 		<text key="General.TableName">기능</text>
+		<text key="General.TangCaNgoaiLe_SK1">SK1</text>
+		<text key="General.TangCaNgoaiLe_SK2">SK2</text>
 		<text key="General.TanTat">장애인</text>
 		<text key="General.TCABC">ABC 수당</text>
 		<text key="General.TCBHXH">사회보험 수당 (1: 예, 2: 아니오)</text>
+		<text key="General.TCC">근태 수당</text>
 		<text key="General.TCNT">식비 수당 (수기 입력)</text>
 		<text key="General.TCTruoc">Tăng ca trước</text>
 		<text key="General.TCTU">미선지급 보너스</text>
@@ -1967,6 +1985,7 @@
 		<text key="General.TuNgay">시작일</text>
 		<text key="General.TuNgayDenNgay2">시작일부터 종료일</text>
 		<text key="General.Type">계약서종류</text>
+		<text key="General.TypeOfDisable">질병유형</text>
 		<text key="General.TypeOfDiseases">질병유형</text>
 		<text key="General.TypeOfHiring">채용 유형</text>
 		<text key="General.TypeOfLeave">늦은 입점/일찍 퇴장</text>
@@ -2447,7 +2466,7 @@
 		<text key="TopMenu.Form1.DayVacationRemain">Day Vacation Remain</text>
 		<text key="TopMenu.Form1.De_IncreaseSepecial">특별보험 증가/감소</text>
 		<text key="TopMenu.Form1.DependentPerson">부양가족</text>
-		<text key="TopMenu.Form1.Disable">장애인 명단 </text>
+		<text key="TopMenu.Form1.Disable">장애인 명단</text>
 		<text key="TopMenu.Form1.Discipline">규정위반/징계처분</text>
 		<text key="TopMenu.Form1.DiseasesRecord">질병현황</text>
 		<text key="TopMenu.Form1.Employee - Family Information">직원 - 가족정보</text>
@@ -2455,8 +2474,8 @@
 		<text key="TopMenu.Form1.EmployeeFamilyInformation">직원 - 가족정보</text>
 		<text key="TopMenu.Form1.employeeinformation">직원정보</text>
 		<text key="TopMenu.Form1.EmpRegisLeave">직원 휴가 등록</text>
-		<text key="TopMenu.Form1.EmpRegisParameter">특이사항 등록 </text>
-		<text key="TopMenu.Form1.EmpRegisPregnant">특이사항 등록 </text>
+		<text key="TopMenu.Form1.EmpRegisParameter">특이사항 등록</text>
+		<text key="TopMenu.Form1.EmpRegisPregnant">특이사항 등록</text>
 		<text key="TopMenu.Form1.EmpRegisterNumberOfWDPerMonth">근로자 코드별 월 최대작업시간 등록</text>
 		<text key="TopMenu.Form1.EmpRegisTimeSheetStarting">교대근무</text>
 		<text key="TopMenu.Form1.EmpRegisTimeShift">근무 시간 등록</text>
@@ -2464,6 +2483,7 @@
 		<text key="TopMenu.Form1.Exit1">나가기</text>
 		<text key="TopMenu.Form1.Factory">공장 설정</text>
 		<text key="TopMenu.Form1.File">시스템</text>
+		<text key="TopMenu.Form1.frmBankAccountOfEmployee">직원 은행 계좌</text>
 		<text key="TopMenu.Form1.gioithieu">Smartbooks - Human Resource 소개</text>
 		<text key="TopMenu.Form1.GoOut">외출 및 출장 </text>
 		<text key="TopMenu.Form1.Group">그룹</text>
@@ -2587,6 +2607,7 @@
 		<text key="BaoHiem.frmInsuranceInformation">Thông Tin Bảo Hiểm</text>
 		<text key="BaoHiem.frmInsuranceInformation.UltraTabControl1.InsuranceBook">Sổ bảo hiểm</text>
 		<text key="BaoHiem.frmTheBHYT">Quản Lý Thẻ Bảo Hiểm Y Tế</text>
+		<text key="EmployeeInformation.BankAccountOfEmployee">Tài Khoản Ngân Hàng Nhân Viên</text>
 		<text key="EmployeeInformation.frmAward">Khen thưởng</text>
 		<text key="EmployeeInformation.frmBankAccountOfEmployee">Tài Khoản Ngân Hàng Nhân Viên</text>
 		<text key="EmployeeInformation.frmCapPhatAo">Cấp Phát Đồ/Áo Bảo Hộ</text>
@@ -2622,13 +2643,13 @@
 		<text key="EmployeeInformation.frmTrainingRecord">Quản lý đào tạo</text>
 		<text key="frmPara">Tham số</text>
 		<text key="frmPara.ExecStore">Thực hiện lệnh</text>
-		<text key="frmPara.ExportDocumentFile">Xuất phai (Văn bản)</text>
+		<text key="frmPara.ExportDocumentFile">Xuất file (Văn bản)</text>
 		<text key="frmPara.ExportExcel">Xuất Excel</text>
-		<text key="frmPara.GetTemplateFile">Lấy phai mẫu</text>
-		<text key="frmPara.InputTemplateFile">Nhập phai mẫu</text>
+		<text key="frmPara.GetTemplateFile">Lấy file mẫu</text>
+		<text key="frmPara.InputTemplateFile">Nhập file mẫu</text>
 		<text key="frmPara.LuaChonHienThi">Lựa chọn thực hiện</text>
 		<text key="frmPara.PrintView">Xem file in</text>
-		<text key="frmPara.PrinViewDocument">Xem phai in (Văn bản)</text>
+		<text key="frmPara.PrinViewDocument">Xem file in (Văn bản)</text>
 		<text key="frmPara.UltraTabControl1.UltraTabPageControl1">Vị trí</text>
 		<text key="frmPara.UltraTabControl1.UltraTabPageControl10">Năm</text>
 		<text key="frmPara.UltraTabControl1.UltraTabPageControl11">Danh mục phép</text>
@@ -2682,6 +2703,7 @@
 		<text key="General.BabyCareStartDate">Ngày bắt đầu tính trợ cấp con nhỏ</text>
 		<text key="General.Bac">Bậc tay nghề</text>
 		<text key="General.BankAccount">Số tài khoản</text>
+		<text key="General.BankAccountOfEmployee">Tài Khoản Ngân Hàng Nhân Viên</text>
 		<text key="General.BankCode">Mã ngân hàng</text>
 		<text key="General.BankName">Tên Ngân Hàng</text>
 		<text key="General.BaseOnRegisterMaxOverTime">Tính công dựa hoàn toàn vào đăng ký tăng ca</text>
@@ -2722,6 +2744,7 @@
 		<text key="General.ChonAnh">Chọn ảnh</text>
 		<text key="General.ChonAnhCCCD">Chọn ảnh CCCD</text>
 		<text key="General.ChucDanh">Chức vụ</text>
+		<text key="General.ChucDanhName">Chức danh</text>
 		<text key="General.ChucNang">Chức năng</text>
 		<text key="General.ChuyenViTri">Chuyển Vị Trí</text>
 		<text key="General.CL_By">Lập bởi</text>
@@ -2829,6 +2852,7 @@
 		<text key="General.FileTemplate">File mẫu</text>
 		<text key="General.ForeignerStatus">Trạng thái cư trú</text>
 		<text key="General.ForeignStatus">Trạng thái cư trú</text>
+		<text key="General.frmBankAccountOfEmployee">Tài Khoản Ngân Hàng Nhân Viên</text>
 		<text key="General.Fromdate">Từ ngày</text>
 		<text key="General.FromTime">Từ giờ</text>
 		<text key="General.FromTime_Edit">Từ giờ</text>
@@ -2882,7 +2906,7 @@
 		<text key="General.HuyTheoLuaChon">Hủy theo lựa chọn</text>
 		<text key="General.ID">Mã thành phần chức năng</text>
 		<text key="General.ID_date">Ngày cấp</text>
-		<text key="General.ID_number">Số CMND</text>
+		<text key="General.ID_number">Số CCCD</text>
 		<text key="General.ID_place">Cấp tại (TV)</text>
 		<text key="General.ID_place_EN">Cấp tại (TA)</text>
 		<text key="General.Import">(&amp;4) Nhập Excel</text>
@@ -2915,7 +2939,7 @@
 		<text key="General.isRealOT">Tăng ca thực tế</text>
 		<text key="General.IssuedAt">Ban hành tại</text>
 		<text key="General.IssuedDate">Ngày cấp chứng chỉ</text>
-		<text key="General.isTanTat">Tàn tật</text>
+		<text key="General.isTanTat">Bị tàn tật</text>
 		<text key="General.isThuViec85PhanTram">Thử việc nhận 85% lương</text>
 		<text key="General.isTrainningContract">Hợp đồng đào tạo</text>
 		<text key="General.isWorkingTime">Công hành chính</text>
@@ -2948,6 +2972,7 @@
 		<text key="General.LoaiCong">Loại công</text>
 		<text key="General.LoaiHD5">Loại HĐ</text>
 		<text key="General.LoaiKhaiBao">Loại khai báo BH</text>
+		<text key="General.LoaiTanTat">Loại tàn tật</text>
 		<text key="General.LongTermLeaving">Dài ngày</text>
 		<text key="General.LuongThoiViec">Lương thôi việc</text>
 		<text key="General.Luu">(&amp;S) Lưu</text>
@@ -3078,7 +3103,7 @@
 		<text key="General.Position_NameEN">Tên (EN)</text>
 		<text key="General.Position_NameKR">Tên (KR)</text>
 		<text key="General.Position_NameVN">Tên (VN)</text>
-		<text key="General.PositionCategory_ID">Loại chức vụ</text>
+		<text key="General.PositionCategory_ID">Chức vụ</text>
 		<text key="General.PositionCategory_NameEN">Tên (EN)</text>
 		<text key="General.PositionCategory_NameKR">Tên (KR)</text>
 		<text key="General.PositionCategory_NameVN">Tên (VN)</text>
@@ -3172,9 +3197,12 @@
 		<text key="General.SurgeryReason">Lý do phẫu thuật</text>
 		<text key="General.TabAccessTime">Tổng quát</text>
 		<text key="General.TableName">Chức năng</text>
+		<text key="General.TangCaNgoaiLe_SK1">SK1</text>
+		<text key="General.TangCaNgoaiLe_SK2">SK2</text>
 		<text key="General.TanTat">Tàn tật</text>
 		<text key="General.TCABC">Trợ cấp ABC</text>
 		<text key="General.TCBHXH">Trợ cấp BHXH (1 là đóng, 2 là không đóng)</text>
+		<text key="General.TCC">Chuyên cần</text>
 		<text key="General.TCNT">Tiền cơm nhập tay</text>
 		<text key="General.TCTruoc">Tăng ca trước</text>
 		<text key="General.TCTU">Thưởng chưa tạm ứng</text>
@@ -3249,6 +3277,7 @@
 		<text key="General.TuNgay">Từ Ngày</text>
 		<text key="General.TuNgayDenNgay2">Từ ngày đến ngày</text>
 		<text key="General.Type">Loại hợp đồng</text>
+		<text key="General.TypeOfDisable">Tình trạng</text>
 		<text key="General.TypeOfDiseases">Loại bệnh</text>
 		<text key="General.TypeOfHiring">Loại tuyển dụng</text>
 		<text key="General.TypeOfLeave">Vào muộn/Ra sớm</text>
@@ -3729,7 +3758,7 @@
 		<text key="TopMenu.Form1.DayVacationRemain">Phép Tồn</text>
 		<text key="TopMenu.Form1.De_IncreaseSepecial">Tăng Giảm BH Đặc Biệt</text>
 		<text key="TopMenu.Form1.DependentPerson">Người Phụ Thuộc</text>
-		<text key="TopMenu.Form1.Disable">Danh Sách Người Tàn Tật</text>
+		<text key="TopMenu.Form1.Disable">Quản lý Lao động Khuyết tật</text>
 		<text key="TopMenu.Form1.Discipline">Quản Lý Vi Phạm Kỷ Luật</text>
 		<text key="TopMenu.Form1.DiseasesRecord">Quản lý bệnh lý</text>
 		<text key="TopMenu.Form1.Employee - Family Information">Thông Tin Gia Đình</text>
@@ -3746,6 +3775,7 @@
 		<text key="TopMenu.Form1.Exit1">&amp;Thoát</text>
 		<text key="TopMenu.Form1.Factory">Tạo/Điều Khu Vực</text>
 		<text key="TopMenu.Form1.File">&amp;Hệ Thống</text>
+		<text key="TopMenu.Form1.frmBankAccountOfEmployee">Tài Khoản Ngân Hàng Nhân Viên</text>
 		<text key="TopMenu.Form1.gioithieu">Giới Thiệu SmartBooks - Human Resource</text>
 		<text key="TopMenu.Form1.GoOut">Nhân Viên Xin Ra Ngoài</text>
 		<text key="TopMenu.Form1.Group">Nhóm</text>

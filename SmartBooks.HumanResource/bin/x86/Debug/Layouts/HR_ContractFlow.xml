@@ -2,8 +2,11 @@
   <property name="#LayoutVersion" />
   <property name="#LayoutScaleFactor">@1,Width=1@1,Height=1</property>
   <property name="OptionsView" isnull="true" iskey="true">
+    <property name="BestFitMode">Fast</property>
+    <property name="BestFitMaxRowCount">250</property>
     <property name="ColumnAutoWidth">false</property>
     <property name="ShowAutoFilterRow">true</property>
+    <property name="ShowFooter">true</property>
     <property name="EnableAppearanceOddRow">true</property>
     <property name="EnableAppearanceEvenRow">true</property>
   </property>
@@ -64,7 +67,16 @@
       <property name="MaxWidth">0</property>
     </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="0" />
+  <property name="GroupSummary" iskey="true" value="1">
+    <property name="Item1" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">ContractFlow</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+  </property>
   <property name="ActiveFilterString" />
   <property name="GroupSummarySortInfoState" />
   <property name="FindFilterText" />

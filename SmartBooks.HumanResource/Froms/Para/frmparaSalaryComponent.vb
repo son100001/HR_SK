@@ -144,9 +144,9 @@ Public Class frmparaSalaryComponent
     Private Sub frmparaSalaryComponent_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.Text = "Thành Phần Lương/Salary Component"
         If bMonthlyChanging = True Then
-            GridControl1.DataSource = kn.ReadData("select * from HR_SalaryComponentCategory where MonthlyChanging=1 order by OrderBy", "table")
+            GridControl1.DataSource = kn.ReadData("select SalaryComponent, Name" + obj.Lan + ", Insurance, MonthlyChanging from HR_SalaryComponentCategory where MonthlyChanging=1 order by OrderBy", "table")
         Else
-            GridControl1.DataSource = kn.ReadData("select * from HR_SalaryComponentCategory where MonthlyChanging=0 or MonthlyChanging is null order by OrderBy", "table")
+            GridControl1.DataSource = kn.ReadData("select SalaryComponent, Name" + obj.Lan + ", Insurance, MonthlyChanging from HR_SalaryComponentCategory where MonthlyChanging=0 or MonthlyChanging is null order by OrderBy", "table")
         End If
         Dim ListOfLANCode As String
         For Each col As GridColumn In GridView1.Columns

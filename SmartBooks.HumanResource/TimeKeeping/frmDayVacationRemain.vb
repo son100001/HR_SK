@@ -28,6 +28,6 @@
     End Sub
 
     Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search()
+        'Search()
     End Sub
 End Class

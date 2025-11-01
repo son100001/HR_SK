@@ -26,7 +26,7 @@
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        Fromdate.DateTime = todate.DateTime.AddDays(-280)
+        Fromdate.DateTime = todate.DateTime.AddMonths(-9).AddDays(-10)
         'todate.DateTime = Fromdate.DateTime.AddMonths(9).AddDays(10)
         If tvcn.SaveByStore(QuyenHRFORM, HRFORM_TableName, "[dbo].[usp_InsertUpdateHR_EmployeeRegisPregnant]", TableLayoutPanel2, ErrorProvider1) Then
             Search()
@@ -50,7 +50,7 @@
         End If
     End Sub
     Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search()
+        'Search()
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click

@@ -48,6 +48,8 @@ Partial Class frmDisable
         Me.lblfromdate = New System.Windows.Forms.Label()
         Me.pnNhap = New System.Windows.Forms.Panel()
         Me.btnSave = New DevExpress.XtraEditors.SimpleButton()
+        Me.lblLoaiTanTat = New System.Windows.Forms.Label()
+        Me.TypeOfDisable = New DevExpress.XtraEditors.LookUpEdit()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.XtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.XtraTabControl1.SuspendLayout()
@@ -64,6 +66,7 @@ Partial Class frmDisable
         CType(Me.FromDate.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PhanTram, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnNhap.SuspendLayout()
+        CType(Me.TypeOfDisable.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PanelButton
@@ -172,6 +175,8 @@ Partial Class frmDisable
         '
         'pnDuLieuNhap
         '
+        Me.pnDuLieuNhap.Controls.Add(Me.TypeOfDisable)
+        Me.pnDuLieuNhap.Controls.Add(Me.lblLoaiTanTat)
         Me.pnDuLieuNhap.Controls.Add(Me.ToDate)
         Me.pnDuLieuNhap.Controls.Add(Me.FromDate)
         Me.pnDuLieuNhap.Controls.Add(Me.Approval)
@@ -186,13 +191,13 @@ Partial Class frmDisable
         Me.pnDuLieuNhap.Controls.Add(Me.lblfromdate)
         Me.pnDuLieuNhap.Location = New System.Drawing.Point(312, 4)
         Me.pnDuLieuNhap.Name = "pnDuLieuNhap"
-        Me.pnDuLieuNhap.Size = New System.Drawing.Size(702, 98)
+        Me.pnDuLieuNhap.Size = New System.Drawing.Size(800, 98)
         Me.pnDuLieuNhap.TabIndex = 1321
         '
         'ToDate
         '
         Me.ToDate.EditValue = Nothing
-        Me.ToDate.Location = New System.Drawing.Point(460, 6)
+        Me.ToDate.Location = New System.Drawing.Point(457, 41)
         Me.ToDate.Name = "ToDate"
         Me.ToDate.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.ToDate.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -209,7 +214,7 @@ Partial Class frmDisable
         'FromDate
         '
         Me.FromDate.EditValue = Nothing
-        Me.FromDate.Location = New System.Drawing.Point(123, 68)
+        Me.FromDate.Location = New System.Drawing.Point(457, 9)
         Me.FromDate.Name = "FromDate"
         Me.FromDate.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
         Me.FromDate.Properties.CalendarTimeProperties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -225,7 +230,7 @@ Partial Class frmDisable
         '
         'Approval
         '
-        Me.Approval.Location = New System.Drawing.Point(460, 31)
+        Me.Approval.Location = New System.Drawing.Point(457, 66)
         Me.Approval.Name = "Approval"
         Me.Approval.Size = New System.Drawing.Size(16, 24)
         Me.Approval.TabIndex = 11
@@ -233,7 +238,7 @@ Partial Class frmDisable
         'lblApproval
         '
         Me.lblApproval.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblApproval.Location = New System.Drawing.Point(342, 35)
+        Me.lblApproval.Location = New System.Drawing.Point(339, 70)
         Me.lblApproval.Name = "lblApproval"
         Me.lblApproval.Size = New System.Drawing.Size(72, 20)
         Me.lblApproval.TabIndex = 1048
@@ -242,7 +247,7 @@ Partial Class frmDisable
         '
         'lblRemark
         '
-        Me.lblRemark.Location = New System.Drawing.Point(340, 61)
+        Me.lblRemark.Location = New System.Drawing.Point(575, 10)
         Me.lblRemark.Name = "lblRemark"
         Me.lblRemark.Size = New System.Drawing.Size(100, 16)
         Me.lblRemark.TabIndex = 1047
@@ -250,16 +255,16 @@ Partial Class frmDisable
         '
         'Remark
         '
-        Me.Remark.Location = New System.Drawing.Point(461, 60)
+        Me.Remark.Location = New System.Drawing.Point(681, 9)
         Me.Remark.Name = "Remark"
-        Me.Remark.Size = New System.Drawing.Size(208, 34)
+        Me.Remark.Size = New System.Drawing.Size(101, 69)
         Me.Remark.TabIndex = 13
         Me.Remark.Text = ""
         '
         'lbltodate
         '
         Me.lbltodate.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lbltodate.Location = New System.Drawing.Point(340, 5)
+        Me.lbltodate.Location = New System.Drawing.Point(337, 40)
         Me.lbltodate.Name = "lbltodate"
         Me.lbltodate.Size = New System.Drawing.Size(104, 20)
         Me.lbltodate.TabIndex = 1046
@@ -268,7 +273,7 @@ Partial Class frmDisable
         '
         'lblReason
         '
-        Me.lblReason.Location = New System.Drawing.Point(3, 5)
+        Me.lblReason.Location = New System.Drawing.Point(5, 35)
         Me.lblReason.Name = "lblReason"
         Me.lblReason.Size = New System.Drawing.Size(100, 16)
         Me.lblReason.TabIndex = 1041
@@ -276,7 +281,7 @@ Partial Class frmDisable
         '
         'Reason
         '
-        Me.Reason.Location = New System.Drawing.Point(123, 5)
+        Me.Reason.Location = New System.Drawing.Point(123, 35)
         Me.Reason.Name = "Reason"
         Me.Reason.Size = New System.Drawing.Size(208, 35)
         Me.Reason.TabIndex = 3
@@ -285,7 +290,7 @@ Partial Class frmDisable
         'lblPhanTram
         '
         Me.lblPhanTram.BackColor = System.Drawing.Color.Transparent
-        Me.lblPhanTram.Location = New System.Drawing.Point(5, 40)
+        Me.lblPhanTram.Location = New System.Drawing.Point(5, 70)
         Me.lblPhanTram.Name = "lblPhanTram"
         Me.lblPhanTram.Size = New System.Drawing.Size(103, 23)
         Me.lblPhanTram.TabIndex = 1040
@@ -295,7 +300,7 @@ Partial Class frmDisable
         'PhanTram
         '
         Me.PhanTram.DecimalPlaces = 1
-        Me.PhanTram.Location = New System.Drawing.Point(123, 42)
+        Me.PhanTram.Location = New System.Drawing.Point(123, 72)
         Me.PhanTram.Maximum = New Decimal(New Integer() {1000, 0, 0, 0})
         Me.PhanTram.Name = "PhanTram"
         Me.PhanTram.Size = New System.Drawing.Size(64, 21)
@@ -304,7 +309,7 @@ Partial Class frmDisable
         'lblfromdate
         '
         Me.lblfromdate.Font = New System.Drawing.Font("Times New Roman", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblfromdate.Location = New System.Drawing.Point(3, 65)
+        Me.lblfromdate.Location = New System.Drawing.Point(337, 6)
         Me.lblfromdate.Name = "lblfromdate"
         Me.lblfromdate.Size = New System.Drawing.Size(104, 20)
         Me.lblfromdate.TabIndex = 1039
@@ -314,7 +319,7 @@ Partial Class frmDisable
         'pnNhap
         '
         Me.pnNhap.Controls.Add(Me.btnSave)
-        Me.pnNhap.Location = New System.Drawing.Point(1021, 4)
+        Me.pnNhap.Location = New System.Drawing.Point(1119, 4)
         Me.pnNhap.Name = "pnNhap"
         Me.pnNhap.Size = New System.Drawing.Size(57, 78)
         Me.pnNhap.TabIndex = 1325
@@ -326,6 +331,25 @@ Partial Class frmDisable
         Me.btnSave.Size = New System.Drawing.Size(53, 73)
         Me.btnSave.TabIndex = 35
         Me.btnSave.Text = "Lưu"
+        '
+        'lblLoaiTanTat
+        '
+        Me.lblLoaiTanTat.Location = New System.Drawing.Point(3, 12)
+        Me.lblLoaiTanTat.Name = "lblLoaiTanTat"
+        Me.lblLoaiTanTat.Size = New System.Drawing.Size(100, 16)
+        Me.lblLoaiTanTat.TabIndex = 1049
+        Me.lblLoaiTanTat.Text = "Loại tàn tật"
+        '
+        'TypeOfDisable
+        '
+        Me.TypeOfDisable.Location = New System.Drawing.Point(123, 9)
+        Me.TypeOfDisable.Name = "TypeOfDisable"
+        Me.TypeOfDisable.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
+        Me.TypeOfDisable.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.TypeOfDisable.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains
+        Me.TypeOfDisable.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard
+        Me.TypeOfDisable.Size = New System.Drawing.Size(208, 20)
+        Me.TypeOfDisable.TabIndex = 1501
         '
         'frmDisable
         '
@@ -360,6 +384,7 @@ Partial Class frmDisable
         CType(Me.FromDate.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PhanTram, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnNhap.ResumeLayout(False)
+        CType(Me.TypeOfDisable.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -388,4 +413,6 @@ Partial Class frmDisable
     Friend WithEvents lblfromdate As Label
     Friend WithEvents pnNhap As Panel
     Friend WithEvents btnSave As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents lblLoaiTanTat As Label
+    Friend WithEvents TypeOfDisable As DevExpress.XtraEditors.LookUpEdit
 End Class

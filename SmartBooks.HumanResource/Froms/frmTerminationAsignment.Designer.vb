@@ -209,6 +209,7 @@ Partial Class frmTerminationAsignment
         Me.ThangTinhLuong.Properties.UseMaskAsDisplayFormat = True
         Me.ThangTinhLuong.Size = New System.Drawing.Size(120, 20)
         Me.ThangTinhLuong.TabIndex = 13
+        Me.ThangTinhLuong.Visible = False
         '
         'NgayNopDon
         '
@@ -284,6 +285,7 @@ Partial Class frmTerminationAsignment
         Me.lblThangTinhLuong.TabIndex = 1292
         Me.lblThangTinhLuong.Text = "Tháng tính lương"
         Me.lblThangTinhLuong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.lblThangTinhLuong.Visible = False
         '
         'Remark
         '

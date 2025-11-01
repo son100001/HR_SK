@@ -2,11 +2,8 @@
   <property name="#LayoutVersion" />
   <property name="#LayoutScaleFactor">@1,Width=1@1,Height=1</property>
   <property name="OptionsView" isnull="true" iskey="true">
-    <property name="BestFitMode">Fast</property>
-    <property name="BestFitMaxRowCount">250</property>
     <property name="ColumnAutoWidth">false</property>
     <property name="ShowAutoFilterRow">true</property>
-    <property name="ShowFooter">true</property>
     <property name="EnableAppearanceOddRow">true</property>
     <property name="EnableAppearanceEvenRow">true</property>
   </property>
@@ -16,7 +13,7 @@
       <property name="Name">colPositionFullName</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">67</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -24,7 +21,7 @@
       <property name="Name">colChucDanh</property>
       <property name="VisibleIndex">3</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">67</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -32,7 +29,7 @@
       <property name="Name">colFullName</property>
       <property name="VisibleIndex">4</property>
       <property name="Visible">true</property>
-      <property name="Width">150</property>
+      <property name="Width">148</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -48,7 +45,7 @@
       <property name="Name">colStartedDate</property>
       <property name="VisibleIndex">5</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -56,7 +53,7 @@
       <property name="Name">colTernimationDate</property>
       <property name="VisibleIndex">6</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -64,7 +61,7 @@
       <property name="Name">colNgay</property>
       <property name="VisibleIndex">7</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -72,7 +69,7 @@
       <property name="Name">colRealTimeIn</property>
       <property name="VisibleIndex">8</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -80,7 +77,7 @@
       <property name="Name">colRealTimeOut</property>
       <property name="VisibleIndex">9</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -88,7 +85,7 @@
       <property name="Name">colShiftName</property>
       <property name="VisibleIndex">10</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -96,7 +93,7 @@
       <property name="Name">colGhiChu</property>
       <property name="VisibleIndex">11</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -104,7 +101,7 @@
       <property name="Name">colwt1</property>
       <property name="VisibleIndex">12</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -112,7 +109,7 @@
       <property name="Name">colwt9</property>
       <property name="VisibleIndex">13</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -120,7 +117,7 @@
       <property name="Name">colwt3</property>
       <property name="VisibleIndex">14</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -128,7 +125,7 @@
       <property name="Name">colwt5</property>
       <property name="VisibleIndex">15</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -136,7 +133,7 @@
       <property name="Name">colwt4</property>
       <property name="VisibleIndex">16</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -144,7 +141,7 @@
       <property name="Name">colwt6</property>
       <property name="VisibleIndex">17</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -152,7 +149,7 @@
       <property name="Name">colwt7</property>
       <property name="VisibleIndex">18</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -160,7 +157,7 @@
       <property name="Name">colwt8</property>
       <property name="VisibleIndex">19</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -168,7 +165,7 @@
       <property name="Name">colLateIn</property>
       <property name="VisibleIndex">20</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -176,7 +173,7 @@
       <property name="Name">colEarlyOut</property>
       <property name="VisibleIndex">21</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -184,7 +181,7 @@
       <property name="Name">colmaxovertime</property>
       <property name="VisibleIndex">22</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -192,7 +189,7 @@
       <property name="Name">colAbsentSign</property>
       <property name="VisibleIndex">23</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -200,7 +197,7 @@
       <property name="Name">colLeaveType_ID</property>
       <property name="VisibleIndex">24</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -208,7 +205,7 @@
       <property name="Name">colHourLeave</property>
       <property name="VisibleIndex">25</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -216,7 +213,7 @@
       <property name="Name">colisLeave_ComPay</property>
       <property name="VisibleIndex">26</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -224,29 +221,12 @@
       <property name="Name">colShiftSign</property>
       <property name="VisibleIndex">27</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">144</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="2">
-    <property name="Item1" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">ChucDanh</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item2" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">ChucDanh</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-  </property>
+  <property name="GroupSummary" iskey="true" value="0" />
   <property name="ActiveFilterString" />
   <property name="GroupSummarySortInfoState" />
   <property name="FindFilterText" />

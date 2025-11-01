@@ -39,7 +39,7 @@ Public Class frmEmpRegisParameter
     End Sub
 
     Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search()
+        'Search()
     End Sub
 
     Private Sub btnSearch_Click_1(sender As Object, e As EventArgs)

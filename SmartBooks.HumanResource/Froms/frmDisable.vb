@@ -4,6 +4,7 @@
         LoadGiaoDienTheoDieuKien()
         tvcn.SearchEmployee(Employee_ID)
         FromDate.EditValue = Today
+        tvcn.GetDataOnDropDownCategoryCodeName(TypeOfDisable, "DisableStatus")
         Search()
     End Sub
     Private Sub Search()
@@ -12,13 +13,13 @@
             EmID = Employee_ID.EditValue.ToString.Trim
         End If
         Dim QR As String
-        QR = "exec [dbo].[sp_BangTanTat] '" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "'"
+        QR = "exec [dbo].[sp_BangTanTat] '1900-01-01','2099-01-01','" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "'"
         Xem(QR, False, HRFORM_GridControl, HRFORM_Gridview)
         HRFORM_QueryView = QR
     End Sub
 
     Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search()
+        'Search()
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click

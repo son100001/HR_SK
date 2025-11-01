@@ -53,12 +53,12 @@ Public Class frmEmployeeInfo
         tvcn.GetDataOnDropDownCategoryCodeName(Employee_Status, "Employee_Status")
         tvcn.GetDataOnDropDownCategoryCodeName(Sex, "Sex")
         tvcn.GetDataOnDropDownCategoryCodeName(MaritalStatus, "MaritalStatus")
-        tvcn.GetDataOnDropDownCategoryCodeName(Graduated, "Graduated")
+        'tvcn.GetDataOnDropDownCategoryCodeName(Graduated, "Graduated")
         tvcn.GetDataOnDropDownCategoryCodeName(Nationality, "Nationality")
         tvcn.GetDataOnDropDownCategoryCodeName(TypeOfHiring, "TypeOfHiring")
         tvcn.GetDataOnDropDownCategoryCodeName(DecisionStatus, "DecisionStatus")
-        tvcn.GetDataOnDropDownCategoryCodeName(Nation, kn.ReadData("select MaDanToc as Code,TenDanToc as Name from HR_DanToc", "Table"))
-        tvcn.GetDataOnDropDownCategoryCodeName(TonGiao, "TonGiao")
+        'tvcn.GetDataOnDropDownCategoryCodeName(Nation, kn.ReadData("select MaDanToc as Code,TenDanToc as Name from HR_DanToc", "Table"))
+        'tvcn.GetDataOnDropDownCategoryCodeName(TonGiao, "TonGiao")
         tvcn.GetDataOnDropDownCategoryCodeName(Factory_ID, kn.ReadData("select * from [dbo].[udf_Factory]('" + obj.Lan + "')", "table"))
         'tvcn.GetDataOnDropDownCategoryCodeName(departmentcode, kn.ReadData("select * from [dbo].[udf_Department]('','" + obj.Lan + "',1)", "table"))
         'tvcn.GetDataOnDropDownCategoryCodeName(sectioncode, kn.ReadData("select * from [dbo].[udf_Section]('',null,'" + obj.Lan + "',1)", "table"))
@@ -1130,6 +1130,11 @@ Public Class frmEmployeeInfo
             latestFrame?.Dispose()
             latestFrame = Nothing
         End SyncLock
+        ' === Clear ảnh preview trên PictureBox ===
+        If PictureCCCD IsNot Nothing Then
+            PicCam.Image?.Dispose()
+            PicCam.Image = Nothing
+        End If
     End Sub
 
     Private Sub FrmCCCD_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -1171,6 +1176,19 @@ Public Class frmEmployeeInfo
 
     Private Sub departmentcode_EditValueChanged(sender As Object, e As EventArgs) Handles departmentcode.EditValueChanged
         tvcn.GetDataOnDropDownCategoryCodeName(sectioncode, kn.ReadData("select * from [dbo].[udf_Section]('',null,'" + obj.Lan + "',1) where Code like N'%" + departmentcode.EditValue.ToString + "%'", "table"))
+    End Sub
+
+    Private Sub isTanTat_CheckedChanged(sender As Object, e As EventArgs) Handles isTanTat.CheckedChanged
+        TanTat.Enabled = True
+    End Sub
+
+    Private Sub BirthDate_EditValueChanged(sender As Object, e As EventArgs) Handles BirthDate.EditValueChanged
+        If BirthDate.EditValue IsNot Nothing AndAlso IsDate(BirthDate.EditValue) Then
+            Dim birth As DateTime = Convert.ToDateTime(BirthDate.EditValue)
+            NgayHetHanCCCD.EditValue = TinhNgayHetHanCCCD(birth)
+        Else
+            NgayHetHanCCCD.EditValue = Nothing
+        End If
     End Sub
 
     ''Load các bảng thông tin chi tiết

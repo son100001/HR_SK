@@ -83,18 +83,19 @@ Public Class frmRoundShift
     End Sub
 
     Private Sub GridView1_RowCellStyle(sender As Object, e As DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs) Handles GridView1.RowCellStyle
-        If e.Column Is Nothing Then
-            Return
-        End If
+        Grid_Rowstyle(sender, e)
+        'If e.Column Is Nothing Then
+        '    Return
+        'End If
 
-        Dim colName As String = e.Column.FieldName
-        Dim dt As DateTime
-        If DateTime.TryParse(colName, dt) Then
-            If dt.DayOfWeek = DayOfWeek.Saturday OrElse dt.DayOfWeek = DayOfWeek.Sunday Then
-                e.Appearance.BackColor = Color.Snow
-                e.Appearance.ForeColor = Color.Black
-            End If
-        End If
+        'Dim colName As String = e.Column.FieldName
+        'Dim dt As DateTime
+        'If DateTime.TryParse(colName, dt) Then
+        '    If dt.DayOfWeek = DayOfWeek.Saturday OrElse dt.DayOfWeek = DayOfWeek.Sunday Then
+        '        e.Appearance.BackColor = Color.Snow
+        '        e.Appearance.ForeColor = Color.Black
+        '    End If
+        'End If
     End Sub
 
     Private Sub Search()
@@ -128,7 +129,7 @@ Public Class frmRoundShift
     End Sub
 
     Private Sub Employee_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Employee_ID.EditValueChanged
-        Search()
+        'Search()
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
