@@ -16,7 +16,7 @@
       <property name="Name">colPosition</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">207</property>
+      <property name="Width">222</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -24,7 +24,7 @@
       <property name="Name">colFullName</property>
       <property name="VisibleIndex">3</property>
       <property name="Visible">true</property>
-      <property name="Width">103</property>
+      <property name="Width">120</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
