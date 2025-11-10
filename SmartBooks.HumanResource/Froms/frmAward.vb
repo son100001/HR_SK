@@ -48,45 +48,45 @@
         End If
 
         ' Delay formatting so it runs after HRFORM.Xem finishes (which overwrites formats)
-        Me.BeginInvoke(
-            New MethodInvoker(
-                Sub()
-                    Try
-                        Dim col = HRFORM_Gridview.Columns.ColumnByFieldName("Amount")
-                        If col IsNot Nothing Then
-                            ' Column display format
-                            col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
-                            col.DisplayFormat.FormatString = "n0" ' no decimals
+        'Me.BeginInvoke(
+        '    New MethodInvoker(
+        '        Sub()
+        '            Try
+        '                Dim col = HRFORM_Gridview.Columns.ColumnByFieldName("Amount")
+        '                If col IsNot Nothing Then
+        '                    ' Column display format
+        '                    col.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        '                    col.DisplayFormat.FormatString = "n0" ' no decimals
 
-                            ' If column uses a repository editor, update it too
-                            Dim repo = TryCast(col.ColumnEdit, DevExpress.XtraEditors.Repository.RepositoryItem)
-                            If repo IsNot Nothing Then
-                                Dim repoText = TryCast(repo, DevExpress.XtraEditors.Repository.RepositoryItemTextEdit)
-                                If repoText IsNot Nothing Then
-                                    repoText.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
-                                    repoText.DisplayFormat.FormatString = "n0"
-                                    repoText.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric
-                                    repoText.Mask.EditMask = "n0"
-                                    repoText.Mask.UseMaskAsDisplayFormat = True
-                                End If
+        '                    ' If column uses a repository editor, update it too
+        '                    Dim repo = TryCast(col.ColumnEdit, DevExpress.XtraEditors.Repository.RepositoryItem)
+        '                    If repo IsNot Nothing Then
+        '                        Dim repoText = TryCast(repo, DevExpress.XtraEditors.Repository.RepositoryItemTextEdit)
+        '                        If repoText IsNot Nothing Then
+        '                            repoText.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        '                            repoText.DisplayFormat.FormatString = "n0"
+        '                            repoText.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric
+        '                            repoText.Mask.EditMask = "n0"
+        '                            repoText.Mask.UseMaskAsDisplayFormat = True
+        '                        End If
 
-                                Dim repoSpin = TryCast(repo, DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit)
-                                If repoSpin IsNot Nothing Then
-                                    repoSpin.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
-                                    repoSpin.DisplayFormat.FormatString = "n0"
-                                    repoSpin.IsFloatValue = True
-                                    repoSpin.EditMask = "n0"
-                                End If
-                            End If
+        '                        Dim repoSpin = TryCast(repo, DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit)
+        '                        If repoSpin IsNot Nothing Then
+        '                            repoSpin.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric
+        '                            repoSpin.DisplayFormat.FormatString = "n0"
+        '                            repoSpin.IsFloatValue = True
+        '                            repoSpin.EditMask = "n0"
+        '                        End If
+        '                    End If
 
-                            If col.SummaryItem IsNot Nothing Then
-                                col.SummaryItem.DisplayFormat = "{0:#,0}"
-                            End If
-                        End If
-                    Catch ex As Exception
-                        Debug.WriteLine("Format Amount column error: " & ex.Message)
-                    End Try
-                End Sub))
+        '                    If col.SummaryItem IsNot Nothing Then
+        '                        col.SummaryItem.DisplayFormat = "{0:#,0}"
+        '                    End If
+        '                End If
+        '            Catch ex As Exception
+        '                Debug.WriteLine("Format Amount column error: " & ex.Message)
+        '            End Try
+        '        End Sub))
     End Sub
 
     Private Sub btnSave_Click(sender As Object, e As EventArgs)
