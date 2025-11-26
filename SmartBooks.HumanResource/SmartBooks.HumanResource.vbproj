@@ -285,6 +285,7 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
@@ -396,6 +397,9 @@
     </Compile>
     <Compile Include="DBConnection.vb" />
     <Compile Include="DBTasks.vb" />
+    <Compile Include="DownloadProgressForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -873,6 +877,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ToolBar\NamedObject.vb" />
+    <Compile Include="UpdateManager.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BaoHiem\frmBaoCaoBaoHiem.resx">
