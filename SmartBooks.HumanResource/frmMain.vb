@@ -8,12 +8,9 @@ Imports System.Collections
 Imports System.Collections.Specialized
 Imports System.Text.RegularExpressions
 Imports WindowsControlLibrary.PublicFunction
-Imports WindowsControlLibrary
-Imports DevExpress.XtraEditors.Controls
-Imports DevExpress.XtraGrid.Localization
-
 Public Class frmMain
     Inherits System.Windows.Forms.Form
+
     Private langDic As DataTable
     Private WithEvents frmLayout As Form1
     Private WithEvents frmLogin As Login
@@ -62,12 +59,41 @@ Public Class frmMain
     Public Sub New()
         MyBase.New()
 
-        'This call is required by the Windows Form Designer.
         InitializeComponent()
         SetupMethods()
 
-        'Add any initialization after the InitializeComponent() call
+        ' ✅ KHÔNG cần check update trong background thread
+        ' Sẽ tự động check khi form load
+    End Sub
 
+    ' ✅ XÓA method CheckForUpdateBackground - không cần nữa
+
+    Private Sub frmMaster_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        flagHomeLogin = False
+        If flagLogin = False Then
+            Login()
+        End If
+
+        ' ✅ Check update ASYNC sau khi load xong
+        CheckForUpdateAsync()
+    End Sub
+
+    ''' <summary>
+    ''' Kiểm tra update tự động (async, không block UI)
+    ''' </summary>
+    Private Async Sub CheckForUpdateAsync()
+        Try
+            ' Đợi 2 giây để UI load xong
+            Await System.Threading.Tasks.Task.Delay(1000)
+
+            ' Tạo instance và gọi method
+            Dim updateManager As New UpdateManager()
+            Await updateManager.CheckAndUpdate()
+
+        Catch ex As Exception
+            ' Silent fail - không hiển thị lỗi
+            System.Diagnostics.Debug.WriteLine($"Auto update check failed: {ex.Message}")
+        End Try
     End Sub
 
     'Form overrides dispose to clean up the component list.
@@ -1127,17 +1153,6 @@ Public Class frmMain
         frmLogin = New Login
         frmLogin.Owner = Me
         frmLogin.ShowDialog()
-    End Sub
-
-    Private Sub frmMaster_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        flagHomeLogin = False
-        'UltraToolbarsManager1.Toolbars(1).Visible = False
-        If flagLogin = False Then
-            Login()
-        End If
-
-        Localizer.Active = New VietnameseEditorsLocalizer()
-        GridLocalizer.Active = New VietnameseGridLocalizer()
     End Sub
 
     Public listKey As ArrayList

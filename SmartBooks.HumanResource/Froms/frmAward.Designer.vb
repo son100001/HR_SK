@@ -39,6 +39,8 @@ Partial Class frmAward
         Me.lblAwardDate = New System.Windows.Forms.Label()
         Me.lblReason = New System.Windows.Forms.Label()
         Me.Reason = New System.Windows.Forms.RichTextBox()
+        Me.lblAmount = New System.Windows.Forms.Label()
+        Me.Amount = New DevExpress.XtraEditors.TextEdit()
         Me.lblAwardType = New System.Windows.Forms.Label()
         Me.Remark = New System.Windows.Forms.RichTextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -171,6 +173,8 @@ Partial Class frmAward
         Me.pnDuLieuNhap.Controls.Add(Me.lblAwardDate)
         Me.pnDuLieuNhap.Controls.Add(Me.lblReason)
         Me.pnDuLieuNhap.Controls.Add(Me.Reason)
+        Me.pnDuLieuNhap.Controls.Add(Me.lblAmount)
+        Me.pnDuLieuNhap.Controls.Add(Me.Amount)
         Me.pnDuLieuNhap.Controls.Add(Me.lblAwardType)
         Me.pnDuLieuNhap.Controls.Add(Me.Remark)
         Me.pnDuLieuNhap.Controls.Add(Me.Label1)
@@ -220,9 +224,9 @@ Partial Class frmAward
         'lblReason
         '
         Me.lblReason.BackColor = System.Drawing.SystemColors.Control
-        Me.lblReason.Location = New System.Drawing.Point(3, 34)
+        Me.lblReason.Location = New System.Drawing.Point(3, 30)
         Me.lblReason.Name = "lblReason"
-        Me.lblReason.Size = New System.Drawing.Size(103, 39)
+        Me.lblReason.Size = New System.Drawing.Size(103, 30)
         Me.lblReason.TabIndex = 1369
         Me.lblReason.Text = "Lý do"
         '
@@ -230,9 +234,31 @@ Partial Class frmAward
         '
         Me.Reason.Location = New System.Drawing.Point(112, 31)
         Me.Reason.Name = "Reason"
-        Me.Reason.Size = New System.Drawing.Size(201, 51)
+        Me.Reason.Size = New System.Drawing.Size(201, 25)
         Me.Reason.TabIndex = 6
         Me.Reason.Text = ""
+
+        'lblPrice
+        '
+        Me.lblAmount.BackColor = System.Drawing.SystemColors.Control
+        Me.lblAmount.Location = New System.Drawing.Point(3, 60)
+        Me.lblAmount.Name = "lblAmount"
+        Me.lblAmount.Size = New System.Drawing.Size(103, 39)
+        Me.lblAmount.TabIndex = 1369
+        Me.lblAmount.Text = "Số tiền"
+        '
+        'Price
+        '
+        Me.Amount.Location = New System.Drawing.Point(112, 60)
+        Me.Amount.Name = "Amount"
+        Me.Amount.Properties.Appearance.Options.UseTextOptions = True
+        Me.Amount.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near
+        Me.Amount.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.Numeric
+        Me.Amount.Properties.Mask.EditMask = "n0" ' use "n2" to always show 2 decimals
+        Me.Amount.Properties.Mask.UseMaskAsDisplayFormat = True
+        Me.Amount.Size = New System.Drawing.Size(201, 21)
+        Me.Amount.TabIndex = 6
+
         '
         'lblAwardType
         '
@@ -327,6 +353,8 @@ Partial Class frmAward
     Friend WithEvents lblAwardDate As Label
     Friend WithEvents lblReason As Label
     Friend WithEvents Reason As RichTextBox
+    Friend WithEvents lblAmount As Label
+    Friend WithEvents Amount As DevExpress.XtraEditors.TextEdit
     Friend WithEvents lblAwardType As Label
     Friend WithEvents Remark As RichTextBox
     Friend WithEvents Label1 As Label
