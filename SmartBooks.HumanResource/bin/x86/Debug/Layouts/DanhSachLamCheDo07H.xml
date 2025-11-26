@@ -127,7 +127,7 @@
       <property name="MaxWidth">0</property>
     </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="8">
+  <property name="GroupSummary" iskey="true" value="5">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
@@ -156,35 +156,11 @@
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />
-      <property name="FieldName">ChucDanh</property>
+      <property name="FieldName">DepartmentName</property>
       <property name="SummaryType">Count</property>
       <property name="DisplayFormat">Count: {0}</property>
     </property>
     <property name="Item5" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item6" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item7" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item8" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />

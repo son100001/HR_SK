@@ -16,7 +16,7 @@
       <property name="Name">colEmployee_ID</property>
       <property name="VisibleIndex">1</property>
       <property name="Visible">true</property>
-      <property name="Width">87</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -24,24 +24,15 @@
       <property name="Name">colFullName</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">55</property>
+      <property name="Width">150</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
-      <property name="Summary" iskey="true" value="1">
-        <property name="Item1" isnull="true" iskey="true">
-          <property name="Tag" isnull="true" />
-          <property name="FieldName">FullName</property>
-          <property name="SummaryType">Count</property>
-          <property name="Mode">AllRows</property>
-          <property name="DisplayFormat">{0}</property>
-        </property>
-      </property>
     </property>
     <property name="Item3" isnull="true" iskey="true">
       <property name="Name">colStartedDate</property>
       <property name="VisibleIndex">3</property>
       <property name="Visible">true</property>
-      <property name="Width">115</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -49,18 +40,9 @@
       <property name="Name">colFactoryName</property>
       <property name="VisibleIndex">4</property>
       <property name="Visible">true</property>
-      <property name="Width">82</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
-      <property name="Summary" iskey="true" value="1">
-        <property name="Item1" isnull="true" iskey="true">
-          <property name="Tag" isnull="true" />
-          <property name="FieldName">FactoryName</property>
-          <property name="SummaryType">Count</property>
-          <property name="Mode">AllRows</property>
-          <property name="DisplayFormat">Số dòng: {0}</property>
-        </property>
-      </property>
     </property>
     <property name="Item5" isnull="true" iskey="true">
       <property name="Name">colDepartmentName</property>
@@ -74,7 +56,7 @@
       <property name="Name">colSectionName</property>
       <property name="VisibleIndex">6</property>
       <property name="Visible">true</property>
-      <property name="Width">107</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -82,7 +64,7 @@
       <property name="Name">colChucDanhName</property>
       <property name="VisibleIndex">7</property>
       <property name="Visible">true</property>
-      <property name="Width">99</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -90,7 +72,7 @@
       <property name="Name">colFromdate</property>
       <property name="VisibleIndex">8</property>
       <property name="Visible">true</property>
-      <property name="Width">63</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -98,7 +80,7 @@
       <property name="Name">colTodate</property>
       <property name="VisibleIndex">9</property>
       <property name="Visible">true</property>
-      <property name="Width">70</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -106,7 +88,7 @@
       <property name="Name">colRemark</property>
       <property name="VisibleIndex">10</property>
       <property name="Visible">true</property>
-      <property name="Width">58</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -114,7 +96,7 @@
       <property name="Name">colInsertDate</property>
       <property name="VisibleIndex">11</property>
       <property name="Visible">true</property>
-      <property name="Width">76</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -122,7 +104,7 @@
       <property name="Name">colUserName</property>
       <property name="VisibleIndex">12</property>
       <property name="Visible">true</property>
-      <property name="Width">78</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>

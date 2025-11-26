@@ -22,6 +22,7 @@ Partial Class HRFORM
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.PanelButton = New System.Windows.Forms.Panel()
         Me.TableLayoutPanel1 = New System.Windows.Forms.TableLayoutPanel()
         Me.btnRefreshLayout = New DevExpress.XtraEditors.SimpleButton()
@@ -45,7 +46,7 @@ Partial Class HRFORM
         Me.lblBottomCompany = New System.Windows.Forms.Label()
         Me.lblBottomNumber2 = New System.Windows.Forms.Label()
         Me.lblBottomCompanyName = New System.Windows.Forms.Label()
-        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip()
+        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Loc = New System.Windows.Forms.ToolStripMenuItem()
         Me.HuyLoc = New System.Windows.Forms.ToolStripMenuItem()
         Me.HuyLocToanBo = New System.Windows.Forms.ToolStripMenuItem()
