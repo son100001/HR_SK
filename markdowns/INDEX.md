@@ -1,4 +1,4 @@
-﻿# 📚 POCONS HR System – Document Index
+# 📚 POCONS HR System – Document Index
 
 > **Dùng file này làm điểm bắt đầu để hiểu toàn bộ hệ thống.**
 > Mỗi khi Antigravity mở project, đọc file này trước tiên.
@@ -35,6 +35,7 @@
 | **SmartBooks.BL.TimeKeeping** | [FLOW_DOCUMENT.md](file:///e:/SourceCodeHR/POCONS/SmartBooks.BL.TimeKeeping/markdowns/FLOW_DOCUMENT.md) | Logic chấm công – tính ca, OT, nghỉ phép |
 | **Entity** | [FLOW_DOCUMENT.md](file:///e:/SourceCodeHR/POCONS/Entity/markdowns/FLOW_DOCUMENT.md) | Data entity classes – mô hình dữ liệu |
 | **CommonLib** | [FLOW_DOCUMENT.md](file:///e:/SourceCodeHR/POCONS/CommonLib/markdowns/FLOW_DOCUMENT.md) | DLL bên thứ 3 – DevExpress, Janus, Infragistics |
+| **UI Notes** | [DEVEXPRESS_NOTES.md](file:///e:/SourceCodeHR/SnK_Dev/markdowns/DEVEXPRESS_NOTES.md) | Xử lý lỗi các control DevExpress (như LookUpEdit) |
 
 ---
 

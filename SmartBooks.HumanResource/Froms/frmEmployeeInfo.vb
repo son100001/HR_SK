@@ -1,4 +1,4 @@
-﻿Imports System.IO
+Imports System.IO
 Imports DevExpress.XtraEditors.Controls
 Imports DevExpress.XtraGrid.Views.Grid
 Imports Infragistics.Win.UltraWinTabControl
@@ -108,6 +108,78 @@ Public Class frmEmployeeInfo
         Next
         If tabEmployee.Rows.Count > 0 Then
             tvcn.NhapDuLieuTuGridLenFormNhap(XtraTabControl2, tabEmployee.Rows(0), ListOfFieldOfTable.ToUpper().Remove(ListOfFieldOfTable.Length - 1).Split(","))
+            Try
+                If departmentcode.Text.Trim() = "" AndAlso tabEmployee.Columns.Contains("DepartmentName") Then
+                    Dim deptName As String = If(IsDBNull(tabEmployee.Rows(0)("DepartmentName")), "", tabEmployee.Rows(0)("DepartmentName").ToString())
+                    Dim deptCode As String = If(tabEmployee.Columns.Contains("DepartmentCode") AndAlso Not IsDBNull(tabEmployee.Rows(0)("DepartmentCode")), tabEmployee.Rows(0)("DepartmentCode").ToString(), "")
+                    If deptName <> "" Then
+                        Dim dt As DataTable = TryCast(departmentcode.Properties.DataSource, DataTable)
+                        If dt Is Nothing Then
+                            dt = New DataTable()
+                            dt.Columns.Add("Code", GetType(String))
+                            dt.Columns.Add("Name", GetType(String))
+                            departmentcode.Properties.DataSource = dt
+                            departmentcode.Properties.ValueMember = "Code"
+                            departmentcode.Properties.DisplayMember = "Name"
+                        ElseIf Not dt.Columns.Contains("Code") OrElse Not dt.Columns.Contains("Name") Then
+                            ' Fallback if columns are different, but GetDataOnDropDownCategoryCodeName expects Code/Name
+                        End If
+                        If deptCode = "" Then deptCode = deptName 
+                        
+                        If dt IsNot Nothing AndAlso dt.Columns.Contains("Code") AndAlso dt.Columns.Contains("Name") Then
+                            Dim found As Boolean = False
+                            For Each r As DataRow In dt.Rows
+                                If r("Code").ToString() = deptCode Then
+                                    found = True
+                                    Exit For
+                                End If
+                            Next
+                            If Not found Then
+                                Dim newRow As DataRow = dt.NewRow()
+                                newRow("Code") = deptCode
+                                newRow("Name") = deptName
+                                dt.Rows.Add(newRow)
+                            End If
+                        End If
+                        departmentcode.EditValue = deptCode
+                    End If
+                End If
+
+                If sectioncode.Text.Trim() = "" AndAlso tabEmployee.Columns.Contains("SectionName") Then
+                    Dim secName As String = If(IsDBNull(tabEmployee.Rows(0)("SectionName")), "", tabEmployee.Rows(0)("SectionName").ToString())
+                    Dim secCode As String = If(tabEmployee.Columns.Contains("SectionCode") AndAlso Not IsDBNull(tabEmployee.Rows(0)("SectionCode")), tabEmployee.Rows(0)("SectionCode").ToString(), "")
+                    If secName <> "" Then
+                        Dim dt As DataTable = TryCast(sectioncode.Properties.DataSource, DataTable)
+                        If dt Is Nothing Then
+                            dt = New DataTable()
+                            dt.Columns.Add("Code", GetType(String))
+                            dt.Columns.Add("Name", GetType(String))
+                            sectioncode.Properties.DataSource = dt
+                            sectioncode.Properties.ValueMember = "Code"
+                            sectioncode.Properties.DisplayMember = "Name"
+                        End If
+                        If secCode = "" Then secCode = secName
+                        
+                        If dt IsNot Nothing AndAlso dt.Columns.Contains("Code") AndAlso dt.Columns.Contains("Name") Then
+                            Dim found As Boolean = False
+                            For Each r As DataRow In dt.Rows
+                                If r("Code").ToString() = secCode Then
+                                    found = True
+                                    Exit For
+                                End If
+                            Next
+                            If Not found Then
+                                Dim newRow As DataRow = dt.NewRow()
+                                newRow("Code") = secCode
+                                newRow("Name") = secName
+                                dt.Rows.Add(newRow)
+                            End If
+                        End If
+                        sectioncode.EditValue = secCode
+                    End If
+                End If
+            Catch ex As Exception
+            End Try
         Else
             tvcn.ClearTextInControlOnForm(XtraTabControl2)
         End If
