@@ -16,7 +16,7 @@
       <property name="Name">colPeriod</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">69</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -24,15 +24,24 @@
       <property name="Name">colEmployee_ID</property>
       <property name="VisibleIndex">1</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">87</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
+      <property name="Summary" iskey="true" value="1">
+        <property name="Item1" isnull="true" iskey="true">
+          <property name="Tag" isnull="true" />
+          <property name="FieldName">Employee_ID</property>
+          <property name="SummaryType">Count</property>
+          <property name="Mode">AllRows</property>
+          <property name="DisplayFormat">{0}</property>
+        </property>
+      </property>
     </property>
     <property name="Item3" isnull="true" iskey="true">
       <property name="Name">colFullName</property>
       <property name="VisibleIndex">3</property>
       <property name="Visible">true</property>
-      <property name="Width">150</property>
+      <property name="Width">147</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -40,15 +49,24 @@
       <property name="Name">colStartedDate</property>
       <property name="VisibleIndex">4</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">115</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
+      <property name="Summary" iskey="true" value="1">
+        <property name="Item1" isnull="true" iskey="true">
+          <property name="Tag" isnull="true" />
+          <property name="FieldName">StartedDate</property>
+          <property name="SummaryType">Count</property>
+          <property name="Mode">AllRows</property>
+          <property name="DisplayFormat">Số dòng: {0}</property>
+        </property>
+      </property>
     </property>
     <property name="Item5" isnull="true" iskey="true">
       <property name="Name">colPosition</property>
       <property name="VisibleIndex">5</property>
       <property name="Visible">true</property>
-      <property name="Width">200</property>
+      <property name="Width">305</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -56,7 +74,7 @@
       <property name="Name">colJobCode</property>
       <property name="VisibleIndex">6</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">85</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -64,7 +82,7 @@
       <property name="Name">colchucdanh</property>
       <property name="VisibleIndex">7</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">216</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -72,7 +90,7 @@
       <property name="Name">colPositionCategory_ID</property>
       <property name="VisibleIndex">8</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">63</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -80,12 +98,12 @@
       <property name="Name">colPosition_ID</property>
       <property name="VisibleIndex">9</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">90</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="20">
+  <property name="GroupSummary" iskey="true" value="4">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
@@ -111,134 +129,6 @@
       <property name="DisplayFormat">Count: {0}</property>
     </property>
     <property name="Item4" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item5" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item6" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item7" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item8" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item9" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item10" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item11" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item12" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item13" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item14" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item15" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item16" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item17" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item18" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item19" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item20" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />

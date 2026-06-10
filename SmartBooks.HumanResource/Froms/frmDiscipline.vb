@@ -40,7 +40,8 @@
         If Not IsNothing(Employee_ID.EditValue) Then
             EmID = Employee_ID.EditValue.ToString.Trim
         End If
-        Dim QR As String = "exec [dbo].[sp_BangViPhamKyLuat] '1900-1-1','" + Today.ToString("yyyy-MM-dd") + "',1,'" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "'"
+
+        Dim QR As String = "exec [dbo].[sp_BangViPhamKyLuat] '1900-1-1','" + Today.AddMonths(1).ToString("yyyy-MM-dd") + "',1,'" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "'"
         Xem(QR, False, HRFORM_GridControl, HRFORM_Gridview)
         HRFORM_QueryView = QR
     End Sub

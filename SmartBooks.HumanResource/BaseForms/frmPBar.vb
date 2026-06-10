@@ -888,7 +888,7 @@ Public Class frmPBar
             Dim i, j, k, No As Integer
             Dim Config As String
             No = 1
-            Dim BangCong As DataTable = kn.ReadData("exec sp_bangcong '" + obj.PARA_FROMDATE.ToString("yyyy-MM-dd") + "','" + obj.PARA_TODATE.ToString("yyyy-MM-dd") + "',27,N'" + obj.Lan + "',N'SK2',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "',N'" + obj.PARA_POSITIONCATEGORY_ID + "'", "table")
+            Dim BangCong As DataTable = kn.ReadData("exec sp_bangcong '" + obj.PARA_FROMDATE.ToString("yyyy-MM-dd") + "','" + obj.PARA_TODATE.ToString("yyyy-MM-dd") + "',27,N'" + obj.Lan + "',N'" + obj.UserName + "',N'SK2',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "',N'" + obj.PARA_POSITIONCATEGORY_ID + "'", "table")
             ProgressBarControl1.Properties.Minimum = 1
             ProgressBarControl1.Properties.Maximum = tabNhanVien.Rows.Count
             Dim progress As Integer = 1

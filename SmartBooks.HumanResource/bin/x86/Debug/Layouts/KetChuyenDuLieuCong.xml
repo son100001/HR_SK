@@ -1,6 +1,10 @@
 ﻿<XtraSerializer version="1.0" application="View">
   <property name="#LayoutVersion" />
   <property name="#LayoutScaleFactor">@1,Width=1@1,Height=1</property>
+  <property name="OptionsView" isnull="true" iskey="true">
+    <property name="EnableAppearanceOddRow">true</property>
+    <property name="EnableAppearanceEvenRow">true</property>
+  </property>
   <property name="ActiveFilterEnabled">true</property>
   <property name="Columns" iskey="true" value="0" />
   <property name="GroupSummary" iskey="true" value="0" />

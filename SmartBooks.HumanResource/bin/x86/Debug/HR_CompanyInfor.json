@@ -17,6 +17,15 @@
       "databaseName": "s1RWYLm44o4mCcttzTksl1OlLLb5Jx2tCnHGZouktQB0=",
       "userID": "sXX4Q9d6SgjNe3j8ZzB4BAA==",
       "password": "sNdfPLK8C+ob4pPHlIyiLkRfn3xKbxOzEd4W8mFcyCpA="
+    },
+	{
+      "id": "2",
+      "name": "HR_S&K_Test",
+      "code": "sAlh6esI9JiZz1NXIwzpSUBjmgQBYSdulvgvludxZxY=",
+      "serverName": "sAn13C5J1oePuDFBMo6juja15EFj6wbpH13Ww0CPBoNs=",
+      "databaseName": "s1RWYLm44o4mCcttzTksl1DJ+Fr7GPp27sCs01OWzKobI91+qJpWdzXRbSjt9ABoe",
+      "userID": "sXX4Q9d6SgjNe3j8ZzB4BAA==",
+      "password": "sNdfPLK8C+ob4pPHlIyiLkRfn3xKbxOzEd4W8mFcyCpA="
     }
   ],
   "Id": 0

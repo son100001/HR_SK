@@ -533,7 +533,7 @@ Public Class ThuVienChucNang
 
     Public Sub LayTemplateEPPlus(ByVal TableName As String, ByVal FirtsRow As Integer, ByVal FileTemplate As String, Optional ByVal FRM As Form = Nothing)
         Dim fileChooser As SaveFileDialog = New SaveFileDialog
-        fileChooser.FileName = FRM.Text
+        fileChooser.FileName = FRM.Text.Replace("/", "")
         Dim result As DialogResult = fileChooser.ShowDialog()
         fileChooser.CheckFileExists = False
         If result = DialogResult.OK Then
@@ -909,6 +909,7 @@ Public Class ThuVienChucNang
                     End If
                 Next
                 If isPrimaryKeyNull = False Or (isPrimaryKeyNull = True And TableName.ToUpper = "SmartBooks_Employee".ToUpper) Then
+                    'If isPrimaryKeyNull = False Then
                     If CheckChangedQuery <> String.Empty Then
                         CheckChangedQuery = CheckChangedQuery.Remove(CheckChangedQuery.Length - 5)
                     End If
@@ -3839,82 +3840,145 @@ Public Class ThuVienChucNang
         End If
     End Sub
 
-    Public Sub NhapDuLieuTuGridLenFormNhap(ByVal ctlControl As Control, ByVal dtRow As DataRow, ByVal ListOfFieldOfTable As String())
-        If Not IsNothing(dtRow) Then
-            For Each ct As Control In ctlControl.Controls
-                If ListOfFieldOfTable.Contains(ct.Name.ToUpper) Then
-                    If ct.GetType.ToString = "System.Windows.Forms.CheckBox" Then '"DevExpress.XtraEditors.CheckEdit"
-                        If Not IsDBNull(dtRow(ct.Name)) Then
-                            CType(ct, System.Windows.Forms.CheckBox).Checked = dtRow(ct.Name)
-                        Else
-                            CType(ct, System.Windows.Forms.CheckBox).Checked = False
-                        End If
-                    ElseIf ct.GetType.ToString = "System.Windows.Forms.RadioButton" Then '"DevExpress.XtraEditors.RadioGroup"
-                        If Not IsDBNull(dtRow(ct.Name)) Then
-                            CType(ct, System.Windows.Forms.RadioButton).Checked = dtRow(ct.Name)
-                        Else
-                            CType(ct, System.Windows.Forms.RadioButton).Checked = False
-                        End If
-                        'Dev Express
-                    ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.LookUpEdit" Then '"DevExpress.XtraEditors.LookUpEdit"
-                        If Not IsDBNull(dtRow(ct.Name)) Then
-                            CType(ct, DevExpress.XtraEditors.LookUpEdit).EditValue = dtRow(ct.Name)
-                        Else
-                            CType(ct, DevExpress.XtraEditors.LookUpEdit).EditValue = dtRow(ct.Name)
-                        End If
-                    ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.DateEdit" Then '"DevExpress.XtraEditors.DateEdit"
-                        If Not IsDBNull(dtRow(ct.Name)) Then
-                            CType(ct, DevExpress.XtraEditors.DateEdit).EditValue = dtRow(ct.Name)
-                        Else
-                            CType(ct, DevExpress.XtraEditors.DateEdit).EditValue = String.Empty
-                        End If
-                    ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.CheckEdit" Then '"DevExpress.XtraEditors.CheckEdit"
-                        If Not IsDBNull(dtRow(ct.Name)) Then
-                            CType(ct, DevExpress.XtraEditors.CheckEdit).Checked = dtRow(ct.Name)
-                        Else
-                            CType(ct, DevExpress.XtraEditors.CheckEdit).Checked = False
-                        End If
+    'Public Sub NhapDuLieuTuGridLenFormNhap(ByVal ctlControl As Control, ByVal dtRow As DataRow, ByVal ListOfFieldOfTable As String())
+    '    If Not IsNothing(dtRow) Then
+    '        For Each ct As Control In ctlControl.Controls
+    '            If ListOfFieldOfTable.Contains(ct.Name.ToUpper) Then
+    '                If ct.GetType.ToString = "System.Windows.Forms.CheckBox" Then '"DevExpress.XtraEditors.CheckEdit"
+    '                    If Not IsDBNull(dtRow(ct.Name)) Then
+    '                        CType(ct, System.Windows.Forms.CheckBox).Checked = dtRow(ct.Name)
+    '                    Else
+    '                        CType(ct, System.Windows.Forms.CheckBox).Checked = False
+    '                    End If
+    '                ElseIf ct.GetType.ToString = "System.Windows.Forms.RadioButton" Then '"DevExpress.XtraEditors.RadioGroup"
+    '                    If Not IsDBNull(dtRow(ct.Name)) Then
+    '                        CType(ct, System.Windows.Forms.RadioButton).Checked = dtRow(ct.Name)
+    '                    Else
+    '                        CType(ct, System.Windows.Forms.RadioButton).Checked = False
+    '                    End If
+    '                    'Dev Express
+    '                ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.LookUpEdit" Then '"DevExpress.XtraEditors.LookUpEdit"
+    '                    If Not IsDBNull(dtRow(ct.Name)) Then
+    '                        CType(ct, DevExpress.XtraEditors.LookUpEdit).EditValue = dtRow(ct.Name)
+    '                    Else
+    '                        CType(ct, DevExpress.XtraEditors.LookUpEdit).EditValue = dtRow(ct.Name)
+    '                    End If
+    '                ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.DateEdit" Then '"DevExpress.XtraEditors.DateEdit"
+    '                    If Not IsDBNull(dtRow(ct.Name)) Then
+    '                        CType(ct, DevExpress.XtraEditors.DateEdit).EditValue = dtRow(ct.Name)
+    '                    Else
+    '                        CType(ct, DevExpress.XtraEditors.DateEdit).EditValue = String.Empty
+    '                    End If
+    '                ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.CheckEdit" Then '"DevExpress.XtraEditors.CheckEdit"
+    '                    If Not IsDBNull(dtRow(ct.Name)) Then
+    '                        CType(ct, DevExpress.XtraEditors.CheckEdit).Checked = dtRow(ct.Name)
+    '                    Else
+    '                        CType(ct, DevExpress.XtraEditors.CheckEdit).Checked = False
+    '                    End If
 
-                        'ElseIf ct.GetType.ToString = "Infragistics.Win.UltraWinEditors.UltraDateTimeEditor" Then        'Bỏ
-                        '    If Not IsDBNull(dtRow(ct.Name)) Then                                                        'Bỏ
-                        '        CType(ct, Infragistics.Win.UltraWinEditors.UltraDateTimeEditor).Value = dtRow(ct.Name)  'Bỏ
-                        '    Else                                                                                        'Bỏ
-                        '        CType(ct, Infragistics.Win.UltraWinEditors.UltraDateTimeEditor).Value = String.Empty    'Bỏ
-                        '    End If                                                                                      'Bỏ
-                    ElseIf ct.GetType.ToString = "WindowsControlLibrary.Address" Then
-                        If Not IsDBNull(dtRow(ct.Name)) Then
-                            ct.Text = dtRow(ct.Name)
-                        Else
-                            ct.Text = String.Empty
-                        End If
-                    ElseIf ct.GetType.ToString = "System.Windows.Forms.PictureBox" Then
-                        If IsDBNull(dtRow(ct.Name)) = False Then
-                            Dim imageData As Byte() = DirectCast(dtRow(ct.Name), Byte())
-                            If Not imageData Is Nothing Then
-                                Dim ms As New MemoryStream(imageData, 0, imageData.Length)
-                                ms.Write(imageData, 0, imageData.Length)
-                                CType(ct, System.Windows.Forms.PictureBox).Image = Image.FromStream(ms, True)
-                            End If
-                        Else
-                            CType(ct, System.Windows.Forms.PictureBox).Image = Nothing
-                        End If
-                    ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.LookUpEdit" Then
-                        CType(ct, DevExpress.XtraEditors.LookUpEdit).EditValue = dtRow(ct.Name)
-                    ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.DateEdit" Then
-                        CType(ct, DevExpress.XtraEditors.DateEdit).EditValue = dtRow(ct.Name)
+    '                    'ElseIf ct.GetType.ToString = "Infragistics.Win.UltraWinEditors.UltraDateTimeEditor" Then        'Bỏ
+    '                    '    If Not IsDBNull(dtRow(ct.Name)) Then                                                        'Bỏ
+    '                    '        CType(ct, Infragistics.Win.UltraWinEditors.UltraDateTimeEditor).Value = dtRow(ct.Name)  'Bỏ
+    '                    '    Else                                                                                        'Bỏ
+    '                    '        CType(ct, Infragistics.Win.UltraWinEditors.UltraDateTimeEditor).Value = String.Empty    'Bỏ
+    '                    '    End If                                                                                      'Bỏ
+    '                ElseIf ct.GetType.ToString = "WindowsControlLibrary.Address" Then
+    '                    If Not IsDBNull(dtRow(ct.Name)) Then
+    '                        ct.Text = dtRow(ct.Name)
+    '                    Else
+    '                        ct.Text = String.Empty
+    '                    End If
+    '                ElseIf ct.GetType.ToString = "System.Windows.Forms.PictureBox" Then
+    '                    If IsDBNull(dtRow(ct.Name)) = False Then
+    '                        Dim imageData As Byte() = DirectCast(dtRow(ct.Name), Byte())
+    '                        If Not imageData Is Nothing Then
+    '                            Dim ms As New MemoryStream(imageData, 0, imageData.Length)
+    '                            ms.Write(imageData, 0, imageData.Length)
+    '                            CType(ct, System.Windows.Forms.PictureBox).Image = Image.FromStream(ms, True)
+    '                        End If
+    '                    Else
+    '                        CType(ct, System.Windows.Forms.PictureBox).Image = Nothing
+    '                    End If
+    '                ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.LookUpEdit" Then
+    '                    CType(ct, DevExpress.XtraEditors.LookUpEdit).EditValue = dtRow(ct.Name)
+    '                ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.DateEdit" Then
+    '                    CType(ct, DevExpress.XtraEditors.DateEdit).EditValue = dtRow(ct.Name)
+    '                Else
+    '                    If Not IsDBNull(dtRow(ct.Name)) Then
+    '                        ct.Text = dtRow(ct.Name)
+    '                    Else
+    '                        ct.Text = String.Empty
+    '                    End If
+    '                End If
+    '            End If
+    '            If ct.Controls.Count > 0 Then
+    '                NhapDuLieuTuGridLenFormNhap(ct, dtRow, ListOfFieldOfTable)
+    '            End If
+    '        Next
+    '    End If
+    'End Sub
+    Public Sub NhapDuLieuTuGridLenFormNhap(ByVal ctlControl As Control, ByVal dtRow As DataRow, ByVal ListOfFieldOfTable As String())
+        ' Exit early if the DataRow is null
+        If dtRow Is Nothing Then Return
+
+        For Each ct As Control In ctlControl.Controls
+            ' Check if the control name exists in the provided field list
+            If ListOfFieldOfTable.Contains(ct.Name.ToUpper()) Then
+                Dim val As Object = dtRow(ct.Name)
+                Dim isNull As Boolean = (IsDBNull(val) OrElse val Is Nothing)
+
+                ' Use TypeOf for cleaner, strongly-typed, and faster type checking
+                If TypeOf ct Is CheckBox Then
+                    CType(ct, CheckBox).Checked = If(Not isNull, Convert.ToBoolean(val), False)
+
+                ElseIf TypeOf ct Is RadioButton Then
+                    CType(ct, RadioButton).Checked = If(Not isNull, Convert.ToBoolean(val), False)
+
+                ElseIf TypeOf ct Is DevExpress.XtraEditors.CheckEdit Then
+                    CType(ct, DevExpress.XtraEditors.CheckEdit).Checked = If(Not isNull, Convert.ToBoolean(val), False)
+
+                ElseIf TypeOf ct Is DevExpress.XtraEditors.LookUpEdit Then
+                    Dim lke As DevExpress.XtraEditors.LookUpEdit = CType(ct, DevExpress.XtraEditors.LookUpEdit)
+                    If Not isNull Then
+                        lke.EditValue = val
+                        ' Optional: If you want to force the display text for missing values based on our previous discussion
+                        ' If lke.Properties.GetDataSourceRowByKeyValue(val) Is Nothing Then
+                        '     lke.Text = val.ToString()
+                        ' End If
                     Else
-                        If Not IsDBNull(dtRow(ct.Name)) Then
-                            ct.Text = dtRow(ct.Name)
-                        Else
-                            ct.Text = String.Empty
-                        End If
+                        lke.EditValue = Nothing
                     End If
+
+                ElseIf TypeOf ct Is DevExpress.XtraEditors.DateEdit Then
+                    CType(ct, DevExpress.XtraEditors.DateEdit).EditValue = If(Not isNull, val, String.Empty)
+
+                ElseIf TypeOf ct Is WindowsControlLibrary.Address Then
+                    ct.Text = If(Not isNull, val.ToString(), String.Empty)
+
+                ElseIf TypeOf ct Is PictureBox Then
+                    Dim picBox As PictureBox = CType(ct, PictureBox)
+                    If Not isNull Then
+                        Dim imageData As Byte() = TryCast(val, Byte())
+                        If imageData IsNot Nothing AndAlso imageData.Length > 0 Then
+                            ' The constructor already writes the array to the stream, no need for ms.Write()
+                            Dim ms As New MemoryStream(imageData)
+                            picBox.Image = Image.FromStream(ms, True)
+                        End If
+                    Else
+                        picBox.Image = Nothing
+                    End If
+
+                Else
+                    ' Default fallback for controls utilizing the Text property (TextBox, Label, etc.)
+                    ct.Text = If(Not isNull, val.ToString(), String.Empty)
                 End If
-                If ct.Controls.Count > 0 Then
-                    NhapDuLieuTuGridLenFormNhap(ct, dtRow, ListOfFieldOfTable)
-                End If
-            Next
-        End If
+            End If
+
+            ' Recursive call for nested controls (e.g., controls inside GroupBoxes or Panels)
+            If ct.Controls.Count > 0 Then
+                NhapDuLieuTuGridLenFormNhap(ct, dtRow, ListOfFieldOfTable)
+            End If
+        Next
     End Sub
 
     Public Function GetDataMemberAndPrimaryFromControl(ByRef ctlControl As Control, ByVal rowConlumnInfor As DataRow, ByRef arrayDatamember As ArrayList, ByRef arrayDatamember_V As ArrayList, ByRef arrayPrimary As ArrayList, ByRef arrayPrimary_V As ArrayList, ByRef bIdentity As Boolean, ByRef bIdentityIsKey As Boolean, ByVal bCheckingHaveFalse As Boolean, ByVal GetParameterForStore As Boolean) As Boolean

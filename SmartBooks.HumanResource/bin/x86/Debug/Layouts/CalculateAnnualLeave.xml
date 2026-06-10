@@ -11,7 +11,7 @@
     <property name="EnableAppearanceEvenRow">true</property>
   </property>
   <property name="ActiveFilterEnabled">true</property>
-  <property name="Columns" iskey="true" value="37">
+  <property name="Columns" iskey="true" value="35">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Name">colEmployee_ID</property>
       <property name="VisibleIndex">1</property>
@@ -69,7 +69,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item8" isnull="true" iskey="true">
-      <property name="Name">col2025/11/01</property>
+      <property name="Name">col2026/02/01</property>
       <property name="VisibleIndex">8</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -77,7 +77,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item9" isnull="true" iskey="true">
-      <property name="Name">col2025/11/02</property>
+      <property name="Name">col2026/02/02</property>
       <property name="VisibleIndex">9</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -85,7 +85,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item10" isnull="true" iskey="true">
-      <property name="Name">col2025/11/03</property>
+      <property name="Name">col2026/02/03</property>
       <property name="VisibleIndex">10</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -93,7 +93,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item11" isnull="true" iskey="true">
-      <property name="Name">col2025/11/04</property>
+      <property name="Name">col2026/02/04</property>
       <property name="VisibleIndex">11</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -101,7 +101,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item12" isnull="true" iskey="true">
-      <property name="Name">col2025/11/05</property>
+      <property name="Name">col2026/02/05</property>
       <property name="VisibleIndex">12</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -109,7 +109,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item13" isnull="true" iskey="true">
-      <property name="Name">col2025/11/06</property>
+      <property name="Name">col2026/02/06</property>
       <property name="VisibleIndex">13</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -117,7 +117,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item14" isnull="true" iskey="true">
-      <property name="Name">col2025/11/07</property>
+      <property name="Name">col2026/02/07</property>
       <property name="VisibleIndex">14</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -125,7 +125,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item15" isnull="true" iskey="true">
-      <property name="Name">col2025/11/08</property>
+      <property name="Name">col2026/02/08</property>
       <property name="VisibleIndex">15</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -133,7 +133,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item16" isnull="true" iskey="true">
-      <property name="Name">col2025/11/09</property>
+      <property name="Name">col2026/02/09</property>
       <property name="VisibleIndex">16</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -141,7 +141,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item17" isnull="true" iskey="true">
-      <property name="Name">col2025/11/10</property>
+      <property name="Name">col2026/02/10</property>
       <property name="VisibleIndex">17</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -149,7 +149,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item18" isnull="true" iskey="true">
-      <property name="Name">col2025/11/11</property>
+      <property name="Name">col2026/02/11</property>
       <property name="VisibleIndex">18</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -157,7 +157,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item19" isnull="true" iskey="true">
-      <property name="Name">col2025/11/12</property>
+      <property name="Name">col2026/02/12</property>
       <property name="VisibleIndex">19</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -165,7 +165,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item20" isnull="true" iskey="true">
-      <property name="Name">col2025/11/13</property>
+      <property name="Name">col2026/02/13</property>
       <property name="VisibleIndex">20</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -173,7 +173,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item21" isnull="true" iskey="true">
-      <property name="Name">col2025/11/14</property>
+      <property name="Name">col2026/02/14</property>
       <property name="VisibleIndex">21</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -181,7 +181,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item22" isnull="true" iskey="true">
-      <property name="Name">col2025/11/15</property>
+      <property name="Name">col2026/02/15</property>
       <property name="VisibleIndex">22</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -189,7 +189,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item23" isnull="true" iskey="true">
-      <property name="Name">col2025/11/16</property>
+      <property name="Name">col2026/02/16</property>
       <property name="VisibleIndex">23</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -197,7 +197,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item24" isnull="true" iskey="true">
-      <property name="Name">col2025/11/17</property>
+      <property name="Name">col2026/02/17</property>
       <property name="VisibleIndex">24</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -205,7 +205,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item25" isnull="true" iskey="true">
-      <property name="Name">col2025/11/18</property>
+      <property name="Name">col2026/02/18</property>
       <property name="VisibleIndex">25</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -213,7 +213,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item26" isnull="true" iskey="true">
-      <property name="Name">col2025/11/19</property>
+      <property name="Name">col2026/02/19</property>
       <property name="VisibleIndex">26</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -221,7 +221,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item27" isnull="true" iskey="true">
-      <property name="Name">col2025/11/20</property>
+      <property name="Name">col2026/02/20</property>
       <property name="VisibleIndex">27</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -229,7 +229,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item28" isnull="true" iskey="true">
-      <property name="Name">col2025/11/21</property>
+      <property name="Name">col2026/02/21</property>
       <property name="VisibleIndex">28</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -237,7 +237,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item29" isnull="true" iskey="true">
-      <property name="Name">col2025/11/22</property>
+      <property name="Name">col2026/02/22</property>
       <property name="VisibleIndex">29</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -245,7 +245,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item30" isnull="true" iskey="true">
-      <property name="Name">col2025/11/23</property>
+      <property name="Name">col2026/02/23</property>
       <property name="VisibleIndex">30</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -253,7 +253,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item31" isnull="true" iskey="true">
-      <property name="Name">col2025/11/24</property>
+      <property name="Name">col2026/02/24</property>
       <property name="VisibleIndex">31</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -261,7 +261,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item32" isnull="true" iskey="true">
-      <property name="Name">col2025/11/25</property>
+      <property name="Name">col2026/02/25</property>
       <property name="VisibleIndex">32</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -269,7 +269,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item33" isnull="true" iskey="true">
-      <property name="Name">col2025/11/26</property>
+      <property name="Name">col2026/02/26</property>
       <property name="VisibleIndex">33</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -277,7 +277,7 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item34" isnull="true" iskey="true">
-      <property name="Name">col2025/11/27</property>
+      <property name="Name">col2026/02/27</property>
       <property name="VisibleIndex">34</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
@@ -285,31 +285,15 @@
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item35" isnull="true" iskey="true">
-      <property name="Name">col2025/11/28</property>
+      <property name="Name">col2026/02/28</property>
       <property name="VisibleIndex">35</property>
       <property name="Visible">true</property>
       <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
-    <property name="Item36" isnull="true" iskey="true">
-      <property name="Name">col2025/11/29</property>
-      <property name="VisibleIndex">36</property>
-      <property name="Visible">true</property>
-      <property name="Width">75</property>
-      <property name="MinWidth">20</property>
-      <property name="MaxWidth">0</property>
-    </property>
-    <property name="Item37" isnull="true" iskey="true">
-      <property name="Name">col2025/11/30</property>
-      <property name="VisibleIndex">37</property>
-      <property name="Visible">true</property>
-      <property name="Width">75</property>
-      <property name="MinWidth">20</property>
-      <property name="MaxWidth">0</property>
-    </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="2">
+  <property name="GroupSummary" iskey="true" value="14">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
@@ -319,6 +303,102 @@
       <property name="DisplayFormat">Count: {0}</property>
     </property>
     <property name="Item2" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item3" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item4" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item5" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">FullName</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item6" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item7" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item8" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item9" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item10" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item11" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_Firstname</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item12" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">FullName</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item13" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">FullName</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item14" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />

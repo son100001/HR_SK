@@ -1139,6 +1139,7 @@ Public Class para_TimeKeeping_Date
     End Sub
 
     Public Overrides Sub ExecSubOrFunctionOfVB()
+        Dim Ext1 As String = If(CongGoc.Checked, "", If(CongDM.Checked, "_DM", "_Diff"))
         If ReportRow("ReportCode") = "WorkingTimeGetTemplate" Then
             GetTemplateWorkingTime()
         ElseIf ReportRow("ReportCode") = "WorkingTimeInputTemplate" Then
@@ -1146,7 +1147,7 @@ Public Class para_TimeKeeping_Date
         ElseIf ReportRow("ReportCode") = "WorkingTimeDetailExportExcel" Then
             Dim fileChooser As SaveFileDialog = New SaveFileDialog
             fileChooser.DefaultExt = "xlsx"
-            fileChooser.FileName = "BangChamCongChiTietThang" + obj.PARA_FROMDATE.Month.ToString + obj.PARA_FROMDATE.Year.ToString + ".xlsx"
+            fileChooser.FileName = "BangChamCongChiTietThang" + obj.PARA_FROMDATE.Month.ToString + obj.PARA_FROMDATE.Year.ToString + Ext1 + ".xlsx"
             Dim result As DialogResult = fileChooser.ShowDialog()
             fileChooser.CheckFileExists = False
             If result = DialogResult.OK Then
@@ -1170,7 +1171,7 @@ Public Class para_TimeKeeping_Date
         ElseIf ReportRow("ReportCode") = "WorkingTimeDetailExportExcelSK1" Then
             Dim fileChooser As SaveFileDialog = New SaveFileDialog
             fileChooser.DefaultExt = "xlsx"
-            fileChooser.FileName = "BangChamCongChiTietThang" + obj.PARA_FROMDATE.Month.ToString + obj.PARA_FROMDATE.Year.ToString + ".xlsx"
+            fileChooser.FileName = "BangChamCongChiTietThang" + obj.PARA_FROMDATE.Month.ToString + obj.PARA_FROMDATE.Year.ToString + Ext1 + ".xlsx"
             Dim result As DialogResult = fileChooser.ShowDialog()
             fileChooser.CheckFileExists = False
             If result = DialogResult.OK Then
@@ -1194,7 +1195,7 @@ Public Class para_TimeKeeping_Date
         ElseIf ReportRow("ReportCode") = "WorkingTimeDetailExportExcelSK2" Then
             Dim fileChooser As SaveFileDialog = New SaveFileDialog
             fileChooser.DefaultExt = "xlsx"
-            fileChooser.FileName = "BangChamCongChiTietThang" + obj.PARA_FROMDATE.Month.ToString + obj.PARA_FROMDATE.Year.ToString + ".xlsx"
+            fileChooser.FileName = "BangChamCongChiTietThang" + obj.PARA_FROMDATE.Month.ToString + obj.PARA_FROMDATE.Year.ToString + Ext1 + ".xlsx"
             Dim result As DialogResult = fileChooser.ShowDialog()
             fileChooser.CheckFileExists = False
             If result = DialogResult.OK Then

@@ -11,10 +11,10 @@
     <property name="EnableAppearanceEvenRow">true</property>
   </property>
   <property name="ActiveFilterEnabled">true</property>
-  <property name="Columns" iskey="true" value="19">
+  <property name="Columns" iskey="true" value="18">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Name">colPeriod</property>
-      <property name="VisibleIndex">2</property>
+      <property name="VisibleIndex">8</property>
       <property name="Visible">true</property>
       <property name="Width">67</property>
       <property name="MinWidth">20</property>
@@ -22,7 +22,7 @@
     </property>
     <property name="Item2" isnull="true" iskey="true">
       <property name="Name">colFactoryName</property>
-      <property name="VisibleIndex">3</property>
+      <property name="VisibleIndex">4</property>
       <property name="Visible">true</property>
       <property name="Width">82</property>
       <property name="MinWidth">20</property>
@@ -39,7 +39,7 @@
     </property>
     <property name="Item3" isnull="true" iskey="true">
       <property name="Name">colDepartmentName</property>
-      <property name="VisibleIndex">4</property>
+      <property name="VisibleIndex">5</property>
       <property name="Visible">true</property>
       <property name="Width">132</property>
       <property name="MinWidth">20</property>
@@ -47,7 +47,7 @@
     </property>
     <property name="Item4" isnull="true" iskey="true">
       <property name="Name">colSectionName</property>
-      <property name="VisibleIndex">5</property>
+      <property name="VisibleIndex">6</property>
       <property name="Visible">true</property>
       <property name="Width">107</property>
       <property name="MinWidth">20</property>
@@ -64,7 +64,7 @@
     </property>
     <property name="Item5" isnull="true" iskey="true">
       <property name="Name">colChucDanhName</property>
-      <property name="VisibleIndex">6</property>
+      <property name="VisibleIndex">7</property>
       <property name="Visible">true</property>
       <property name="Width">105</property>
       <property name="MinWidth">20</property>
@@ -80,7 +80,7 @@
     </property>
     <property name="Item7" isnull="true" iskey="true">
       <property name="Name">colFullName</property>
-      <property name="VisibleIndex">7</property>
+      <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
       <property name="Width">83</property>
       <property name="MinWidth">20</property>
@@ -88,7 +88,7 @@
     </property>
     <property name="Item8" isnull="true" iskey="true">
       <property name="Name">colStartedDate</property>
-      <property name="VisibleIndex">8</property>
+      <property name="VisibleIndex">3</property>
       <property name="Visible">true</property>
       <property name="Width">115</property>
       <property name="MinWidth">20</property>
@@ -264,12 +264,6 @@
         </property>
       </property>
     </property>
-    <property name="Item19" isnull="true" iskey="true">
-      <property name="Name">colrn</property>
-      <property name="Width">75</property>
-      <property name="MinWidth">20</property>
-      <property name="MaxWidth">0</property>
-    </property>
   </property>
   <property name="GroupSummary" iskey="true" value="14">
     <property name="Item1" isnull="true" iskey="true">
@@ -386,6 +380,15 @@
     </property>
   </property>
   <property name="ActiveFilterString" />
+  <property name="SortInfoState" iskey="true" value="1">
+    <property name="Item1" isnull="true" iskey="true">
+      <property name="Orders">Descending</property>
+      <property name="Columns">colFullName</property>
+    </property>
+    <property name="Content" isnull="true" iskey="true">
+      <property name="GroupCount">0</property>
+    </property>
+  </property>
   <property name="GroupSummarySortInfoState" />
   <property name="FindFilterText" />
   <property name="FindPanelVisible">false</property>

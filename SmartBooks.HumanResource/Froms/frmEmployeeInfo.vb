@@ -142,8 +142,8 @@ Public Class frmEmployeeInfo
                 a = Me.Picture.Image
                 If Not a Is Nothing Then
                     Dim ms As New MemoryStream
-                    Picture.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg)
-                    Dim arrImage() As Byte = ms.GetBuffer
+                    Picture.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png)
+                    Dim arrImage() As Byte = ms.ToArray()
                     kn.UpdateImagesInformation("UpdateImagesEmployee", arrImage, Employee_ID.Text.Trim)
                 Else
                     kn.SaveData("UPDATE [dbo].[SmartBooks_Employee] SET [picture] = null WHERE Employee_ID = '" + Employee_ID.Text.Trim + "'")
@@ -1163,19 +1163,23 @@ Public Class frmEmployeeInfo
         ' Chuyển sang byte[] và lưu SQL
         Dim imgBytes As Byte()
         Using ms As New MemoryStream()
-            snap.Save(ms, Imaging.ImageFormat.Jpeg)   ' <-- lưu trên bản clone, không bị lock
+            snap.Save(ms, Imaging.ImageFormat.Png)   ' <-- lưu trên bản clone, không bị lock
             imgBytes = ms.ToArray()
         End Using
         snap.Dispose()
     End Sub
 
     Private Sub Factory_ID_EditValueChanged(sender As Object, e As EventArgs) Handles Factory_ID.EditValueChanged
-        tvcn.GetDataOnDropDownCategoryCodeName(departmentcode, kn.ReadData("select * from [dbo].[udf_Department]('','" + obj.Lan + "',1) where Code like N'" + Factory_ID.EditValue.ToString + "%'", "table"))
+        If Factory_ID.EditValue IsNot Nothing Then
+            tvcn.GetDataOnDropDownCategoryCodeName(departmentcode, kn.ReadData("select * from [dbo].[udf_Department]('','" + obj.Lan + "',1) where Code like N'" + Factory_ID.EditValue.ToString + "%'", "table"))
+        End If
         'tvcn.GetDataOnDropDownCategoryCodeName(sectioncode, kn.ReadData("select * from [dbo].[udf_Section]('',null,'" + obj.Lan + "',1)", "table"))
     End Sub
 
     Private Sub departmentcode_EditValueChanged(sender As Object, e As EventArgs) Handles departmentcode.EditValueChanged
-        tvcn.GetDataOnDropDownCategoryCodeName(sectioncode, kn.ReadData("select * from [dbo].[udf_Section]('',null,'" + obj.Lan + "',1) where Code like N'%" + departmentcode.EditValue.ToString + "%'", "table"))
+        If departmentcode.EditValue IsNot Nothing Then
+            tvcn.GetDataOnDropDownCategoryCodeName(sectioncode, kn.ReadData("select * from [dbo].[udf_Section]('',null,'" + obj.Lan + "',1) where Code like N'%" + departmentcode.EditValue.ToString + "%'", "table"))
+        End If
     End Sub
 
     Private Sub isTanTat_CheckedChanged(sender As Object, e As EventArgs) Handles isTanTat.CheckedChanged

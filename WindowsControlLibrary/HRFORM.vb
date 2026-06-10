@@ -342,7 +342,7 @@ Public Class HRFORM
         cbbReport.Visible = HRFORM_VisibleControl_cbbReport
         btnSaveLayout.Visible = HRFORM_VisibleControl_SaveLayout
         btnRefreshLayout.Visible = HRFORM_VisibleControl_RefreshLayout
-        btnQuickPrint.Visible = HRFORM_VisibleControl_QuickPrint
+        btnQuickPrint.Visible = False 'HRFORM_VisibleControl_QuickPrint
         'btnDong.Visible = HRFORM_VisibleControl_Dong
         'btnGetTemplate.Visible = HRFORM_VisibleControl_GetTemplate
         'btnImportExcel.Visible = HRFORM_VisibleControl_ImportExcel
@@ -1367,7 +1367,7 @@ Public Class HRFORM
                 e.Appearance.ForeColor = Color.Black
             End If
             If dt.DayOfWeek = DayOfWeek.Sunday Then
-                e.Appearance.BackColor = Color.Orchid
+                e.Appearance.BackColor = Color.LightSteelBlue
                 e.Appearance.ForeColor = Color.Black
             End If
         End If

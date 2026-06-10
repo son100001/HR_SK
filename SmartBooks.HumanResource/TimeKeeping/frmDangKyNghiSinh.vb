@@ -850,7 +850,7 @@ Public Class frmDangKyNghiSinh
 
         If DateTime.TryParse(colName, dt) Then
             If dt.DayOfWeek = DayOfWeek.Saturday OrElse dt.DayOfWeek = DayOfWeek.Sunday Then
-                e.Appearance.BackColor = Color.LightBlue
+                e.Appearance.BackColor = Color.Black
                 e.Appearance.ForeColor = Color.DarkRed
             End If
         End If
