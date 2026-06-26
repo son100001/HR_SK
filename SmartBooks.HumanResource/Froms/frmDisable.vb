@@ -18,7 +18,7 @@
         td = fd.AddMonths(1).AddDays(-1)
 
         Dim QR As String
-        QR = "exec [dbo].[sp_BangTanTat] " + fd.ToString("yyyy-MM-dd") + "','" + td.ToString("yyyy-MM-dd") + "','" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "'"
+        QR = "exec [dbo].[sp_BangTanTat] '" + fd.ToString("yyyy-MM-dd") + "','" + td.ToString("yyyy-MM-dd") + "','" + obj.Lan + "',N'" + obj.PARA_FACTORY_ID + "',N'" + obj.PARA_DEPARTMENTCODE + "',N'" + obj.PARA_SECTIONCODE + "',N'" + obj.PARA_TEAMCODE + "',N'" + obj.PARA_POSITION_ID + "','" + obj.PARA_POSITIONCATEGORY_ID + "',N'" + EmID + "'"
         Xem(QR, False, HRFORM_GridControl, HRFORM_Gridview)
         HRFORM_QueryView = QR
     End Sub

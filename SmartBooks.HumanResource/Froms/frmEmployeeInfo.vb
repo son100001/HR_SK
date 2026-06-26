@@ -124,8 +124,8 @@ Public Class frmEmployeeInfo
                         ElseIf Not dt.Columns.Contains("Code") OrElse Not dt.Columns.Contains("Name") Then
                             ' Fallback if columns are different, but GetDataOnDropDownCategoryCodeName expects Code/Name
                         End If
-                        If deptCode = "" Then deptCode = deptName 
-                        
+                        If deptCode = "" Then deptCode = deptName
+
                         If dt IsNot Nothing AndAlso dt.Columns.Contains("Code") AndAlso dt.Columns.Contains("Name") Then
                             Dim found As Boolean = False
                             For Each r As DataRow In dt.Rows
@@ -159,7 +159,7 @@ Public Class frmEmployeeInfo
                             sectioncode.Properties.DisplayMember = "Name"
                         End If
                         If secCode = "" Then secCode = secName
-                        
+
                         If dt IsNot Nothing AndAlso dt.Columns.Contains("Code") AndAlso dt.Columns.Contains("Name") Then
                             Dim found As Boolean = False
                             For Each r As DataRow In dt.Rows
@@ -250,7 +250,7 @@ Public Class frmEmployeeInfo
         JobCode.Enabled = isNhapNhanVienMoi
         IE_FLAG.Enabled = isNhapNhanVienMoi
         TypeOfHiring.Enabled = isNhapNhanVienMoi
-        BankAccount.Enabled = isNhapNhanVienMoi
+        'BankAccount.Enabled = isNhapNhanVienMoi
 
         Factory_ID.Text = ""
         departmentcode.Text = ""

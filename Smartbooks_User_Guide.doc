@@ -1,0 +1,205 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>Hướng Dẫn Sử Dụng Phần Mềm Nhân Sự SmartBooks.HR</title>
+<style>
+    body { font-family: "Times New Roman", Times, serif; font-size: 14pt; line-height: 1.5; }
+    h1 { color: #003366; text-align: center; font-size: 24pt; }
+    h2 { color: #0055A4; border-bottom: 1px solid #0055A4; padding-bottom: 5px; font-size: 18pt; margin-top: 30px; }
+    h3 { color: #333333; font-size: 16pt; margin-top: 20px; }
+    .note { background-color: #f9f9f9; border-left: 4px solid #f0ad4e; padding: 10px; margin: 10px 0; font-style: italic; }
+    .important { background-color: #ffeeba; border-left: 4px solid #d39e00; padding: 10px; margin: 10px 0; }
+    .placeholder { background-color: #e9ecef; border: 2px dashed #6c757d; padding: 40px; text-align: center; color: #495057; margin: 20px 0; font-weight: bold; }
+    ul { margin-top: 5px; margin-bottom: 10px; }
+    li { margin-bottom: 5px; }
+    table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+    th, td { border: 1px solid #dddddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+</style>
+</head>
+<body>
+
+<h1>HƯỚNG DẪN SỬ DỤNG PHẦN MỀM NHÂN SỰ SMARTBOOKS.HR</h1>
+
+<div class="note">
+    <strong>Lưu ý:</strong> Tài liệu này được thiết kế dành cho người mới sử dụng phần mềm Smartbooks.HumanResource. Vui lòng làm theo hướng dẫn từng bước và tham khảo các ảnh chụp màn hình minh họa đi kèm. Các vị trí ghi [CHÈN ẢNH MÀN HÌNH TẠI ĐÂY] là nơi bạn cần chụp ảnh từ phần mềm đang chạy để chèn vào.
+</div>
+
+<h2>MỤC LỤC</h2>
+<ol>
+    <li><a href="#phan1">I. Hướng Dẫn Chung và Đăng Nhập</a></li>
+    <li><a href="#phan2">II. Phân Hệ Cài Đặt Tổng Quát</a></li>
+    <li><a href="#phan3">III. Phân Hệ Quản Lý Thông Tin Nhân Viên</a></li>
+    <li><a href="#phan4">IV. Phân Hệ Chấm Công</a></li>
+    <li><a href="#phan5">V. Phân Hệ Tính Lương</a></li>
+    <li><a href="#phan6">VI. Phân Hệ Bảo Hiểm</a></li>
+</ol>
+
+<h2 id="phan1">I. Hướng Dẫn Chung và Đăng Nhập</h2>
+
+<h3>1. Khởi động và Đăng nhập</h3>
+<p>Click đúp vào biểu tượng Smartbooks HR để khởi động phần mềm. Màn hình đăng nhập sẽ hiện ra.</p>
+
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN ĐĂNG NHẬP Ở ĐÂY - File: Login.vb]</div>
+
+<ul>
+    <li><strong>Username:</strong> Nhập tên đăng nhập của bạn.</li>
+    <li><strong>Password:</strong> Nhập mật khẩu.</li>
+    <li>Nhấn <strong>Login</strong> để truy cập vào giao diện chính.</li>
+</ul>
+
+<h3>2. Giao diện làm việc chung</h3>
+<p>Hầu hết các màn hình làm việc trong hệ thống có cấu trúc tương đồng nhau gồm các phần chính:</p>
+
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN CHÍNH Ở ĐÂY - File: frmMain.vb]</div>
+
+<ol>
+    <li><strong>Thanh tác nghiệp (Menu bên trái):</strong> Chứa danh sách các chức năng chính.</li>
+    <li><strong>Thanh công cụ (Phía trên):</strong> Nhập/Lọc thông tin dữ liệu mới.</li>
+    <li><strong>Lưới dữ liệu (Lớn nhất ở giữa):</strong> Hiển thị dữ liệu, cho phép xem báo cáo, chọn để sửa/xóa.</li>
+    <li><strong>Hộp chức năng (Dưới cùng/Góc phải):</strong> Chứa các báo cáo, lệnh xử lý đặc biệt.</li>
+    <li><strong>Nút chức năng (Thanh dưới cùng):</strong> Thêm, Lưu, Xóa, Làm tươi, Đóng.</li>
+</ol>
+
+<div class="important">
+    <strong>Quy tắc chung:</strong> Dấu <strong>*</strong> màu đỏ biểu thị trường dữ liệu <strong>bắt buộc</strong> phải nhập.
+</div>
+
+<h3>3. Thao tác Cơ bản (Thêm, Sửa, Xóa)</h3>
+<ul>
+    <li><strong>Thêm mới:</strong> Nhập thông tin vào Thanh công cụ phía trên &rarr; Nhấn <strong>Lưu</strong>. Hoặc sử dụng tính năng Nhập từ Excel (Import).</li>
+    <li><strong>Sửa:</strong> Chỉnh sửa trực tiếp trên lưới ở những cột có tiêu đề màu xanh &rarr; Nhấn <strong>Lưu</strong>.</li>
+    <li><strong>Xóa:</strong> Tích chọn dòng cần xóa trên lưới &rarr; Nhấn nút <strong>Xóa (D)</strong>.</li>
+    <li><strong>Xuất Excel:</strong> Chọn dòng &rarr; Nhấn biểu tượng Excel &rarr; Chọn đường dẫn lưu file (Tên file không dấu, không ký tự đặc biệt).</li>
+</ul>
+
+<h2 id="phan2">II. Phân Hệ Cài Đặt Tổng Quát</h2>
+<p>Phân hệ này dùng để thiết lập các thông tin gốc áp dụng cho toàn bộ công ty (Cơ cấu tổ chức, Chức vụ, Hợp đồng...).</p>
+
+<h3>1. Cơ cấu phòng ban (Xưởng, Khu vực, Bộ phận)</h3>
+<p>Định nghĩa cơ cấu tổ chức nhiều cấp. Ví dụ: Xưởng &rarr; Khu vực &rarr; Bộ phận.</p>
+
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN TẠO BỘ PHẬN Ở ĐÂY - File: frmDepartment.vb]</div>
+
+<ul>
+    <li>Chọn mục <strong>Tạo/Điều chỉnh Xưởng</strong> (hoặc Bộ phận) trên thanh tác nghiệp.</li>
+    <li>Nhập tên Tiếng Việt/Tiếng Anh/Hàn.</li>
+    <li>Nhấn <strong>Lưu</strong> để cập nhật.</li>
+</ul>
+
+<h3>2. Chức vụ và Chức danh</h3>
+<p>Quản lý các cấp bậc chức vụ (Giám đốc, Quản lý, Nhân viên...) và Chức danh nghề nghiệp.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN TẠO CHỨC VỤ Ở ĐÂY - File: frmPosition.vb]</div>
+
+<h3>3. Quản lý Hợp Đồng Lao Động (HĐLĐ)</h3>
+<p>Quản lý các loại hợp đồng (Thử việc, 1 năm, Vô thời hạn).</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN HỢP ĐỒNG Ở ĐÂY - File: frmContractType.vb]</div>
+
+<div class="important">
+    <ul>
+        <li>Cột <strong>Từ ngày:</strong> Ngày bắt đầu có hiệu lực của loại HĐLĐ.</li>
+        <li>Cột <strong>Phần trăm lương:</strong> Khai báo phần trăm lương cho loại hợp đồng (Ví dụ: Thử việc 85%).</li>
+    </ul>
+</div>
+
+<h3>4. Ca làm việc cho toàn doanh nghiệp</h3>
+<p>Thiết lập các ca làm việc (Hành chính, Ca đêm...) làm cơ sở chấm công.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN CÀI ĐẶT CA Ở ĐÂY - File: frmShift.vb]</div>
+<ul>
+    <li><strong>Mã ca:</strong> Đặt theo chuẩn (Ví dụ: 01-Shift1).</li>
+    <li><strong>Từ giờ / Đến giờ:</strong> Thời gian bắt đầu và kết thúc.</li>
+    <li><strong>Giờ nghỉ:</strong> Thời gian nghỉ giữa ca.</li>
+</ul>
+
+<h2 id="phan3">III. Phân Hệ Quản Lý Thông Tin Nhân Viên</h2>
+<p>Sử dụng để quản lý hồ sơ cơ bản, gia đình, lịch sử công tác và thôi việc.</p>
+
+<h3>1. Quản lý Thông Tin Nhân Viên</h3>
+<p>Màn hình trung tâm để nhập và tra cứu thông tin nhân sự.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN NHÂN VIÊN Ở ĐÂY - File: frmEmployeeInfo.vb]</div>
+<ul>
+    <li><strong>Thêm nhân viên mới:</strong> Chuyển sang Tab <em>Nhập nhân viên mới</em>. Điền thông tin vào các cột bắt buộc (Màu đỏ: Mã NV, Họ tên, Ngày sinh...).</li>
+    <li><strong>Cập nhật thông tin chi tiết:</strong> Tại Tab <em>Tổng quát</em>, điền đầy đủ các thông tin cá nhân, trình độ, liên lạc ở bảng bên phải. Nhấn <strong>Lưu</strong>.</li>
+</ul>
+
+<h3>2. Thông tin Gia đình và Chế độ Con nhỏ</h3>
+<p>Khai báo người thân và thiết lập chế độ ưu tiên (Đi trễ về sớm cho con nhỏ).</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN GIA ĐÌNH Ở ĐÂY - File: frmFamily.vb]</div>
+<ul>
+    <li>Khi nhập Ngày sinh của con, hệ thống tự tính thời gian thụ hưởng chế độ con nhỏ dưới 1 tuổi (hoặc 6 tuổi).</li>
+</ul>
+
+<h3>3. Chuyển Vị Trí / Chức Vụ</h3>
+<p>Lưu vết lịch sử thay đổi phòng ban, vị trí công việc của nhân viên.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN CHUYỂN VỊ TRÍ Ở ĐÂY - File: frmChuyenViTri.vb]</div>
+<ul>
+    <li>Chọn nhân viên, điền vị trí mới và <strong>Ngày hiệu lực</strong>.</li>
+    <li>Nhấn <strong>Nhập</strong> rồi nhấn <strong>Lưu</strong>.</li>
+</ul>
+
+<h3>4. Quyết định Thôi việc</h3>
+<p>Quản lý trạng thái nghỉ việc của nhân viên.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN THÔI VIỆC Ở ĐÂY - File: frmTerminationAsignment.vb]</div>
+<ul>
+    <li>Nhập Lý do thôi việc, trạng thái (Duyệt/Kế hoạch/Hủy), và Ngày thôi việc.</li>
+</ul>
+
+<h2 id="phan4">IV. Phân Hệ Chấm Công</h2>
+<p>Quản lý đăng ký ca, tăng ca, nghỉ phép và lấy dữ liệu từ máy chấm công.</p>
+
+<h3>1. Đăng ký Tăng Ca</h3>
+<p>Đăng ký trước hoặc sau thời gian làm việc để hệ thống ghi nhận tính công.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN ĐĂNG KÝ TĂNG CA Ở ĐÂY - File: frmDkTangCa.vb]</div>
+
+<h3>2. Lấy dữ liệu từ Máy chấm công</h3>
+<p>Kéo dữ liệu quẹt thẻ thực tế vào hệ thống.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN LẤY DỮ LIỆU Ở ĐÂY - File: frmChamCong.vb]</div>
+<ul>
+    <li>Chức năng: Vào Hộp chức năng chọn <em>Lấy dữ liệu chấm công</em>.</li>
+    <li>Chọn khoảng thời gian và nhấn OK để tải dữ liệu giờ ra/vào.</li>
+</ul>
+
+<h3>3. Xử lý Công Bất Thường</h3>
+<p>Xử lý các trường hợp quên quẹt thẻ (Chỉ có Giờ Vào hoặc Giờ Ra).</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN XỬ LÝ BẤT THƯỜNG Ở ĐÂY - File: frmMissingTime.vb]</div>
+<ul>
+    <li>Hệ thống tự động tính bù giờ theo quy định hoặc có thể nhập tay.</li>
+</ul>
+
+<h3>4. Tính Công</h3>
+<p>Tổng hợp toàn bộ dữ liệu (Ca, Tăng ca, Giờ quẹt thẻ) để ra Bảng công.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN TÍNH CÔNG Ở ĐÂY - File: frmTimeKeeping.vb]</div>
+<ul>
+    <li>Chọn tính công theo <strong>Mã nhân viên</strong> hoặc <strong>Toàn bộ nhân viên</strong>.</li>
+    <li>Chọn tháng tính công &rarr; Nhấn <strong>Tính Công</strong>.</li>
+</ul>
+
+<h2 id="phan5">V. Phân Hệ Tính Lương</h2>
+<p>Thực hiện thiết lập các mức lương và chốt lương cuối tháng.</p>
+
+<h3>1. Cài Đặt Mức Lương và Bậc Lương</h3>
+<p>Định nghĩa hệ thống thang bảng lương của công ty.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN CÀI ĐẶT MỨC LƯƠNG Ở ĐÂY - File: frmSalaryLevel.vb]</div>
+
+<h3>2. Tính Lương và In Phiếu Lương</h3>
+<p>Chạy quy trình tính lương tự động dựa trên bảng công và các thiết lập phụ cấp.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN TÍNH LƯƠNG Ở ĐÂY - File: frmPayroll.vb]</div>
+<ul>
+    <li>Vào tab <em>Lương tháng</em> &rarr; Chọn <em>Tính lương</em> &rarr; Nhấn <strong>Thực hiện</strong>.</li>
+    <li><strong>Khóa lương:</strong> Sau khi kiểm tra đúng, thực hiện Khóa để bảo vệ dữ liệu.</li>
+    <li><strong>In phiếu lương:</strong> Xuất ra dạng PDF để in hoặc gửi email.</li>
+</ul>
+
+<h2 id="phan6">VI. Phân Hệ Bảo Hiểm</h2>
+<p>Theo dõi Sổ BHXH, BHYT và quá trình đóng bảo hiểm.</p>
+
+<h3>1. Quản lý Sổ BHXH và Thẻ BHYT</h3>
+<p>Khai báo số sổ, số thẻ và bệnh viện đăng ký khám chữa bệnh.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN SỔ BẢO HIỂM Ở ĐÂY - File: frmInsurance.vb]</div>
+
+<h3>2. Báo Cáo Bảo Hiểm (Mẫu D02-TS)</h3>
+<p>Tổng hợp tình hình Tăng/Giảm bảo hiểm hàng tháng.</p>
+<div class="placeholder">[CHÈN ẢNH GIAO DIỆN BÁO CÁO BẢO HIỂM Ở ĐÂY - File: frmInsuranceReport.vb]</div>
+
+</body>
+</html>

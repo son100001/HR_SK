@@ -49,6 +49,7 @@ Partial Class frmGoOut
         Me.ShiftName = New DevExpress.XtraEditors.LookUpEdit()
         Me.pnLuu = New System.Windows.Forms.Panel()
         Me.btnSave = New DevExpress.XtraEditors.SimpleButton()
+        Me.GioVaoThucTe = New DevExpress.XtraEditors.DateTimeOffsetEdit()
         CType(Me.ErrorProvider1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.XtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.XtraTabControl1.SuspendLayout()
@@ -67,6 +68,7 @@ Partial Class frmGoOut
         CType(Me.LeaveType_ID.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ShiftName.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnLuu.SuspendLayout()
+        CType(Me.GioVaoThucTe.Properties, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PanelButton
@@ -180,6 +182,7 @@ Partial Class frmGoOut
         '
         'pnDuLieuNhap
         '
+        Me.pnDuLieuNhap.Controls.Add(Me.GioVaoThucTe)
         Me.pnDuLieuNhap.Controls.Add(Me.TimeIn)
         Me.pnDuLieuNhap.Controls.Add(Me.TimeOut_)
         Me.pnDuLieuNhap.Controls.Add(Me.TimeDate)
@@ -342,6 +345,18 @@ Partial Class frmGoOut
         Me.btnSave.TabIndex = 37
         Me.btnSave.Text = "Lưu"
         '
+        'GioVaoThucTe
+        '
+        Me.GioVaoThucTe.EditValue = Nothing
+        Me.GioVaoThucTe.Enabled = False
+        Me.GioVaoThucTe.Location = New System.Drawing.Point(120, 46)
+        Me.GioVaoThucTe.Name = "GioVaoThucTe"
+        Me.GioVaoThucTe.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
+        Me.GioVaoThucTe.Properties.MaskSettings.Set("mask", "t")
+        Me.GioVaoThucTe.Size = New System.Drawing.Size(103, 20)
+        Me.GioVaoThucTe.TabIndex = 1323
+        Me.GioVaoThucTe.Visible = False
+        '
         'frmGoOut
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -379,6 +394,7 @@ Partial Class frmGoOut
         CType(Me.LeaveType_ID.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ShiftName.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnLuu.ResumeLayout(False)
+        CType(Me.GioVaoThucTe.Properties, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -408,4 +424,5 @@ Partial Class frmGoOut
     Friend WithEvents ShiftName As DevExpress.XtraEditors.LookUpEdit
     Friend WithEvents pnLuu As Panel
     Friend WithEvents btnSave As DevExpress.XtraEditors.SimpleButton
+    Friend WithEvents GioVaoThucTe As DevExpress.XtraEditors.DateTimeOffsetEdit
 End Class

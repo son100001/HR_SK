@@ -22,15 +22,24 @@
       <property name="Name">colFactory_ID_SK1</property>
       <property name="VisibleIndex">1</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">189</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
+      <property name="Summary" iskey="true" value="1">
+        <property name="Item1" isnull="true" iskey="true">
+          <property name="Tag" isnull="true" />
+          <property name="FieldName">Factory_ID_SK1</property>
+          <property name="SummaryType">Count</property>
+          <property name="Mode">AllRows</property>
+          <property name="DisplayFormat">{0}</property>
+        </property>
+      </property>
     </property>
     <property name="Item3" isnull="true" iskey="true">
       <property name="Name">colNgay_SK1</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">67</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -38,15 +47,24 @@
       <property name="Name">colGio_SK1</property>
       <property name="VisibleIndex">3</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">79</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
+      <property name="Summary" iskey="true" value="1">
+        <property name="Item1" isnull="true" iskey="true">
+          <property name="Tag" isnull="true" />
+          <property name="FieldName">Gio_SK1</property>
+          <property name="SummaryType">Count</property>
+          <property name="Mode">AllRows</property>
+          <property name="DisplayFormat">Số dòng: {0}</property>
+        </property>
+      </property>
     </property>
     <property name="Item5" isnull="true" iskey="true">
       <property name="Name">colInsertDate</property>
       <property name="VisibleIndex">4</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">127</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -54,12 +72,12 @@
       <property name="Name">colUserName</property>
       <property name="VisibleIndex">5</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">78</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="8">
+  <property name="GroupSummary" iskey="true" value="2">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
@@ -69,54 +87,6 @@
       <property name="DisplayFormat">Count: {0}</property>
     </property>
     <property name="Item2" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Factory_ID_SK1</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item3" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Factory_ID_SK1</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item4" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Factory_ID_SK1</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item5" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Factory_ID_SK1</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item6" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Factory_ID_SK1</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item7" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">Factory_ID_SK1</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item8" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />

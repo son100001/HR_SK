@@ -2,8 +2,11 @@
   <property name="#LayoutVersion" />
   <property name="#LayoutScaleFactor">@1,Width=1@1,Height=1</property>
   <property name="OptionsView" isnull="true" iskey="true">
+    <property name="BestFitMode">Fast</property>
+    <property name="BestFitMaxRowCount">250</property>
     <property name="ColumnAutoWidth">false</property>
     <property name="ShowAutoFilterRow">true</property>
+    <property name="ShowFooter">true</property>
     <property name="EnableAppearanceOddRow">true</property>
     <property name="EnableAppearanceEvenRow">true</property>
   </property>
@@ -13,7 +16,7 @@
       <property name="Name">colFullName</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">160</property>
+      <property name="Width">83</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -24,12 +27,21 @@
       <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
+      <property name="Summary" iskey="true" value="1">
+        <property name="Item1" isnull="true" iskey="true">
+          <property name="Tag" isnull="true" />
+          <property name="FieldName">FactoryName</property>
+          <property name="SummaryType">Count</property>
+          <property name="Mode">AllRows</property>
+          <property name="DisplayFormat">{0}</property>
+        </property>
+      </property>
     </property>
     <property name="Item3" isnull="true" iskey="true">
       <property name="Name">colDepartmentName</property>
       <property name="VisibleIndex">4</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">138</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -37,21 +49,30 @@
       <property name="Name">colSectionName</property>
       <property name="VisibleIndex">5</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">124</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
+      <property name="Summary" iskey="true" value="1">
+        <property name="Item1" isnull="true" iskey="true">
+          <property name="Tag" isnull="true" />
+          <property name="FieldName">SectionName</property>
+          <property name="SummaryType">Count</property>
+          <property name="Mode">AllRows</property>
+          <property name="DisplayFormat">Số dòng: {0}</property>
+        </property>
+      </property>
     </property>
     <property name="Item5" isnull="true" iskey="true">
       <property name="Name">colChucDanhName</property>
       <property name="VisibleIndex">6</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">143</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
     <property name="Item6" isnull="true" iskey="true">
       <property name="Name">colID</property>
-      <property name="Width">71</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -59,7 +80,7 @@
       <property name="Name">colEmployee_ID</property>
       <property name="VisibleIndex">1</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">87</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -67,7 +88,7 @@
       <property name="Name">colAwardType</property>
       <property name="VisibleIndex">7</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">179</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -75,7 +96,7 @@
       <property name="Name">colReason</property>
       <property name="VisibleIndex">8</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">112</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -83,7 +104,7 @@
       <property name="Name">colAwardDate</property>
       <property name="VisibleIndex">9</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">112</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -91,7 +112,7 @@
       <property name="Name">colRemark</property>
       <property name="VisibleIndex">10</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">58</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -99,7 +120,7 @@
       <property name="Name">colInsertDate</property>
       <property name="VisibleIndex">11</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">127</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -107,7 +128,7 @@
       <property name="Name">colUserName</property>
       <property name="VisibleIndex">12</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">78</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -115,12 +136,54 @@
       <property name="Name">colAmount</property>
       <property name="VisibleIndex">13</property>
       <property name="Visible">true</property>
-      <property name="Width">92</property>
+      <property name="Width">73</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
+      <property name="Summary" iskey="true" value="1">
+        <property name="Item1" isnull="true" iskey="true">
+          <property name="Tag" isnull="true" />
+          <property name="FieldName">Amount</property>
+          <property name="SummaryType">Sum</property>
+          <property name="Mode">AllRows</property>
+          <property name="DisplayFormat">{0:#,0.00}</property>
+        </property>
+      </property>
     </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="0" />
+  <property name="GroupSummary" iskey="true" value="4">
+    <property name="Item1" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">FactoryName</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item2" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">FactoryName</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item3" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">FullName</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item4" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">FactoryName</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+  </property>
   <property name="ActiveFilterString" />
   <property name="GroupSummarySortInfoState" />
   <property name="FindFilterText" />

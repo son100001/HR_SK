@@ -198,7 +198,7 @@
     </property>
     <property name="Item15" isnull="true" iskey="true">
       <property name="Name">colTCABC</property>
-      <property name="VisibleIndex">15</property>
+      <property name="VisibleIndex">17</property>
       <property name="Visible">true</property>
       <property name="Width">82</property>
       <property name="MinWidth">20</property>
@@ -232,7 +232,7 @@
     </property>
     <property name="Item17" isnull="true" iskey="true">
       <property name="Name">colTGCD</property>
-      <property name="VisibleIndex">17</property>
+      <property name="VisibleIndex">18</property>
       <property name="Visible">true</property>
       <property name="Width">119</property>
       <property name="MinWidth">20</property>
@@ -249,7 +249,7 @@
     </property>
     <property name="Item18" isnull="true" iskey="true">
       <property name="Name">colTCC</property>
-      <property name="VisibleIndex">18</property>
+      <property name="VisibleIndex">15</property>
       <property name="Visible">true</property>
       <property name="Width">80</property>
       <property name="MinWidth">20</property>

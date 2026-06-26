@@ -24,7 +24,7 @@
       <property name="Name">colFullName</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">119</property>
+      <property name="Width">123</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
@@ -49,7 +49,7 @@
       <property name="Name">colDepartmentName</property>
       <property name="VisibleIndex">4</property>
       <property name="Visible">true</property>
-      <property name="Width">139</property>
+      <property name="Width">134</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
@@ -74,7 +74,7 @@
       <property name="Name">colChucDanhName</property>
       <property name="VisibleIndex">6</property>
       <property name="Visible">true</property>
-      <property name="Width">151</property>
+      <property name="Width">132</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -279,7 +279,7 @@
       <property name="MaxWidth">0</property>
     </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="3">
+  <property name="GroupSummary" iskey="true" value="2">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
@@ -289,14 +289,6 @@
       <property name="DisplayFormat">Count: {0}</property>
     </property>
     <property name="Item2" isnull="true" iskey="true">
-      <property name="Mode">AllRows</property>
-      <property name="ShowInGroupColumnFooterName" />
-      <property name="Tag" isnull="true" />
-      <property name="FieldName">FullName</property>
-      <property name="SummaryType">Count</property>
-      <property name="DisplayFormat">Count: {0}</property>
-    </property>
-    <property name="Item3" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />

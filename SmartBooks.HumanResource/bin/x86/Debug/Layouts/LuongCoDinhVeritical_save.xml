@@ -11,12 +11,12 @@
     <property name="EnableAppearanceEvenRow">true</property>
   </property>
   <property name="ActiveFilterEnabled">true</property>
-  <property name="Columns" iskey="true" value="18">
+  <property name="Columns" iskey="true" value="19">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Name">colPeriod</property>
       <property name="VisibleIndex">8</property>
       <property name="Visible">true</property>
-      <property name="Width">73</property>
+      <property name="Width">82</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -41,7 +41,7 @@
       <property name="Name">colDepartmentName</property>
       <property name="VisibleIndex">5</property>
       <property name="Visible">true</property>
-      <property name="Width">83</property>
+      <property name="Width">178</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -66,7 +66,7 @@
       <property name="Name">colChucDanhName</property>
       <property name="VisibleIndex">7</property>
       <property name="Visible">true</property>
-      <property name="Width">77</property>
+      <property name="Width">216</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -82,7 +82,7 @@
       <property name="Name">colFullName</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">71</property>
+      <property name="Width">147</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -98,7 +98,7 @@
       <property name="Name">colLCB</property>
       <property name="VisibleIndex">9</property>
       <property name="Visible">true</property>
-      <property name="Width">93</property>
+      <property name="Width">103</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
@@ -115,7 +115,7 @@
       <property name="Name">colTN</property>
       <property name="VisibleIndex">10</property>
       <property name="Visible">true</property>
-      <property name="Width">95</property>
+      <property name="Width">103</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
@@ -149,7 +149,7 @@
       <property name="Name">colPCCD</property>
       <property name="VisibleIndex">12</property>
       <property name="Visible">true</property>
-      <property name="Width">91</property>
+      <property name="Width">93</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
@@ -166,7 +166,7 @@
       <property name="Name">colPCDT</property>
       <property name="VisibleIndex">13</property>
       <property name="Visible">true</property>
-      <property name="Width">88</property>
+      <property name="Width">89</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
@@ -198,7 +198,7 @@
     </property>
     <property name="Item15" isnull="true" iskey="true">
       <property name="Name">colTCABC</property>
-      <property name="VisibleIndex">15</property>
+      <property name="VisibleIndex">17</property>
       <property name="Visible">true</property>
       <property name="Width">82</property>
       <property name="MinWidth">20</property>
@@ -232,7 +232,7 @@
     </property>
     <property name="Item17" isnull="true" iskey="true">
       <property name="Name">colTGCD</property>
-      <property name="VisibleIndex">17</property>
+      <property name="VisibleIndex">18</property>
       <property name="Visible">true</property>
       <property name="Width">119</property>
       <property name="MinWidth">20</property>
@@ -249,9 +249,9 @@
     </property>
     <property name="Item18" isnull="true" iskey="true">
       <property name="Name">colTCC</property>
-      <property name="VisibleIndex">18</property>
+      <property name="VisibleIndex">15</property>
       <property name="Visible">true</property>
-      <property name="Width">80</property>
+      <property name="Width">93</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
@@ -264,8 +264,14 @@
         </property>
       </property>
     </property>
+    <property name="Item19" isnull="true" iskey="true">
+      <property name="Name">colrn</property>
+      <property name="Width">109</property>
+      <property name="MinWidth">20</property>
+      <property name="MaxWidth">0</property>
+    </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="2">
+  <property name="GroupSummary" iskey="true" value="3">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
@@ -282,8 +288,38 @@
       <property name="SummaryType">Count</property>
       <property name="DisplayFormat">Count: {0}</property>
     </property>
+    <property name="Item3" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">FactoryName</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
   </property>
   <property name="ActiveFilterString" />
+  <property name="MRUFiltersInfo" iskey="true" value="1">
+    <property name="Item1" isnull="true" iskey="true">
+      <property name="NonColumnFilter" />
+      <property name="ColumnsFilter" iskey="true" value="1">
+        <property name="Item1" isnull="true" iskey="true">
+          <property name="Type">AutoFilter</property>
+          <property name="FilterString">Contains([Employee_ID], '0827')</property>
+          <property name="DisplayText" />
+          <property name="ColumnName">colEmployee_ID</property>
+        </property>
+      </property>
+    </property>
+  </property>
+  <property name="SortInfoState" iskey="true" value="1">
+    <property name="Item1" isnull="true" iskey="true">
+      <property name="Orders">Ascending</property>
+      <property name="Columns">colFactoryName</property>
+    </property>
+    <property name="Content" isnull="true" iskey="true">
+      <property name="GroupCount">0</property>
+    </property>
+  </property>
   <property name="GroupSummarySortInfoState" />
   <property name="FindFilterText" />
   <property name="FindPanelVisible">false</property>

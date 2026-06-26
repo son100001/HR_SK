@@ -16,7 +16,7 @@
       <property name="Name">colPosition</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">222</property>
+      <property name="Width">229</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -88,7 +88,7 @@
       <property name="Name">colResonTerminated</property>
       <property name="VisibleIndex">7</property>
       <property name="Visible">true</property>
-      <property name="Width">115</property>
+      <property name="Width">128</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -128,7 +128,7 @@
       <property name="Name">colInsertDate</property>
       <property name="VisibleIndex">12</property>
       <property name="Visible">true</property>
-      <property name="Width">127</property>
+      <property name="Width">133</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>

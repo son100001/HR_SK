@@ -119,7 +119,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\CommonLib\AxInterop.ActiveToolBars.dll</HintPath>
     </Reference>
-    <Reference Include="CrystalDecisions.CrystalReports.Design, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.2000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\CommonLib\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
