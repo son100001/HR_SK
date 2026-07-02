@@ -155,7 +155,6 @@ Partial Class frmEmployeeInfo
         Me.lblTonGiao = New System.Windows.Forms.Label()
         Me.lblFactory_ID = New System.Windows.Forms.Label()
         Me.Address_Temporary = New WindowsControlLibrary.Address()
-        Me.Address_Permanent = New WindowsControlLibrary.Address()
         Me.lblRemark = New System.Windows.Forms.Label()
         Me.Remark = New System.Windows.Forms.RichTextBox()
         Me.lblContractFlow = New System.Windows.Forms.Label()
@@ -229,6 +228,15 @@ Partial Class frmEmployeeInfo
         Me.btnDoiMaNV = New DevExpress.XtraEditors.SimpleButton()
         Me.lblMaMoi = New System.Windows.Forms.Label()
         Me.lblMaCu = New System.Windows.Forms.Label()
+        Me.Address_Permanent = New WindowsControlLibrary.Address()
+        Me.SoNhaThonXom = New System.Windows.Forms.TextBox()
+        Me.PhuongXa = New System.Windows.Forms.TextBox()
+        Me.QuanHuyen = New System.Windows.Forms.TextBox()
+        Me.TinhThanhPho = New System.Windows.Forms.TextBox()
+        Me.lblSoNhaThonXom = New System.Windows.Forms.Label()
+        Me.lblPhuongXa = New System.Windows.Forms.Label()
+        Me.lblQuanHuyen = New System.Windows.Forms.Label()
+        Me.lblTinhThanhPho = New System.Windows.Forms.Label()
         CType(Me.XtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.XtraTabControl1.SuspendLayout()
         Me.General.SuspendLayout()
@@ -351,6 +359,14 @@ Partial Class frmEmployeeInfo
         Me.MainInformation.Appearance.PageClient.BackColor = System.Drawing.Color.White
         Me.MainInformation.Appearance.PageClient.Options.UseBackColor = True
         Me.MainInformation.AutoScroll = True
+        Me.MainInformation.Controls.Add(Me.lblTinhThanhPho)
+        Me.MainInformation.Controls.Add(Me.lblQuanHuyen)
+        Me.MainInformation.Controls.Add(Me.lblPhuongXa)
+        Me.MainInformation.Controls.Add(Me.lblSoNhaThonXom)
+        Me.MainInformation.Controls.Add(Me.TinhThanhPho)
+        Me.MainInformation.Controls.Add(Me.QuanHuyen)
+        Me.MainInformation.Controls.Add(Me.PhuongXa)
+        Me.MainInformation.Controls.Add(Me.SoNhaThonXom)
         Me.MainInformation.Controls.Add(Me.Nation)
         Me.MainInformation.Controls.Add(Me.lblisTanTat)
         Me.MainInformation.Controls.Add(Me.isTanTat)
@@ -602,7 +618,7 @@ Partial Class frmEmployeeInfo
         '
         'btnChup
         '
-        Me.btnChup.Location = New System.Drawing.Point(8, 665)
+        Me.btnChup.Location = New System.Drawing.Point(6, 701)
         Me.btnChup.Name = "btnChup"
         Me.btnChup.Size = New System.Drawing.Size(85, 22)
         Me.btnChup.TabIndex = 1552
@@ -612,14 +628,14 @@ Partial Class frmEmployeeInfo
         '
         Me.cbbChonCam.FormattingEnabled = True
         Me.cbbChonCam.Items.AddRange(New Object() {"dd/MM/yyyy", "MM/yyyy", "yyyy"})
-        Me.cbbChonCam.Location = New System.Drawing.Point(8, 638)
+        Me.cbbChonCam.Location = New System.Drawing.Point(6, 674)
         Me.cbbChonCam.Name = "cbbChonCam"
         Me.cbbChonCam.Size = New System.Drawing.Size(86, 21)
         Me.cbbChonCam.TabIndex = 1551
         '
         'AccountCode3
         '
-        Me.AccountCode3.Location = New System.Drawing.Point(908, 644)
+        Me.AccountCode3.Location = New System.Drawing.Point(906, 680)
         Me.AccountCode3.Name = "AccountCode3"
         Me.AccountCode3.Size = New System.Drawing.Size(106, 21)
         Me.AccountCode3.TabIndex = 1550
@@ -628,7 +644,7 @@ Partial Class frmEmployeeInfo
         'lblAccountCode3
         '
         Me.lblAccountCode3.BackColor = System.Drawing.Color.Transparent
-        Me.lblAccountCode3.Location = New System.Drawing.Point(823, 643)
+        Me.lblAccountCode3.Location = New System.Drawing.Point(821, 679)
         Me.lblAccountCode3.Name = "lblAccountCode3"
         Me.lblAccountCode3.Size = New System.Drawing.Size(79, 19)
         Me.lblAccountCode3.TabIndex = 1549
@@ -638,7 +654,7 @@ Partial Class frmEmployeeInfo
         '
         'AccountCode2
         '
-        Me.AccountCode2.Location = New System.Drawing.Point(908, 617)
+        Me.AccountCode2.Location = New System.Drawing.Point(906, 653)
         Me.AccountCode2.Name = "AccountCode2"
         Me.AccountCode2.Size = New System.Drawing.Size(106, 21)
         Me.AccountCode2.TabIndex = 1548
@@ -647,7 +663,7 @@ Partial Class frmEmployeeInfo
         'lblAccountCode2
         '
         Me.lblAccountCode2.BackColor = System.Drawing.Color.Transparent
-        Me.lblAccountCode2.Location = New System.Drawing.Point(823, 616)
+        Me.lblAccountCode2.Location = New System.Drawing.Point(821, 652)
         Me.lblAccountCode2.Name = "lblAccountCode2"
         Me.lblAccountCode2.Size = New System.Drawing.Size(79, 19)
         Me.lblAccountCode2.TabIndex = 1547
@@ -657,7 +673,7 @@ Partial Class frmEmployeeInfo
         '
         'Accountcode1
         '
-        Me.Accountcode1.Location = New System.Drawing.Point(708, 641)
+        Me.Accountcode1.Location = New System.Drawing.Point(706, 677)
         Me.Accountcode1.Name = "Accountcode1"
         Me.Accountcode1.Size = New System.Drawing.Size(106, 21)
         Me.Accountcode1.TabIndex = 1546
@@ -666,7 +682,7 @@ Partial Class frmEmployeeInfo
         'lblAccountcode1
         '
         Me.lblAccountcode1.BackColor = System.Drawing.Color.Transparent
-        Me.lblAccountcode1.Location = New System.Drawing.Point(623, 640)
+        Me.lblAccountcode1.Location = New System.Drawing.Point(621, 676)
         Me.lblAccountcode1.Name = "lblAccountcode1"
         Me.lblAccountcode1.Size = New System.Drawing.Size(79, 19)
         Me.lblAccountcode1.TabIndex = 1545
@@ -676,7 +692,7 @@ Partial Class frmEmployeeInfo
         '
         'NguoiGT
         '
-        Me.NguoiGT.Location = New System.Drawing.Point(708, 616)
+        Me.NguoiGT.Location = New System.Drawing.Point(706, 652)
         Me.NguoiGT.Name = "NguoiGT"
         Me.NguoiGT.Size = New System.Drawing.Size(106, 21)
         Me.NguoiGT.TabIndex = 1544
@@ -685,7 +701,7 @@ Partial Class frmEmployeeInfo
         'lblNguoiGT
         '
         Me.lblNguoiGT.BackColor = System.Drawing.Color.Transparent
-        Me.lblNguoiGT.Location = New System.Drawing.Point(623, 615)
+        Me.lblNguoiGT.Location = New System.Drawing.Point(621, 651)
         Me.lblNguoiGT.Name = "lblNguoiGT"
         Me.lblNguoiGT.Size = New System.Drawing.Size(79, 19)
         Me.lblNguoiGT.TabIndex = 1543
@@ -696,7 +712,7 @@ Partial Class frmEmployeeInfo
         'lblCamket
         '
         Me.lblCamket.BackColor = System.Drawing.Color.Transparent
-        Me.lblCamket.Location = New System.Drawing.Point(623, 590)
+        Me.lblCamket.Location = New System.Drawing.Point(621, 626)
         Me.lblCamket.Name = "lblCamket"
         Me.lblCamket.Size = New System.Drawing.Size(99, 20)
         Me.lblCamket.TabIndex = 1542
@@ -707,7 +723,7 @@ Partial Class frmEmployeeInfo
         'CamKet
         '
         Me.CamKet.AutoSize = True
-        Me.CamKet.Location = New System.Drawing.Point(728, 594)
+        Me.CamKet.Location = New System.Drawing.Point(726, 630)
         Me.CamKet.Name = "CamKet"
         Me.CamKet.Size = New System.Drawing.Size(15, 14)
         Me.CamKet.TabIndex = 1541
@@ -764,7 +780,7 @@ Partial Class frmEmployeeInfo
         '
         Me.PicCam.BackColor = System.Drawing.Color.Transparent
         Me.PicCam.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.PicCam.Location = New System.Drawing.Point(100, 577)
+        Me.PicCam.Location = New System.Drawing.Point(98, 613)
         Me.PicCam.Margin = New System.Windows.Forms.Padding(0)
         Me.PicCam.Name = "PicCam"
         Me.PicCam.Size = New System.Drawing.Size(190, 83)
@@ -774,7 +790,7 @@ Partial Class frmEmployeeInfo
         '
         'btnStopCam
         '
-        Me.btnStopCam.Location = New System.Drawing.Point(9, 610)
+        Me.btnStopCam.Location = New System.Drawing.Point(7, 646)
         Me.btnStopCam.Name = "btnStopCam"
         Me.btnStopCam.Size = New System.Drawing.Size(85, 22)
         Me.btnStopCam.TabIndex = 1535
@@ -782,7 +798,7 @@ Partial Class frmEmployeeInfo
         '
         'btnStartCam
         '
-        Me.btnStartCam.Location = New System.Drawing.Point(8, 582)
+        Me.btnStartCam.Location = New System.Drawing.Point(6, 618)
         Me.btnStartCam.Name = "btnStartCam"
         Me.btnStartCam.Size = New System.Drawing.Size(85, 22)
         Me.btnStartCam.TabIndex = 1534
@@ -916,7 +932,7 @@ Partial Class frmEmployeeInfo
         'IsSeasonWorker
         '
         Me.IsSeasonWorker.AutoSize = True
-        Me.IsSeasonWorker.Location = New System.Drawing.Point(921, 594)
+        Me.IsSeasonWorker.Location = New System.Drawing.Point(919, 630)
         Me.IsSeasonWorker.Name = "IsSeasonWorker"
         Me.IsSeasonWorker.Size = New System.Drawing.Size(15, 14)
         Me.IsSeasonWorker.TabIndex = 1519
@@ -926,7 +942,7 @@ Partial Class frmEmployeeInfo
         'lblSeasonWorker
         '
         Me.lblSeasonWorker.BackColor = System.Drawing.Color.Transparent
-        Me.lblSeasonWorker.Location = New System.Drawing.Point(805, 590)
+        Me.lblSeasonWorker.Location = New System.Drawing.Point(803, 626)
         Me.lblSeasonWorker.Name = "lblSeasonWorker"
         Me.lblSeasonWorker.Size = New System.Drawing.Size(99, 20)
         Me.lblSeasonWorker.TabIndex = 1518
@@ -963,7 +979,7 @@ Partial Class frmEmployeeInfo
         '
         'SoNgayPhepNam
         '
-        Me.SoNgayPhepNam.Location = New System.Drawing.Point(831, 539)
+        Me.SoNgayPhepNam.Location = New System.Drawing.Point(829, 575)
         Me.SoNgayPhepNam.Name = "SoNgayPhepNam"
         Me.SoNgayPhepNam.Size = New System.Drawing.Size(15, 21)
         Me.SoNgayPhepNam.TabIndex = 1515
@@ -1090,7 +1106,7 @@ Partial Class frmEmployeeInfo
         '
         'QuanHeVoiChuHo
         '
-        Me.QuanHeVoiChuHo.Location = New System.Drawing.Point(609, 524)
+        Me.QuanHeVoiChuHo.Location = New System.Drawing.Point(607, 553)
         Me.QuanHeVoiChuHo.Name = "QuanHeVoiChuHo"
         Me.QuanHeVoiChuHo.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
         Me.QuanHeVoiChuHo.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -1232,7 +1248,7 @@ Partial Class frmEmployeeInfo
         'DecisionStatus
         '
         Me.DecisionStatus.Enabled = False
-        Me.DecisionStatus.Location = New System.Drawing.Point(437, 696)
+        Me.DecisionStatus.Location = New System.Drawing.Point(435, 732)
         Me.DecisionStatus.Name = "DecisionStatus"
         Me.DecisionStatus.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.[True]
         Me.DecisionStatus.Properties.Buttons.AddRange(New DevExpress.XtraEditors.Controls.EditorButton() {New DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)})
@@ -1393,7 +1409,7 @@ Partial Class frmEmployeeInfo
         'IE_FLAG
         '
         Me.IE_FLAG.Enabled = False
-        Me.IE_FLAG.Location = New System.Drawing.Point(819, 693)
+        Me.IE_FLAG.Location = New System.Drawing.Point(817, 729)
         Me.IE_FLAG.Name = "IE_FLAG"
         Me.IE_FLAG.Size = New System.Drawing.Size(78, 21)
         Me.IE_FLAG.TabIndex = 1475
@@ -1402,7 +1418,7 @@ Partial Class frmEmployeeInfo
         'JobCode
         '
         Me.JobCode.Enabled = False
-        Me.JobCode.Location = New System.Drawing.Point(731, 694)
+        Me.JobCode.Location = New System.Drawing.Point(729, 730)
         Me.JobCode.Name = "JobCode"
         Me.JobCode.Size = New System.Drawing.Size(78, 21)
         Me.JobCode.TabIndex = 1474
@@ -1411,7 +1427,7 @@ Partial Class frmEmployeeInfo
         'DecisionCode
         '
         Me.DecisionCode.Enabled = False
-        Me.DecisionCode.Location = New System.Drawing.Point(731, 671)
+        Me.DecisionCode.Location = New System.Drawing.Point(729, 707)
         Me.DecisionCode.Name = "DecisionCode"
         Me.DecisionCode.Size = New System.Drawing.Size(166, 21)
         Me.DecisionCode.TabIndex = 1473
@@ -1420,7 +1436,7 @@ Partial Class frmEmployeeInfo
         'AbsentStatus
         '
         Me.AbsentStatus.Enabled = False
-        Me.AbsentStatus.Location = New System.Drawing.Point(437, 669)
+        Me.AbsentStatus.Location = New System.Drawing.Point(435, 705)
         Me.AbsentStatus.Name = "AbsentStatus"
         Me.AbsentStatus.Size = New System.Drawing.Size(166, 21)
         Me.AbsentStatus.TabIndex = 1472
@@ -1428,7 +1444,7 @@ Partial Class frmEmployeeInfo
         '
         'NguoiLienHeGap
         '
-        Me.NguoiLienHeGap.Location = New System.Drawing.Point(102, 553)
+        Me.NguoiLienHeGap.Location = New System.Drawing.Point(100, 582)
         Me.NguoiLienHeGap.Name = "NguoiLienHeGap"
         Me.NguoiLienHeGap.Size = New System.Drawing.Size(688, 21)
         Me.NguoiLienHeGap.TabIndex = 1471
@@ -1436,7 +1452,7 @@ Partial Class frmEmployeeInfo
         '
         'TenChuHo
         '
-        Me.TenChuHo.Location = New System.Drawing.Point(102, 526)
+        Me.TenChuHo.Location = New System.Drawing.Point(100, 555)
         Me.TenChuHo.Name = "TenChuHo"
         Me.TenChuHo.Size = New System.Drawing.Size(322, 21)
         Me.TenChuHo.TabIndex = 1470
@@ -1479,7 +1495,7 @@ Partial Class frmEmployeeInfo
         '
         'Card_No
         '
-        Me.Card_No.Location = New System.Drawing.Point(422, 621)
+        Me.Card_No.Location = New System.Drawing.Point(420, 657)
         Me.Card_No.Name = "Card_No"
         Me.Card_No.Size = New System.Drawing.Size(178, 21)
         Me.Card_No.TabIndex = 1464
@@ -1487,7 +1503,7 @@ Partial Class frmEmployeeInfo
         '
         'Card_Code
         '
-        Me.Card_Code.Location = New System.Drawing.Point(423, 596)
+        Me.Card_Code.Location = New System.Drawing.Point(421, 632)
         Me.Card_Code.Name = "Card_Code"
         Me.Card_Code.Size = New System.Drawing.Size(178, 21)
         Me.Card_Code.TabIndex = 1463
@@ -1567,7 +1583,7 @@ Partial Class frmEmployeeInfo
         'lblQuanHeVoiChuHo
         '
         Me.lblQuanHeVoiChuHo.BackColor = System.Drawing.Color.Transparent
-        Me.lblQuanHeVoiChuHo.Location = New System.Drawing.Point(429, 523)
+        Me.lblQuanHeVoiChuHo.Location = New System.Drawing.Point(427, 552)
         Me.lblQuanHeVoiChuHo.Name = "lblQuanHeVoiChuHo"
         Me.lblQuanHeVoiChuHo.Size = New System.Drawing.Size(174, 22)
         Me.lblQuanHeVoiChuHo.TabIndex = 1454
@@ -1578,7 +1594,7 @@ Partial Class frmEmployeeInfo
         'lblTenChuHo
         '
         Me.lblTenChuHo.BackColor = System.Drawing.Color.Transparent
-        Me.lblTenChuHo.Location = New System.Drawing.Point(12, 526)
+        Me.lblTenChuHo.Location = New System.Drawing.Point(10, 555)
         Me.lblTenChuHo.Name = "lblTenChuHo"
         Me.lblTenChuHo.Size = New System.Drawing.Size(84, 19)
         Me.lblTenChuHo.TabIndex = 1453
@@ -1589,7 +1605,7 @@ Partial Class frmEmployeeInfo
         'lblLeaveType_ID
         '
         Me.lblLeaveType_ID.BackColor = System.Drawing.Color.Transparent
-        Me.lblLeaveType_ID.Location = New System.Drawing.Point(329, 670)
+        Me.lblLeaveType_ID.Location = New System.Drawing.Point(327, 706)
         Me.lblLeaveType_ID.Name = "lblLeaveType_ID"
         Me.lblLeaveType_ID.Size = New System.Drawing.Size(92, 19)
         Me.lblLeaveType_ID.TabIndex = 1452
@@ -1699,7 +1715,7 @@ Partial Class frmEmployeeInfo
         'lblWeight
         '
         Me.lblWeight.BackColor = System.Drawing.Color.White
-        Me.lblWeight.Location = New System.Drawing.Point(811, 564)
+        Me.lblWeight.Location = New System.Drawing.Point(809, 600)
         Me.lblWeight.Name = "lblWeight"
         Me.lblWeight.Size = New System.Drawing.Size(66, 23)
         Me.lblWeight.TabIndex = 1442
@@ -1729,7 +1745,7 @@ Partial Class frmEmployeeInfo
         'lblDecisionStatus
         '
         Me.lblDecisionStatus.BackColor = System.Drawing.Color.Transparent
-        Me.lblDecisionStatus.Location = New System.Drawing.Point(329, 693)
+        Me.lblDecisionStatus.Location = New System.Drawing.Point(327, 729)
         Me.lblDecisionStatus.Name = "lblDecisionStatus"
         Me.lblDecisionStatus.Size = New System.Drawing.Size(84, 19)
         Me.lblDecisionStatus.TabIndex = 1438
@@ -1740,7 +1756,7 @@ Partial Class frmEmployeeInfo
         'lblJobCode
         '
         Me.lblJobCode.BackColor = System.Drawing.Color.Transparent
-        Me.lblJobCode.Location = New System.Drawing.Point(623, 693)
+        Me.lblJobCode.Location = New System.Drawing.Point(621, 729)
         Me.lblJobCode.Name = "lblJobCode"
         Me.lblJobCode.Size = New System.Drawing.Size(92, 19)
         Me.lblJobCode.TabIndex = 1437
@@ -1769,7 +1785,7 @@ Partial Class frmEmployeeInfo
         'lblNguoiLienHeGap
         '
         Me.lblNguoiLienHeGap.BackColor = System.Drawing.Color.Transparent
-        Me.lblNguoiLienHeGap.Location = New System.Drawing.Point(12, 552)
+        Me.lblNguoiLienHeGap.Location = New System.Drawing.Point(10, 581)
         Me.lblNguoiLienHeGap.Name = "lblNguoiLienHeGap"
         Me.lblNguoiLienHeGap.Size = New System.Drawing.Size(93, 21)
         Me.lblNguoiLienHeGap.TabIndex = 1434
@@ -1809,17 +1825,10 @@ Partial Class frmEmployeeInfo
         '
         'Address_Temporary
         '
-        Me.Address_Temporary.Location = New System.Drawing.Point(102, 494)
+        Me.Address_Temporary.Location = New System.Drawing.Point(100, 523)
         Me.Address_Temporary.Name = "Address_Temporary"
         Me.Address_Temporary.Size = New System.Drawing.Size(688, 24)
         Me.Address_Temporary.TabIndex = 1430
-        '
-        'Address_Permanent
-        '
-        Me.Address_Permanent.Location = New System.Drawing.Point(102, 470)
-        Me.Address_Permanent.Name = "Address_Permanent"
-        Me.Address_Permanent.Size = New System.Drawing.Size(688, 24)
-        Me.Address_Permanent.TabIndex = 1429
         '
         'lblRemark
         '
@@ -1852,7 +1861,7 @@ Partial Class frmEmployeeInfo
         'lblSoNgayPhepNam
         '
         Me.lblSoNgayPhepNam.BackColor = System.Drawing.Color.Transparent
-        Me.lblSoNgayPhepNam.Location = New System.Drawing.Point(830, 517)
+        Me.lblSoNgayPhepNam.Location = New System.Drawing.Point(828, 553)
         Me.lblSoNgayPhepNam.Name = "lblSoNgayPhepNam"
         Me.lblSoNgayPhepNam.Size = New System.Drawing.Size(16, 19)
         Me.lblSoNgayPhepNam.TabIndex = 1423
@@ -1963,9 +1972,9 @@ Partial Class frmEmployeeInfo
         'lblAddress_Permanent
         '
         Me.lblAddress_Permanent.BackColor = System.Drawing.Color.Transparent
-        Me.lblAddress_Permanent.Location = New System.Drawing.Point(12, 470)
+        Me.lblAddress_Permanent.Location = New System.Drawing.Point(10, 495)
         Me.lblAddress_Permanent.Name = "lblAddress_Permanent"
-        Me.lblAddress_Permanent.Size = New System.Drawing.Size(80, 19)
+        Me.lblAddress_Permanent.Size = New System.Drawing.Size(93, 19)
         Me.lblAddress_Permanent.TabIndex = 1412
         Me.lblAddress_Permanent.Text = "Đ/C thường trú"
         Me.lblAddress_Permanent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
@@ -1973,7 +1982,7 @@ Partial Class frmEmployeeInfo
         'lblAddress_Temporary
         '
         Me.lblAddress_Temporary.BackColor = System.Drawing.Color.Transparent
-        Me.lblAddress_Temporary.Location = New System.Drawing.Point(12, 494)
+        Me.lblAddress_Temporary.Location = New System.Drawing.Point(10, 523)
         Me.lblAddress_Temporary.Name = "lblAddress_Temporary"
         Me.lblAddress_Temporary.Size = New System.Drawing.Size(72, 19)
         Me.lblAddress_Temporary.TabIndex = 1413
@@ -2094,7 +2103,7 @@ Partial Class frmEmployeeInfo
         'lblCard_No
         '
         Me.lblCard_No.BackColor = System.Drawing.Color.Transparent
-        Me.lblCard_No.Location = New System.Drawing.Point(334, 621)
+        Me.lblCard_No.Location = New System.Drawing.Point(332, 657)
         Me.lblCard_No.Name = "lblCard_No"
         Me.lblCard_No.Size = New System.Drawing.Size(80, 19)
         Me.lblCard_No.TabIndex = 1399
@@ -2105,7 +2114,7 @@ Partial Class frmEmployeeInfo
         'lblCard_Code
         '
         Me.lblCard_Code.BackColor = System.Drawing.Color.Transparent
-        Me.lblCard_Code.Location = New System.Drawing.Point(334, 597)
+        Me.lblCard_Code.Location = New System.Drawing.Point(332, 633)
         Me.lblCard_Code.Name = "lblCard_Code"
         Me.lblCard_Code.Size = New System.Drawing.Size(80, 19)
         Me.lblCard_Code.TabIndex = 1398
@@ -2116,7 +2125,7 @@ Partial Class frmEmployeeInfo
         'lblCongViecPhaiLam
         '
         Me.lblCongViecPhaiLam.BackColor = System.Drawing.Color.Transparent
-        Me.lblCongViecPhaiLam.Location = New System.Drawing.Point(909, 674)
+        Me.lblCongViecPhaiLam.Location = New System.Drawing.Point(907, 710)
         Me.lblCongViecPhaiLam.Name = "lblCongViecPhaiLam"
         Me.lblCongViecPhaiLam.Size = New System.Drawing.Size(99, 40)
         Me.lblCongViecPhaiLam.TabIndex = 1397
@@ -2126,7 +2135,7 @@ Partial Class frmEmployeeInfo
         '
         'CongViecPhaiLam
         '
-        Me.CongViecPhaiLam.Location = New System.Drawing.Point(1017, 685)
+        Me.CongViecPhaiLam.Location = New System.Drawing.Point(1015, 721)
         Me.CongViecPhaiLam.Name = "CongViecPhaiLam"
         Me.CongViecPhaiLam.Size = New System.Drawing.Size(168, 23)
         Me.CongViecPhaiLam.TabIndex = 1389
@@ -2146,7 +2155,7 @@ Partial Class frmEmployeeInfo
         'lblDecisionCode
         '
         Me.lblDecisionCode.BackColor = System.Drawing.Color.Transparent
-        Me.lblDecisionCode.Location = New System.Drawing.Point(623, 670)
+        Me.lblDecisionCode.Location = New System.Drawing.Point(621, 706)
         Me.lblDecisionCode.Name = "lblDecisionCode"
         Me.lblDecisionCode.Size = New System.Drawing.Size(92, 19)
         Me.lblDecisionCode.TabIndex = 1395
@@ -2539,6 +2548,82 @@ Partial Class frmEmployeeInfo
         Me.lblMaCu.Text = "Mã cũ"
         Me.lblMaCu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
+        'Address_Permanent
+        '
+        Me.Address_Permanent.Location = New System.Drawing.Point(649, 309)
+        Me.Address_Permanent.Name = "Address_Permanent"
+        Me.Address_Permanent.Size = New System.Drawing.Size(141, 24)
+        Me.Address_Permanent.TabIndex = 1429
+        Me.Address_Permanent.Visible = False
+        '
+        'SoNhaThonXom
+        '
+        Me.SoNhaThonXom.Location = New System.Drawing.Point(103, 496)
+        Me.SoNhaThonXom.Name = "SoNhaThonXom"
+        Me.SoNhaThonXom.Size = New System.Drawing.Size(113, 21)
+        Me.SoNhaThonXom.TabIndex = 1561
+        '
+        'PhuongXa
+        '
+        Me.PhuongXa.Location = New System.Drawing.Point(222, 496)
+        Me.PhuongXa.Name = "PhuongXa"
+        Me.PhuongXa.Size = New System.Drawing.Size(113, 21)
+        Me.PhuongXa.TabIndex = 1562
+        '
+        'QuanHuyen
+        '
+        Me.QuanHuyen.Location = New System.Drawing.Point(341, 496)
+        Me.QuanHuyen.Name = "QuanHuyen"
+        Me.QuanHuyen.Size = New System.Drawing.Size(140, 21)
+        Me.QuanHuyen.TabIndex = 1563
+        '
+        'TinhThanhPho
+        '
+        Me.TinhThanhPho.Location = New System.Drawing.Point(488, 496)
+        Me.TinhThanhPho.Name = "TinhThanhPho"
+        Me.TinhThanhPho.Size = New System.Drawing.Size(141, 21)
+        Me.TinhThanhPho.TabIndex = 1564
+        '
+        'lblSoNhaThonXom
+        '
+        Me.lblSoNhaThonXom.BackColor = System.Drawing.Color.Transparent
+        Me.lblSoNhaThonXom.Location = New System.Drawing.Point(103, 470)
+        Me.lblSoNhaThonXom.Name = "lblSoNhaThonXom"
+        Me.lblSoNhaThonXom.Size = New System.Drawing.Size(93, 19)
+        Me.lblSoNhaThonXom.TabIndex = 1565
+        Me.lblSoNhaThonXom.Text = "Số nhà thôn xóm"
+        Me.lblSoNhaThonXom.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblPhuongXa
+        '
+        Me.lblPhuongXa.BackColor = System.Drawing.Color.Transparent
+        Me.lblPhuongXa.Location = New System.Drawing.Point(224, 470)
+        Me.lblPhuongXa.Name = "lblPhuongXa"
+        Me.lblPhuongXa.Size = New System.Drawing.Size(93, 19)
+        Me.lblPhuongXa.TabIndex = 1566
+        Me.lblPhuongXa.Text = "Phường xã"
+        Me.lblPhuongXa.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblQuanHuyen
+        '
+        Me.lblQuanHuyen.BackColor = System.Drawing.Color.Transparent
+        Me.lblQuanHuyen.Location = New System.Drawing.Point(338, 470)
+        Me.lblQuanHuyen.Name = "lblQuanHuyen"
+        Me.lblQuanHuyen.Size = New System.Drawing.Size(93, 19)
+        Me.lblQuanHuyen.TabIndex = 1567
+        Me.lblQuanHuyen.Text = "Quận huyện"
+        Me.lblQuanHuyen.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'lblTinhThanhPho
+        '
+        Me.lblTinhThanhPho.BackColor = System.Drawing.Color.Transparent
+        Me.lblTinhThanhPho.Location = New System.Drawing.Point(485, 470)
+        Me.lblTinhThanhPho.Name = "lblTinhThanhPho"
+        Me.lblTinhThanhPho.Size = New System.Drawing.Size(93, 19)
+        Me.lblTinhThanhPho.TabIndex = 1568
+        Me.lblTinhThanhPho.Text = "Tỉnh thành phố"
+        Me.lblTinhThanhPho.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'frmEmployeeInfo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2735,7 +2820,6 @@ Partial Class frmEmployeeInfo
     Friend WithEvents lblTonGiao As Label
     Friend WithEvents lblFactory_ID As Label
     Friend WithEvents Address_Temporary As WindowsControlLibrary.Address
-    Friend WithEvents Address_Permanent As WindowsControlLibrary.Address
     Friend WithEvents lblRemark As Label
     Friend WithEvents Remark As RichTextBox
     Friend WithEvents lblContractFlow As Label
@@ -2833,4 +2917,13 @@ Partial Class frmEmployeeInfo
     Friend WithEvents lblisTanTat As Label
     Friend WithEvents isTanTat As CheckBox
     Friend WithEvents Nation As TextBox
+    Friend WithEvents lblTinhThanhPho As Label
+    Friend WithEvents lblQuanHuyen As Label
+    Friend WithEvents lblPhuongXa As Label
+    Friend WithEvents lblSoNhaThonXom As Label
+    Friend WithEvents TinhThanhPho As TextBox
+    Friend WithEvents QuanHuyen As TextBox
+    Friend WithEvents PhuongXa As TextBox
+    Friend WithEvents SoNhaThonXom As TextBox
+    Friend WithEvents Address_Permanent As WindowsControlLibrary.Address
 End Class

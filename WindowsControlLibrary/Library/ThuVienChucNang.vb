@@ -1342,6 +1342,102 @@ Public Class ThuVienChucNang
         End If
         Return False
     End Function
+
+    ' TaoSQLKhongGhiLog: giống LuuKhongGhiLog nhưng chỉ trả về chuỗi SQL thay vì gọi kn.SaveData,
+    ' dùng để gộp nhiều dòng thành một batch INSERT/UPDATE gửi lên DB một lần.
+    Private Function TaoSQLKhongGhiLog(ByVal bInsertAndUpdateIsSame As Boolean, ByVal TableName As String, ByVal Primary() As String, ByVal Primary_Value As Object(), ByVal DataMember() As String, ByVal DataMember_Value() As Object) As String
+        Dim TruongInsert, TruongGiaTri, GiaTri, sqlUpdate, DieuKienUpdate, str_sql As String
+        For i As Integer = 0 To DataMember.Length - 1
+            TruongInsert = TruongInsert + "[" + DataMember(i) + "],"
+        Next
+        TruongInsert = TruongInsert.Remove(TruongInsert.Length - 1, 1)
+        For i As Integer = 0 To DataMember_Value.Length - 1
+            If IsNothing(DataMember_Value(i)) Then
+                GiaTri = "null,"
+            Else
+                If DataMember_Value(i).GetType.ToString = "System.String" Then
+                    If CStr(DataMember_Value(i)).Trim.ToUpper <> "NULL" Then
+                        If CStr(DataMember_Value(i)).Trim = "" Then
+                            GiaTri = "null,"
+                        Else
+                            GiaTri = "N'" + CStr(DataMember_Value(i)).Replace("'", "''") + "',"
+                        End If
+                    Else
+                        GiaTri = "null,"
+                    End If
+                ElseIf DataMember_Value(i).GetType.ToString = "System.Boolean" Then
+                    If DataMember_Value(i) = True Then
+                        GiaTri = "1,"
+                    Else
+                        GiaTri = "0,"
+                    End If
+                ElseIf DataMember_Value(i).GetType.ToString = "System.DateTime" Then
+                    If CType(DataMember_Value(i), DateTime).Year = 1900 Or CType(DataMember_Value(i), DateTime).Year = 1 Or CType(DataMember_Value(i), DateTime).Year = 1753 Then
+                        GiaTri = "null,"
+                    Else
+                        GiaTri = "'" + CType(DataMember_Value(i), DateTime).ToString("yyyy-MM-dd HH:mm:ss") + "',"
+                    End If
+                Else
+                    If IsDBNull(DataMember_Value(i)) Then
+                        GiaTri = "null,"
+                    Else
+                        GiaTri = "'" + CStr(DataMember_Value(i)) + "',"
+                    End If
+                End If
+            End If
+            TruongGiaTri += GiaTri
+            If DataMember(i).ToUpper <> "InsertSource".ToUpper Then
+                If bInsertAndUpdateIsSame = False Then
+                    If Primary.IndexOf(Primary, DataMember(i)) < 0 Then
+                        sqlUpdate += "[" + DataMember(i) + "]=" + GiaTri
+                    End If
+                Else
+                    sqlUpdate += "[" + DataMember(i) + "]=" + GiaTri
+                End If
+            End If
+        Next
+        For i As Integer = 0 To Primary_Value.Length - 1
+            If Primary_Value(i).GetType.ToString = "System.String" Then
+                If CStr(Primary_Value(i)).ToUpper <> "NULL" Then
+                    GiaTri = "N'" + CType(Primary_Value(i), String).Replace("'", "''").Replace(",", "######") + "',"
+                Else
+                    GiaTri = "null,"
+                End If
+            ElseIf Primary_Value(i).GetType.ToString = "System.Boolean" Then
+                If Primary_Value(i) = True Then
+                    GiaTri = "1,"
+                Else
+                    GiaTri = "0,"
+                End If
+            ElseIf Primary_Value(i).GetType.ToString = "System.DateTime" Then
+                GiaTri = "'" + CType(Primary_Value(i), DateTime).ToString("yyyy-MM-dd HH:mm:ss") + "',"
+            ElseIf Primary_Value(i).GetType.ToString = "System.DBNull" Then
+                GiaTri = "null,"
+            Else
+                GiaTri = "'" + CStr(Primary_Value(i)) + "',"
+            End If
+            If GiaTri.ToUpper = "NULL," Then
+                DieuKienUpdate += "[" + Primary(i) + "] is " + GiaTri.Replace(",", " and ")
+            Else
+                DieuKienUpdate += "[" + Primary(i) + "]=" + GiaTri.Replace(",", " and ")
+            End If
+        Next
+        If IsNothing(sqlUpdate) OrElse sqlUpdate.Length = 0 Then Return String.Empty
+        sqlUpdate = sqlUpdate.Remove(sqlUpdate.Length - 1, 1)
+        If IsNothing(DieuKienUpdate) Then Return String.Empty
+        DieuKienUpdate = DieuKienUpdate.Remove(DieuKienUpdate.Length - 5, 5)
+        TruongGiaTri = TruongGiaTri.Remove(TruongGiaTri.Length - 1, 1)
+        str_sql = "IF EXISTS(SELECT * FROM [dbo].[" + TableName + "] WHERE " + DieuKienUpdate + ") " &
+                  "BEGIN " &
+                  "UPDATE [dbo].[" + TableName + "] set " + sqlUpdate + " where " + DieuKienUpdate + " END " &
+                  "ELSE BEGIN " + "INSERT INTO [" + TableName + "] (" + TruongInsert + ") values(" + TruongGiaTri + ") END"
+        If TableName.ToUpper = "SmartBooks_Salary".ToUpper Then
+            str_sql = "IF NOT EXISTS(SELECT * FROM [dbo].[" + TableName + "] WHERE " + DieuKienUpdate + " AND trangthai=1) " &
+                      "BEGIN " + str_sql + " END"
+        End If
+        Return str_sql
+    End Function
+
     Public Function SaveByStore(ByVal Quyen As String, ByVal TableName As String, ByVal NameOfStore As String, ByVal ControlContainAllOfValue As Control, ByVal ErrorP As ErrorProvider) As Boolean
 
         If Quyen = "View" Then
@@ -2681,175 +2777,182 @@ Public Class ThuVienChucNang
     End Function
 
     Public Function NhapExcelEPPlus(ByVal TableName As String, ByVal LinkOfFile As String, ByVal LineConfigDatamember As Integer, ByVal LineConfigPrimary As Integer, ByVal LineStart As Integer, Optional ByVal FieldInserDate As String = "", Optional ByVal FieldUserName As String = "") As Boolean
-        'Dim ofd As New OpenFileDialog
-        'With ofd
-        '    '.FileName = "C:" & "\" & "TempImport\Received Files" 'Points it to the received files folder
-        '    .Title = "Locate File"
-        '    .Filter = "Excel file (*.xlsx)|*.xlsx|All files (*.*)|*.*"
-        'End With
-        'If ofd.ShowDialog() = DialogResult.Cancel Then
-        '    Return False
-        'End If
-        'If MessageBox.Show("Bạn có thực sự muốn cập nhật thông tin nhân viên!", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
-        '    Return False
-        'End If
-        Dim ColExel() As String = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ", "CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "CL", "CM", "CN", "CO", "CP", "CQ", "CR", "CS", "CT", "CU", "CV", "CW", "CX", "CY", "CZ", "DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ", "EA", "EB", "EC", "ED", "EE", "EF", "EG", "EH", "EI", "EJ", "EK", "EL", "EM", "EN", "EO", "EP", "EQ", "ER", "ES", "ET", "EU", "EV", "EW", "EX", "EY", "EZ", "FA", "FB", "FC", "FD", "FE", "FF", "FG", "FH", "FI", "FJ", "FK", "FL", "FM", "FN", "FO", "FP", "FQ", "FR", "FS", "FT", "FU", "FV", "FW", "FX", "FY", "FZ", "GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GI", "GJ", "GK", "GL", "GM", "GN", "GO", "GP", "GQ", "GR", "GS", "GT", "GU", "GV", "GW", "GX", "GY", "GZ", "HA", "HB", "HC", "HD", "HE", "HF", "HG", "HH", "HI", "HJ", "HK", "HL", "HM", "HN", "HO", "HP", "HQ", "HR", "HS", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "IA", "IB", "IC", "ID", "IE", "IF", "IG", "IH", "II", "IJ", "IK", "IL", "IM", "IN", "IO", "IP", "IQ", "IR", "IS", "IT", "IU", "IV", "IW", "IX", "IY", "IZ", "JA", "JB", "JC", "JD", "JE", "JF", "JG", "JH", "JI", "JJ", "JK", "JL", "JM", "JN", "JO", "JP", "JQ", "JR", "JS", "JT", "JU", "JV", "JW", "JX", "JY", "JZ", "KA", "KB", "KC", "KD", "KE", "KF", "KG", "KH", "KI", "KJ", "KK", "KL", "KM", "KN", "KO", "KP", "KQ", "KR", "KS", "KT", "KU", "KV", "KW", "KX", "KY", "KZ"}
-        Dim str, strData, strColKey As String
-        Dim Datamember As String()
-        Dim Datamember_Value As New ArrayList
-        Dim Primary As String()
-        Dim Primary_Value As New ArrayList
-        Dim ColDatamember As String()
-        Dim ColKey As String()
-        Dim ojDate, ojTime As Object
-        Dim dtDate, dtTime, dtfromdate, StartedDate As DateTime
+        ' Toi uu: dung Dictionary O(1) thay vi tableInf.Select() moi o, doc config row 1 lan,
+        ' bo Calculate(), gop SQL batch 100 dong/lan goi DB.
         Dim tableInf As DataTable = kn.ReadData("exec [dbo].[sp_GetAllInformationInTable] '" + TableName + "'", "table")
+        Dim colTypeMap As New Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase)
+        For Each row As DataRow In tableInf.Rows
+            Dim cname As String = CStr(row("COLUMN_NAME"))
+            If Not colTypeMap.ContainsKey(cname) Then
+                colTypeMap(cname) = CStr(row("DATA_TYPE"))
+            End If
+        Next
+
+        ' Bang can kiem tra khoa tung dong (CheckingBlock) -- dung LuuKhongGhiLog nhu cu
+        Dim needsPerRowCheck As Boolean = (String.Equals(TableName, "HR_WTDaily", StringComparison.OrdinalIgnoreCase) OrElse
+                                           String.Equals(TableName, "HR_TimeKeeping_Data", StringComparison.OrdinalIgnoreCase) OrElse
+                                           String.Equals(TableName, "HR_EmpRegisLeave", StringComparison.OrdinalIgnoreCase) OrElse
+                                           String.Equals(TableName, "HR_EmployeeRegisMaternityLeave", StringComparison.OrdinalIgnoreCase))
+
+        Dim ColExel() As String = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ", "CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "CL", "CM", "CN", "CO", "CP", "CQ", "CR", "CS", "CT", "CU", "CV", "CW", "CX", "CY", "CZ", "DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ", "EA", "EB", "EC", "ED", "EE", "EF", "EG", "EH", "EI", "EJ", "EK", "EL", "EM", "EN", "EO", "EP", "EQ", "ER", "ES", "ET", "EU", "EV", "EW", "EX", "EY", "EZ", "FA", "FB", "FC", "FD", "FE", "FF", "FG", "FH", "FI", "FJ", "FK", "FL", "FM", "FN", "FO", "FP", "FQ", "FR", "FS", "FT", "FU", "FV", "FW", "FX", "FY", "FZ", "GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GI", "GJ", "GK", "GL", "GM", "GN", "GO", "GP", "GQ", "GR", "GS", "GT", "GU", "GV", "GW", "GX", "GY", "GZ", "HA", "HB", "HC", "HD", "HE", "HF", "HG", "HH", "HI", "HJ", "HK", "HL", "HM", "HN", "HO", "HP", "HQ", "HR", "HS", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "IA", "IB", "IC", "ID", "IE", "IF", "IG", "IH", "II", "IJ", "IK", "IL", "IM", "IN", "IO", "IP", "IQ", "IR", "IS", "IT", "IU", "IV", "IW", "IX", "IY", "IZ", "JA", "JB", "JC", "JD", "JE", "JF", "JG", "JH", "JI", "JJ", "JK", "JL", "JM", "JN", "JO", "JP", "JQ", "JR", "JS", "JT", "JU", "JV", "JW", "JX", "JY", "JZ", "KA", "KB", "KC", "KD", "KE", "KF", "KG", "KH", "KI", "KJ", "KK", "KL", "KM", "KN", "KO", "KP", "KQ", "KR", "KS", "KT", "KU", "KV", "KW", "KX", "KY", "KZ"}
+
+        ' -- Doc config row mot lan duy nhat ---------------------------------------------------
+        Dim strDmNames As New List(Of String)   ' ten field DB  (= Datamember)
+        Dim strDmCols As New List(Of String)   ' chu cot Excel (= ColDatamember)
+        Dim strPkNames As New List(Of String)   ' ten field PK  (= Primary)
+        Dim strPkCols As New List(Of String)   ' chu cot Excel PK (= ColKey)
+
         Dim excel As New FileInfo(LinkOfFile)
         Using package = New ExcelPackage(excel)
-            Dim workbook = package.Workbook
-            Dim worksheet = workbook.Worksheets.First()
-            'package.Workbook.Calculate()
+            Dim worksheet = package.Workbook.Worksheets.First()
+
             For Each c As String In ColExel
-                If worksheet.Cells(c + LineConfigDatamember.ToString).Text.Trim <> "" Then
-                    If tableInf.Select("COLUMN_NAME='" + worksheet.Cells(c + LineConfigDatamember.ToString).Text.Trim + "'").Length > 0 Then
-                        str += worksheet.Cells(c + LineConfigDatamember.ToString).Text.Trim + ","
-                        strData += c + ","
-                    End If
+                Dim cellVal As String = worksheet.Cells(c + LineConfigDatamember.ToString()).Text.Trim()
+                If cellVal <> "" AndAlso colTypeMap.ContainsKey(cellVal) Then
+                    strDmNames.Add(cellVal)
+                    strDmCols.Add(c)
                 End If
             Next
-            If str <> String.Empty Then
-                If FieldInserDate <> String.Empty Then
-                    str += FieldInserDate + ","
-                End If
-                If FieldUserName <> String.Empty Then
-                    str += FieldUserName + ","
-                End If
-                Datamember = Split(str.Remove(str.Length - 1, 1), ",")
-                ColDatamember = Split(strData.Remove(strData.Length - 1, 1), ",")
-            End If
-            str = String.Empty
             For Each c As String In ColExel
-                If worksheet.Cells(c + LineConfigPrimary.ToString).Text.Trim <> "" Then
-                    If tableInf.Select("COLUMN_NAME='" + worksheet.Cells(c + LineConfigPrimary.ToString).Text.Trim + "'").Length > 0 Then
-                        str += worksheet.Cells(c + LineConfigPrimary.ToString).Text.Trim + ","
-                        strColKey += c + ","
-                    End If
+                Dim cellVal As String = worksheet.Cells(c + LineConfigPrimary.ToString()).Text.Trim()
+                If cellVal <> "" AndAlso colTypeMap.ContainsKey(cellVal) Then
+                    strPkNames.Add(cellVal)
+                    strPkCols.Add(c)
                 End If
             Next
-            If str <> String.Empty Then
-                Primary = Split(str.Remove(str.Length - 1, 1), ",")
-                ColKey = Split(strColKey.Remove(strColKey.Length - 1, 1), ",")
+
+            If strPkNames.Count = 0 Then
+                MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": Primary Key Config", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return False
             End If
-            Dim index As Integer = LineStart, isDataNull As Integer = 0
-            While worksheet.Cells(ColKey(0) + index.ToString).Text.Trim <> String.Empty Or isDataNull < 2
-                If worksheet.Cells(ColKey(0) + index.ToString).Text.Trim = String.Empty Then
+
+            ' Them field ngay nhap / user vao cuoi ten (gia tri duoc them sau vong lap doc Excel)
+            If FieldInserDate <> String.Empty Then strDmNames.Add(FieldInserDate)
+            If FieldUserName <> String.Empty Then strDmNames.Add(FieldUserName)
+
+            Dim Datamember() As String = strDmNames.ToArray()
+            Dim ColDatamember() As String = strDmCols.ToArray()   ' chi cac cot Excel, khong co extra
+            Dim Primary() As String = strPkNames.ToArray()
+            Dim ColKey() As String = strPkCols.ToArray()
+
+            ' Cache ten cot config de khong goi lai worksheet moi vong lap
+            Dim configColName(ColDatamember.Length - 1) As String
+            For i As Integer = 0 To ColDatamember.Length - 1
+                configColName(i) = worksheet.Cells(ColDatamember(i) + LineConfigDatamember.ToString()).Text.ToUpper().Trim()
+            Next
+
+            Dim sb As New StringBuilder()
+            Dim batchCount As Integer = 0
+            Const BATCH_SIZE As Integer = 100
+
+            Dim index As Integer = LineStart
+            Dim isDataNull As Integer = 0
+            Dim dtfromdate As DateTime
+
+            While worksheet.Cells(ColKey(0) + index.ToString()).Text.Trim() <> String.Empty OrElse isDataNull < 2
+                If worksheet.Cells(ColKey(0) + index.ToString()).Text.Trim() = String.Empty Then
                     isDataNull += 1
                     index += 1
                 Else
                     isDataNull = 0
-                    Primary_Value.Clear()
-                    Datamember_Value.Clear()
+                    Dim ojVal As Object
+                    Dim dtDate As DateTime
+                    Dim Primary_Value As New List(Of Object)
+                    Dim Datamember_Value As New List(Of Object)
+
+                    ' -- Doc gia tri khoa chinh --------------------------------------------------
                     For i As Integer = 0 To ColKey.Length - 1
-                        worksheet.Cells(ColKey(i) + index.ToString()).Calculate
-                        If tableInf.Select("COLUMN_NAME='" + Primary(i) + "'")(0)("DATA_TYPE") = "datetime" Then
-                            ojDate = worksheet.Cells(ColKey(i) + index.ToString()).Value
-                            ojTime = worksheet.Cells(ColKey(i) + index.ToString()).Value
-                            If IsNothing(ojTime) And IsNothing(ojTime) Then
-                                Primary_Value.Add(New DateTime(1900, 1, 1))
-                                MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString + ". " + GetLanguagesTranslated("Popup.Banluuytruongkhoakhongduocdetrong"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Dim pkType As String = ""
+                        colTypeMap.TryGetValue(Primary(i), pkType)
+                        If pkType = "datetime" Then
+                            ojVal = worksheet.Cells(ColKey(i) + index.ToString()).Value
+                            If IsNothing(ojVal) Then
+                                MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString & ". " + GetLanguagesTranslated("Popup.Banluuytruongkhoakhongduocdetrong"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                                 Return False
                             Else
-                                If IsNothing(ojDate) Then
-                                    dtDate = New DateTime(2001, 1, 1)
+                                If ojVal.GetType().ToString() = "System.Double" Then
+                                    Primary_Value.Add(DateTime.FromOADate(CDbl(ojVal)))
                                 Else
-                                    If dtDate.GetType.ToString = "System.Double" Then
-                                        dtDate = DateTime.FromOADate(ojDate)
-                                    Else
-                                        dtDate = CType(ojDate, DateTime)
-                                    End If
-
-                                End If
-                                If IsNothing(ojTime) Then
-                                    Primary_Value.Add(dtDate)
-                                Else
-                                    If ojTime.GetType.ToString = "System.Double" Then
-                                        dtTime = DateTime.FromOADate(ojTime)
-                                    Else
-                                        dtTime = CType(ojTime, DateTime)
-                                    End If
-                                    Primary_Value.Add(New DateTime(dtDate.Year, dtDate.Month, dtDate.Day, dtTime.Hour, dtTime.Minute, dtTime.Second))
+                                    Primary_Value.Add(CType(ojVal, DateTime))
                                 End If
                             End If
                         Else
-                            If worksheet.Cells(ColKey(i) + index.ToString()).Text.Trim <> String.Empty Then
+                            Dim cellText As String = worksheet.Cells(ColKey(i) + index.ToString()).Text.Trim()
+                            If cellText <> String.Empty Then
                                 Primary_Value.Add(worksheet.Cells(ColKey(i) + index.ToString()).Value)
                             Else
-                                MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString + ". " + GetLanguagesTranslated("Popup.Banluuytruongkhoakhongduocdetrong"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString & ". " + GetLanguagesTranslated("Popup.Banluuytruongkhoakhongduocdetrong"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
                                 Return False
                             End If
                         End If
                     Next
+
+                    ' -- Doc gia tri datamember (chi cac cot Excel) ------------------------------
                     For i As Integer = 0 To ColDatamember.Length - 1
-                        worksheet.Cells(ColDatamember(i) + index.ToString()).Calculate
-                        If tableInf.Select("COLUMN_NAME='" + Datamember(i) + "'")(0)("DATA_TYPE") = "datetime" Then
-                            ojDate = worksheet.Cells(ColDatamember(i) + index.ToString()).Value
-                            ojTime = worksheet.Cells(ColDatamember(i) + index.ToString()).Value
-                            If IsNothing(ojTime) Then
+                        Dim dmType As String = ""
+                        colTypeMap.TryGetValue(Datamember(i), dmType)
+                        If dmType = "datetime" Then
+                            ojVal = worksheet.Cells(ColDatamember(i) + index.ToString()).Value
+                            If IsNothing(ojVal) Then
                                 Datamember_Value.Add(New DateTime(1900, 1, 1))
                             Else
-                                If IsNothing(ojDate) Then
-                                    dtDate = dtfromdate
+                                If ojVal.GetType().ToString() = "System.Double" Then
+                                    dtDate = DateTime.FromOADate(CDbl(ojVal))
                                 Else
-                                    'dtDate = CType(ojDate, DateTime)
-                                    If ojDate.GetType.ToString = "System.Double" Then
-                                        dtDate = DateTime.FromOADate(ojDate)
-                                    Else
-                                        dtDate = CType(ojDate, DateTime)
-                                    End If
-                                    If Datamember(i).ToUpper = "StartedDate".ToUpper Then
-                                        StartedDate = dtDate
-                                    End If
-                                    If TableName = "HR_EmployeeRegisMaternityLeave" Then
-                                        If worksheet.Cells(ColDatamember(i) + LineConfigDatamember.ToString()).Text.ToUpper = "FROMDATE" Then
-                                            dtfromdate = dtDate
-                                        End If
-                                    End If
-                                    If TableName = "HR_EmployeeWarning" Then
-                                        If worksheet.Cells(ColDatamember(i) + LineConfigDatamember.ToString()).Text.ToUpper = "DATE_" Then
-                                            dtfromdate = dtDate
-                                        End If
-                                    End If
+                                    dtDate = CType(ojVal, DateTime)
                                 End If
-                                If IsNothing(ojTime) Then
-                                    Datamember_Value.Add(dtDate)
-                                Else
-                                    If ojTime.GetType.ToString = "System.Double" Then
-                                        dtTime = DateTime.FromOADate(ojTime)
-                                    Else
-                                        dtTime = CType(ojTime, DateTime)
-                                    End If
-                                    Datamember_Value.Add(New DateTime(dtDate.Year, dtDate.Month, dtDate.Day, dtTime.Hour, dtTime.Minute, dtTime.Second))
+                                ' Luu dtfromdate cho bang dac biet
+                                If String.Equals(TableName, "HR_EmployeeRegisMaternityLeave", StringComparison.OrdinalIgnoreCase) AndAlso configColName(i) = "FROMDATE" Then
+                                    dtfromdate = dtDate
                                 End If
+                                If String.Equals(TableName, "HR_EmployeeWarning", StringComparison.OrdinalIgnoreCase) AndAlso configColName(i) = "DATE_" Then
+                                    dtfromdate = dtDate
+                                End If
+                                Datamember_Value.Add(dtDate)
                             End If
                         Else
-                            'worksheet.Cells(ColDatamember(i) + index.ToString()).Calculate()
                             Datamember_Value.Add(worksheet.Cells(ColDatamember(i) + index.ToString()).Value)
                         End If
                     Next
 
-                    If FieldInserDate <> String.Empty Then
-                        Datamember_Value.Add(Now)
+                    If FieldInserDate <> String.Empty Then Datamember_Value.Add(Now)
+                    If FieldUserName <> String.Empty Then Datamember_Value.Add(obj.UserName)
+
+                    ' -- Luu: batch cho bang thuong, per-row cho bang can CheckingBlock ----------
+                    If needsPerRowCheck Then
+                        If LuuKhongGhiLog(False, TableName, Primary, Primary_Value.ToArray(), Datamember, Datamember_Value.ToArray()) = False Then
+                            MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Return False
+                        End If
+                    Else
+                        Dim rowSql As String = TaoSQLKhongGhiLog(False, TableName, Primary, Primary_Value.ToArray(), Datamember, Datamember_Value.ToArray())
+                        If rowSql = String.Empty Then
+                            MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Return False
+                        End If
+                        sb.AppendLine(rowSql)
+                        batchCount += 1
+                        If batchCount >= BATCH_SIZE Then
+                            If Not kn.SaveData(sb.ToString()) Then
+                                MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + " batch gan dong " + index.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                Return False
+                            End If
+                            sb.Clear()
+                            batchCount = 0
+                        End If
                     End If
-                    If FieldUserName <> String.Empty Then
-                        Datamember_Value.Add(obj.UserName)
-                    End If
-                    If LuuKhongGhiLog(False, TableName, Primary, Primary_Value.ToArray, Datamember, Datamember_Value.ToArray) = False Then
-                        MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        Return False
-                    End If
+
                     index += 1
                 End If
             End While
+
+            ' Flush batch con lai
+            If batchCount > 0 Then
+                If Not kn.SaveData(sb.ToString()) Then
+                    MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + " batch cuoi", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return False
+                End If
+            End If
         End Using
         MessageBox.Show(GetLanguagesTranslated("Popup.Nhapthanhcong"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Return True
@@ -2857,12 +2960,12 @@ Public Class ThuVienChucNang
     Public Function NhapExcelToDatableEPPlus(ByVal TableName As String, ByVal LineConfigDatamember As Integer, ByVal LineStart As Integer) As DataTable
         Dim ofd As New OpenFileDialog
         With ofd
-            '.FileName = "C:" & "\" & "TempImport\Received Files" 'Points it to the received files folder
             .Title = "Locate File"
-            .Filter = "Excel file (*.xlsx)|*.xlsx|All files (*.*)|*.*"
+            .Filter = "Excel file (*.xlsx;*.xls)|*.xlsx;*.xls|Excel 2007+ (*.xlsx)|*.xlsx|Excel 97-2003 (*.xls)|*.xls|All files (*.*)|*.*"
         End With
         If ofd.ShowDialog() <> DialogResult.Cancel Then
-            Dim ColExel() As String = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ", "CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "CL", "CM", "CN", "CO", "CP", "CQ", "CR", "CS", "CT", "CU", "CV", "CW", "CX", "CY", "CZ", "DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ", "EA", "EB", "EC", "ED", "EE", "EF", "EG", "EH", "EI", "EJ", "EK", "EL", "EM", "EN", "EO", "EP", "EQ", "ER", "ES", "ET", "EU", "EV", "EW", "EX", "EY", "EZ", "FA", "FB", "FC", "FD", "FE", "FF", "FG", "FH", "FI", "FJ", "FK", "FL", "FM", "FN", "FO", "FP", "FQ", "FR", "FS", "FT", "FU", "FV", "FW", "FX", "FY", "FZ", "GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GI", "GJ", "GK", "GL", "GM", "GN", "GO", "GP", "GQ", "GR", "GS", "GT", "GU", "GV", "GW", "GX", "GY", "GZ", "HA", "HB", "HC", "HD", "HE", "HF", "HG", "HH", "HI", "HJ", "HK", "HL", "HM", "HN", "HO", "HP", "HQ", "HR", "HS", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "IA", "IB", "IC", "ID", "IE", "IF", "IG", "IH", "II", "IJ", "IK", "IL", "IM", "IN", "IO", "IP", "IQ", "IR", "IS", "IT", "IU", "IV", "IW", "IX", "IY", "IZ", "JA", "JB", "JC", "JD", "JE", "JF", "JG", "JH", "JI", "JJ", "JK", "JL", "JM", "JN", "JO", "JP", "JQ", "JR", "JS", "JT", "JU", "JV", "JW", "JX", "JY", "JZ", "KA", "KB", "KC", "KD", "KE", "KF", "KG", "KH", "KI", "KJ", "KK", "KL", "KM", "KN", "KO", "KP", "KQ", "KR", "KS", "KT", "KU", "KV", "KW", "KX", "KY", "KZ"}
+            Dim fileExt As String = IO.Path.GetExtension(ofd.FileName).ToLower()
+            Dim ColExel() As String = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ", "CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "CL", "CM", "CN", "CO", "CP", "CQ", "CR", "CS", "CT", "CU", "CV", "CW", "CX", "CY", "CZ", "DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ", "EA", "EB", "EC", "ED", "EE", "EF", "EG", "EH", "EI", "EJ", "EK", "EL", "EM", "EN", "EO", "EP", "EQ", "ER", "ES", "ET", "EU", "EV", "EW", "EX", "EY", "EZ", "FA", "FB", "FC", "FD", "FE", "FF", "FG", "FH", "FI", "FJ", "FK", "FL", "FM", "FN", "FO", "FP", "FQ", "FR", "FS", "FT", "FU", "FV", "FW", "FX", "FY", "FZ", "GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GI", "GJ", "GK", "GL", "GM", "GN", "GO", "GP", "GQ", "GR", "GS", "GT", "GU", "GV", "GW", "GX", "GY", "GZ", "HA", "HB", "HC", "HD", "HE", "HF", "HG", "HH", "HI", "HJ", "HK", "HL", "HM", "HN", "HO", "HP", "HQ", "HR", "HS", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "IA", "IB", "IC", "ID", "IE", "IF", "IG", "IH", "II", "IJ", "IK", "IL", "IM", "IN", "IO", "IP", "IQ", "IR", "IS", "IT", "IU", "IV", "IW", "IX", "IY", "IZ", "JA", "JB", "JC", "JD", "JE", "JF", "JG", "JH", "JI", "JJ", "JK", "JL", "JM", "JN", "JO", "JP", "JQ", "JR", "JS", "JT", "JU", "JV", "JW", "JX", "JY", "JZ", "KA", "KB", "KC", "KD", "KE", "KF", "KG", "KH", "KI", "KJ", "KK", "KL", "KM", "KN", "KO", "KP", "KQ", "KR", "KS", "KT", "KU", "KV", "KW", "KX", "KY", "KZ"}
             Dim ColIndex As Integer = 0
             Dim i As Integer
             Dim Table As DataTable
@@ -2889,48 +2992,70 @@ Public Class ThuVienChucNang
                 Table.Columns.Add(clKiemTraDuLieuNhap)
             End If
             Dim bKiemTraConDuLieuNhap As Boolean
-            Dim excel As New FileInfo(ofd.FileName)
-            Using package = New ExcelPackage(excel)
-                Dim workbook = package.Workbook
-                Dim worksheet = workbook.Worksheets.First()
+
+            If fileExt = ".xls" Then
+                ' ──── Nhap .xls bang OleDb (nhanh hon, khong can EPPlus) ───────────────
+                Dim provider As String = If(Environment.Is64BitProcess, "Microsoft.ACE.OLEDB.12.0", "Microsoft.Jet.OLEDB.4.0")
+                Dim connStr As String = "Provider=" & provider & ";Data Source=" & ofd.FileName & ";Extended Properties='Excel 8.0;HDR=NO;IMEX=1'"
+                Dim xlsData As New DataTable
+                Try
+                    Using conn As New System.Data.OleDb.OleDbConnection(connStr)
+                        conn.Open()
+                        Dim dtSchema As DataTable = conn.GetOleDbSchemaTable(System.Data.OleDb.OleDbSchemaGuid.Tables, Nothing)
+                        Dim firstSheet As String = CStr(dtSchema.Rows(0)("TABLE_NAME"))
+                        Using adapter As New System.Data.OleDb.OleDbDataAdapter("SELECT * FROM [" & firstSheet & "]", conn)
+                            adapter.Fill(xlsData)
+                        End Using
+                    End Using
+                Catch ex As Exception
+                    MessageBox.Show(ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return Nothing
+                End Try
+                Dim dmRowIdx As Integer = LineConfigDatamember - 1
                 Dim index As Integer = LineStart
                 Try
                     bKiemTraConDuLieuNhap = True
                     While 1 = 1
+                        Dim rowIdx As Integer = index - 1
+                        If rowIdx >= xlsData.Rows.Count Then Exit While
                         bKiemTraConDuLieuNhap = False
-                        For i = 0 To ColExel.Length - 1
-                            If worksheet.Cells(ColExel(i) + index.ToString).Text.Trim <> String.Empty Then
+                        For i = 0 To Math.Min(ColExel.Length, xlsData.Columns.Count) - 1
+                            Dim cellChk As Object = xlsData.Rows(rowIdx)(i)
+                            If Not IsDBNull(cellChk) AndAlso CStr(cellChk).Trim() <> String.Empty Then
                                 bKiemTraConDuLieuNhap = True
                                 Exit For
                             End If
                         Next
-                        If bKiemTraConDuLieuNhap = False Then
-                            Exit While
-                        End If
+                        If Not bKiemTraConDuLieuNhap Then Exit While
                         Dim newRow As DataRow = Table.NewRow
                         LoiDuLieu = String.Empty
-                        For ColIndex = 0 To ColExel.Length - 1
-                            If worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim <> String.Empty Then
-                                If Not IsNothing(worksheet.Cells(ColExel(ColIndex) + index.ToString).Value) Then
-                                    If worksheet.Cells(ColExel(ColIndex) + index.ToString).Value.GetType.Name = "ExcelErrorValue" Then
-                                        MessageBox.Show(GetLanguagesTranslated("Popup.Banvuilongkiemtragiatricot") + ": " + ColExel(ColIndex) + " " + GetLanguagesTranslated("Popup.Dong") + ": " + index.ToString + " " + GetLanguagesTranslated("Popup.Dulieukhonghople"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                                        Return Nothing
-                                    Else
-                                        If CStr(worksheet.Cells(ColExel(ColIndex) + index.ToString).Value).Trim <> String.Empty Then
-                                            If Table.Columns.Contains(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim) Then
-                                                If Table.Columns(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim).DataType.FullName = "System.DateTime" Then
-                                                    If worksheet.Cells(ColExel(ColIndex) + index.ToString).Value.GetType.ToString = "System.Double" Then
-                                                        newRow(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim) = DateTime.FromOADate(worksheet.Cells(ColExel(ColIndex) + index.ToString).Value)
-                                                    Else
-                                                        newRow(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim) = worksheet.Cells(ColExel(ColIndex) + index.ToString).Value
-                                                    End If
-                                                Else
-                                                    newRow(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim) = worksheet.Cells(ColExel(ColIndex) + index.ToString).Value
-                                                End If
-                                            End If
-                                        End If
-                                    End If
+                        For ColIndex = 0 To Math.Min(ColExel.Length, xlsData.Columns.Count) - 1
+                            Dim configCell As Object = If(dmRowIdx < xlsData.Rows.Count, xlsData.Rows(dmRowIdx)(ColIndex), DBNull.Value)
+                            Dim fieldName As String = CStr(If(IsDBNull(configCell), "", configCell)).Trim()
+                            If fieldName = "" Then Continue For
+                            Dim dataVal As Object = xlsData.Rows(rowIdx)(ColIndex)
+                            If IsDBNull(dataVal) OrElse CStr(dataVal).Trim() = String.Empty Then Continue For
+                            If Not Table.Columns.Contains(fieldName) Then Continue For
+                            Dim colType As String = Table.Columns(fieldName).DataType.FullName
+                            If colType = "System.DateTime" Then
+                                Dim dtParsed As DateTime = New DateTime(1900, 1, 1)
+                                If TypeOf dataVal Is DateTime Then
+                                    dtParsed = CType(dataVal, DateTime)
+                                ElseIf TypeOf dataVal Is Double Then
+                                    dtParsed = DateTime.FromOADate(CDbl(dataVal))
+                                Else
+                                    DateTime.TryParse(CStr(dataVal), dtParsed)
                                 End If
+                                If dtParsed.Year > 1900 Then newRow(fieldName) = dtParsed
+                            ElseIf colType = "System.Int32" Then
+                                Dim intParsed As Integer = 0
+                                If TypeOf dataVal Is Double Then
+                                    newRow(fieldName) = CInt(CDbl(dataVal))
+                                ElseIf Integer.TryParse(CStr(dataVal), intParsed) Then
+                                    newRow(fieldName) = intParsed
+                                End If
+                            Else
+                                newRow(fieldName) = CStr(dataVal).Trim()
                             End If
                         Next
                         If TableName.ToUpper = "HR_EmployeeRegisMaternityLeave".ToUpper Then
@@ -2944,17 +3069,6 @@ Public Class ThuVienChucNang
                                     bCheckAddGrid = False
                                 End If
                             End If
-                            'If Not IsDBNull(r("PrimaryName")) Then
-                            '    If TableName.ToUpper = "HR_TimeKeeping_Data".ToUpper And CStr(r("PrimaryName")).ToUpper = "CardNumber".ToUpper Then
-                            '        If IsDBNull(newRow("Employee_ID")) Then
-                            '            bCheckAddGrid = False
-                            '        End If
-                            '    Else
-                            '        If IsDBNull(newRow(r("PrimaryName"))) Then
-                            '            bCheckAddGrid = False
-                            '        End If
-                            '    End If
-                            'End If
                         Next
                         If bCheckAddGrid = True Then
                             Table.Rows.Add(newRow)
@@ -2983,9 +3097,93 @@ Public Class ThuVienChucNang
                 Catch ex As Exception
                     MessageBox.Show(ex.ToString)
                 End Try
-
-            End Using
-            'Table.AcceptChanges()
+            Else
+                ' ──── Nhap .xlsx bang EPPlus (giu nguyen logic cu) ───────────────────────
+                Dim excel As New FileInfo(ofd.FileName)
+                Using package = New ExcelPackage(excel)
+                    Dim workbook = package.Workbook
+                    Dim worksheet = workbook.Worksheets.First()
+                    Dim index As Integer = LineStart
+                    Try
+                        bKiemTraConDuLieuNhap = True
+                        While 1 = 1
+                            bKiemTraConDuLieuNhap = False
+                            For i = 0 To ColExel.Length - 1
+                                If worksheet.Cells(ColExel(i) + index.ToString).Text.Trim <> String.Empty Then
+                                    bKiemTraConDuLieuNhap = True
+                                    Exit For
+                                End If
+                            Next
+                            If bKiemTraConDuLieuNhap = False Then
+                                Exit While
+                            End If
+                            Dim newRow As DataRow = Table.NewRow
+                            LoiDuLieu = String.Empty
+                            For ColIndex = 0 To ColExel.Length - 1
+                                If worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim <> String.Empty Then
+                                    If Not IsNothing(worksheet.Cells(ColExel(ColIndex) + index.ToString).Value) Then
+                                        If worksheet.Cells(ColExel(ColIndex) + index.ToString).Value.GetType.Name = "ExcelErrorValue" Then
+                                            MessageBox.Show(GetLanguagesTranslated("Popup.Banvuilongkiemtragiatricot") + ": " + ColExel(ColIndex) + " " + GetLanguagesTranslated("Popup.Dong") + ": " + index.ToString + " " + GetLanguagesTranslated("Popup.Dulieukhonghople"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                            Return Nothing
+                                        Else
+                                            If CStr(worksheet.Cells(ColExel(ColIndex) + index.ToString).Value).Trim <> String.Empty Then
+                                                If Table.Columns.Contains(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim) Then
+                                                    If Table.Columns(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim).DataType.FullName = "System.DateTime" Then
+                                                        If worksheet.Cells(ColExel(ColIndex) + index.ToString).Value.GetType.ToString = "System.Double" Then
+                                                            newRow(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim) = DateTime.FromOADate(worksheet.Cells(ColExel(ColIndex) + index.ToString).Value)
+                                                        Else
+                                                            newRow(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim) = worksheet.Cells(ColExel(ColIndex) + index.ToString).Value
+                                                        End If
+                                                    Else
+                                                        newRow(worksheet.Cells(ColExel(ColIndex) + LineConfigDatamember.ToString).Text.Trim) = worksheet.Cells(ColExel(ColIndex) + index.ToString).Value
+                                                    End If
+                                                End If
+                                            End If
+                                        End If
+                                    End If
+                                End If
+                            Next
+                            If TableName.ToUpper = "HR_EmployeeRegisMaternityLeave".ToUpper Then
+                                newRow("PlanStatus") = ReturnLeavePlanStatus(newRow("Employee_ID"), newRow("fromdate"))
+                            End If
+                            bCheckAddGrid = True
+                            For Each r As DataRow In tableInf.Rows
+                                If r("IS_NULLABLE") = "NO" And IsDBNull(r("IdentityName")) Then
+                                    If IsDBNull(newRow(r("COLUMN_NAME"))) Then
+                                        LoiDuLieu += r("COLUMN_NAME") + "; "
+                                        bCheckAddGrid = False
+                                    End If
+                                End If
+                            Next
+                            If bCheckAddGrid = True Then
+                                Table.Rows.Add(newRow)
+                            Else
+                                If TableName.ToUpper = "SmartBooks_Employee".ToUpper Then
+                                    If LoiDuLieu.ToUpper = "EMPLOYEE_ID; " Then
+                                        Table.Rows.Add(newRow)
+                                    Else
+                                        MessageBox.Show(GetLanguagesTranslated("Popup.Dong") + " " + index.ToString + " " + GetLanguagesTranslated("Popup.Khongtheduocnhaplenluoividulieubisaidinhdangbankiemtrakey") + ": " + LoiDuLieu.Replace("Employee_ID; ", ""), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                        Exit While
+                                    End If
+                                ElseIf TableName.ToUpper = "HR_Transfer".ToUpper Then
+                                    If LoiDuLieu.ToUpper = "TYPEOFTRANSFER; " Then
+                                        Table.Rows.Add(newRow)
+                                    Else
+                                        MessageBox.Show(GetLanguagesTranslated("Popup.Dong") + " " + index.ToString + " " + GetLanguagesTranslated("Popup.Khongtheduocnhaplenluoividulieubisaidinhdangbankiemtrakey") + ": " + LoiDuLieu.Replace("Employee_ID; ", ""), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                        Exit While
+                                    End If
+                                Else
+                                    MessageBox.Show(GetLanguagesTranslated("Popup.Dong") + " " + index.ToString + " " + GetLanguagesTranslated("Popup.Khongtheduocnhaplenluoividulieubisaidinhdangbankiemtrakey") + ": " + LoiDuLieu, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                                    Exit While
+                                End If
+                            End If
+                            index += 1
+                        End While
+                    Catch ex As Exception
+                        MessageBox.Show(ex.ToString)
+                    End Try
+                End Using
+            End If
             Return Table
         End If
     End Function
@@ -3315,160 +3513,220 @@ Public Class ThuVienChucNang
         End If
     End Function
     Public Function NhapExcel(ByVal SheetName As String, ByVal TableName As String, ByVal LinkOfFile As String, ByVal LineConfigDatamember As Integer, ByVal LineConfigPrimary As Integer, ByVal LineStart As Integer, Optional ByVal FieldInserDate As String = "", Optional ByVal FieldUserName As String = "") As Boolean
-        'Dim ofd As New OpenFileDialog
-        'With ofd
-        '    .FileName = "C:" & "\" & "TempImport\Received Files" 'Points it to the received files folder
-        '    .Title = "Locate File"
-        '    .Filter = "Excel file (*.xls)|*.xls|All files (*.*)|*.*"
-        'End With
-        Dim b As Boolean = True
-        'Dim result As Integer = MessageBox.Show("Bạn có thực sự muốn cập nhật thông tin nhân viên!", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-        'If result = DialogResult.No Then
-        '    b = False
-        'End If
-        Dim urlTemplate As String = LinkOfFile
-        Dim ColExel() As String = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF", "AG", "AH", "AI", "AJ", "AK", "AL", "AM", "AN", "AO", "AP", "AQ", "AR", "AS", "AT", "AU", "AV", "AW", "AX", "AY", "AZ", "BA", "BB", "BC", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BK", "BL", "BM", "BN", "BO", "BP", "BQ", "BR", "BS", "BT", "BU", "BV", "BW", "BX", "BY", "BZ", "CA", "CB", "CC", "CD", "CE", "CF", "CG", "CH", "CI", "CJ", "CK", "CL", "CM", "CN", "CO", "CP", "CQ", "CR", "CS", "CT", "CU", "CV", "CW", "CX", "CY", "CZ", "DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ", "EA", "EB", "EC", "ED", "EE", "EF", "EG", "EH", "EI", "EJ", "EK", "EL", "EM", "EN", "EO", "EP", "EQ", "ER", "ES", "ET", "EU", "EV", "EW", "EX", "EY", "EZ", "FA", "FB", "FC", "FD", "FE", "FF", "FG", "FH", "FI", "FJ", "FK", "FL", "FM", "FN", "FO", "FP", "FQ", "FR", "FS", "FT", "FU", "FV", "FW", "FX", "FY", "FZ", "GA", "GB", "GC", "GD", "GE", "GF", "GG", "GH", "GI", "GJ", "GK", "GL", "GM", "GN", "GO", "GP", "GQ", "GR", "GS", "GT", "GU", "GV", "GW", "GX", "GY", "GZ", "HA", "HB", "HC", "HD", "HE", "HF", "HG", "HH", "HI", "HJ", "HK", "HL", "HM", "HN", "HO", "HP", "HQ", "HR", "HS", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "HT", "HU", "HV", "HW", "HX", "HY", "HZ", "IA", "IB", "IC", "ID", "IE", "IF", "IG", "IH", "II", "IJ", "IK", "IL", "IM", "IN", "IO", "IP", "IQ", "IR", "IS", "IT", "IU", "IV", "IW", "IX", "IY", "IZ", "JA", "JB", "JC", "JD", "JE", "JF", "JG", "JH", "JI", "JJ", "JK", "JL", "JM", "JN", "JO", "JP", "JQ", "JR", "JS", "JT", "JU", "JV", "JW", "JX", "JY", "JZ", "KA", "KB", "KC", "KD", "KE", "KF", "KG", "KH", "KI", "KJ", "KK", "KL", "KM", "KN", "KO", "KP", "KQ", "KR", "KS", "KT", "KU", "KV", "KW", "KX", "KY", "KZ"}
-        Dim Xls As New XlsReport
-        Xls.FileName = urlTemplate
-        Xls.Start.File()
-        Xls.Page.Begin(SheetName, "1")
-        Xls.Page.Name = SheetName
-        Dim str, strData, strColKey As String
-        Dim Datamember As String()
-        Dim Datamember_Value As New ArrayList
-        Dim Primary As String()
-        Dim Primary_Value As New ArrayList
-        Dim ColDatamember As String()
-        Dim ColKey As String()
-        Dim ojDate, ojTime As Object
-        Dim dtDate, dtTime, dtfromdate As DateTime
+        ' Da sua: thay XlsReport (khong doc duoc) bang OleDb; bo Xls.Out.File (ghi de file nguon);
+        ' them batch SQL 100 dong/lan cho toc do nhanh.
         Dim tableInf As DataTable = kn.ReadData("exec [dbo].[sp_GetAllInformationInTable] '" + TableName + "'", "table")
-        'Dim tab As DataTable = kn.ReadData("select top 1 * from [" + TableName + "]", "table")
-        For Each c As String In ColExel
-            If CStr(Xls.Cell(c + LineConfigDatamember.ToString).Value).Trim <> "" Then
-                str += CStr(Xls.Cell(c + LineConfigDatamember.ToString).Value).Trim + ","
-                strData += c + ","
+        Dim colTypeMap As New Dictionary(Of String, String)(StringComparer.OrdinalIgnoreCase)
+        For Each row As DataRow In tableInf.Rows
+            Dim cname As String = CStr(row("COLUMN_NAME"))
+            If Not colTypeMap.ContainsKey(cname) Then
+                colTypeMap(cname) = CStr(row("DATA_TYPE"))
             End If
         Next
-        If str <> String.Empty Then
-            If FieldInserDate <> String.Empty Then
-                str += FieldInserDate + ","
-            End If
-            If FieldUserName <> String.Empty Then
-                str += FieldUserName + ","
-            End If
-            Datamember = Split(str.Remove(str.Length - 1, 1), ",")
-            ColDatamember = Split(strData.Remove(strData.Length - 1, 1), ",")
-        End If
-        str = String.Empty
-        For Each c As String In ColExel
-            If CStr(Xls.Cell(c + LineConfigPrimary.ToString).Value).Trim <> "" Then
-                If tableInf.Select("COLUMN_NAME='" + CStr(Xls.Cell(c + LineConfigPrimary.ToString).Value).Trim + "'").Count > 0 Then
-                    str += CStr(Xls.Cell(c + LineConfigPrimary.ToString).Value).Trim + ","
-                    strColKey += c + ","
-                End If
-            End If
-        Next
-        If str <> String.Empty Then
-            Primary = Split(str.Remove(str.Length - 1, 1), ",")
-            ColKey = Split(strColKey.Remove(strColKey.Length - 1, 1), ",")
-        End If
-        Dim index As Integer = LineStart, isDataNull As Integer = 0
-        While Xls.Cell(ColKey(0) + index.ToString).Value <> String.Empty Or isDataNull < 2
-            If Xls.Cell(ColKey(0) + index.ToString).Value = String.Empty Then
-                isDataNull += 1
-                index += 1
-            Else
-                isDataNull = 0
-                Primary_Value.Clear()
-                Datamember_Value.Clear()
-                For i As Integer = 0 To ColKey.Length - 1
-                    If tableInf.Select("COLUMN_NAME='" + Primary(i) + "'")(0)("DATA_TYPE") = "datetime" Then
-                        ojDate = CheckExcelNull(Xls, ColKey(i) + index.ToString(), ObjectType.DateType, "Null").Replace("'", "")
-                        ojTime = CheckExcelNull(Xls, ColKey(i) + index.ToString(), ObjectType.TimeType, "Null").Replace("'", "")
-                        If (ojDate = "" Or CStr(ojDate).ToUpper = "NULL") And (ojTime = "" Or CStr(ojTime).ToUpper = "NULL") Then
-                            Primary_Value.Add(New DateTime(1900, 1, 1))
-                            MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString + ". " + GetLanguagesTranslated("Popup.Banluuytruongkhoakhongduocdetrong"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            b = False
-                            Exit While
-                        Else
-                            If CStr(ojDate).ToUpper = "NULL" Then
-                                dtDate = New DateTime(2001, 1, 1)
-                            Else
-                                dtDate = CType(ojDate, DateTime)
-                            End If
-                            If (ojTime = "" Or CStr(ojTime).ToUpper = "NULL") Then
-                                Primary_Value.Add(dtDate)
-                            Else
-                                dtTime = CType(ojTime, DateTime)
-                                Primary_Value.Add(New DateTime(dtDate.Year, dtDate.Month, dtDate.Day, dtTime.Hour, dtTime.Minute, dtTime.Second))
-                            End If
-                        End If
-                    Else
-                        If CStr(Xls.Cell(ColKey(i) + index.ToString).Value).Trim <> String.Empty Then
-                            Primary_Value.Add(CStr(Xls.Cell(ColKey(i) + index.ToString).Value).Trim)
-                        Else
-                            'MessageBox.Show("Có lỗi ở dòng thứ " + index.ToString + ", bạn lưu ý trường khóa không được để trống.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            'b = False
-                            Exit While
-                        End If
-                    End If
-                Next
-                For i As Integer = 0 To ColDatamember.Length - 1
-                    If tableInf.Select("COLUMN_NAME='" + Datamember(i) + "'")(0)("DATA_TYPE") = "datetime" Then
-                        ojDate = CheckExcelNull(Xls, ColDatamember(i) + index.ToString(), ObjectType.DateType, "Null").Replace("'", "")
-                        ojTime = CheckExcelNull(Xls, ColDatamember(i) + index.ToString(), ObjectType.TimeType, "Null").Replace("'", "")
-                        If (ojDate = "" Or CStr(ojDate).ToUpper = "NULL") And (ojTime = "" Or CStr(ojTime).ToUpper = "NULL") Then
-                            Datamember_Value.Add(New DateTime(1900, 1, 1))
-                            'MessageBox.Show("Có lỗi ở dòng thứ " + index.ToString + ", bạn lưu ý trường khóa không được để trống.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                            'b = False
-                            'Exit While
-                        Else
-                            If CStr(ojDate).ToUpper = "NULL" Or ojDate = "'0001-01-01'" Then
-                                dtDate = dtfromdate
-                            Else
-                                dtDate = CType(ojDate, DateTime)
-                                If TableName = "HR_EmployeeRegisMaternityLeave" Then
-                                    If CStr(Xls.Cell(ColDatamember(i) + LineConfigDatamember.ToString()).Value).Trim.ToUpper = "FROMDATE" Then
-                                        dtfromdate = dtDate
-                                    End If
-                                End If
-                                If TableName = "HR_EmployeeWarning" Then
-                                    If CStr(Xls.Cell(ColDatamember(i) + LineConfigDatamember.ToString()).Value).Trim.ToUpper = "DATE_" Then
-                                        dtfromdate = dtDate
-                                    End If
-                                End If
-                            End If
-                            If (ojTime = "" Or CStr(ojTime).ToUpper = "NULL") Then
-                                Datamember_Value.Add(dtDate)
-                            Else
-                                dtTime = CType(ojTime, DateTime)
-                                Datamember_Value.Add(New DateTime(dtDate.Year, dtDate.Month, dtDate.Day, dtTime.Hour, dtTime.Minute, dtTime.Second))
-                            End If
-                        End If
-                    Else
-                        Datamember_Value.Add(CStr(Xls.Cell(ColDatamember(i) + index.ToString).Value).Trim)
-                    End If
-                Next
 
-                If FieldInserDate <> String.Empty Then
-                    Datamember_Value.Add(Now)
-                End If
-                If FieldUserName <> String.Empty Then
-                    Datamember_Value.Add(obj.UserName)
-                End If
-                If LuuKhongGhiLog(False, TableName, Primary, Primary_Value.ToArray, Datamember, Datamember_Value.ToArray) = False Then
-                    MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + index.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    b = False
-                    Exit While
-                End If
-                index += 1
+        ' Bang can kiem tra khoa tung dong (CheckingBlock) -- dung LuuKhongGhiLog nhu cu
+        Dim needsPerRowCheck As Boolean = (String.Equals(TableName, "HR_WTDaily", StringComparison.OrdinalIgnoreCase) OrElse
+                                           String.Equals(TableName, "HR_TimeKeeping_Data", StringComparison.OrdinalIgnoreCase) OrElse
+                                           String.Equals(TableName, "HR_EmpRegisLeave", StringComparison.OrdinalIgnoreCase) OrElse
+                                           String.Equals(TableName, "HR_EmployeeRegisMaternityLeave", StringComparison.OrdinalIgnoreCase))
+
+        ' Doc toan bo sheet .xls vao DataTable bang OleDb (HDR=NO: hang=row, cot=F1,F2,...)
+        Dim provider As String = If(Environment.Is64BitProcess, "Microsoft.ACE.OLEDB.12.0", "Microsoft.Jet.OLEDB.4.0")
+        Dim connStr As String = "Provider=" & provider & ";Data Source=" & LinkOfFile & ";Extended Properties='Excel 8.0;HDR=NO;IMEX=1'"
+        Dim xlsData As New DataTable
+        Try
+            Using conn As New System.Data.OleDb.OleDbConnection(connStr)
+                conn.Open()
+                Using adapter As New System.Data.OleDb.OleDbDataAdapter("SELECT * FROM [" & SheetName & "$]", conn)
+                    adapter.Fill(xlsData)
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        End Try
+
+        ' Config row (0-based): LineConfigDatamember-1 = ten field DM, LineConfigPrimary-1 = ten PK
+        Dim dmRowIdx As Integer = LineConfigDatamember - 1
+        Dim pkRowIdx As Integer = LineConfigPrimary - 1
+        If dmRowIdx >= xlsData.Rows.Count OrElse pkRowIdx >= xlsData.Rows.Count Then
+            MessageBox.Show("File Excel khong du dong config.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        End If
+
+        Dim strDmNames As New List(Of String)
+        Dim strDmColIdx As New List(Of Integer)
+        Dim strPkNames As New List(Of String)
+        Dim strPkColIdx As New List(Of Integer)
+
+        For j As Integer = 0 To xlsData.Columns.Count - 1
+            Dim cellVal As String = CStr(If(IsDBNull(xlsData.Rows(dmRowIdx)(j)), "", xlsData.Rows(dmRowIdx)(j))).Trim()
+            If cellVal <> "" AndAlso colTypeMap.ContainsKey(cellVal) Then
+                strDmNames.Add(cellVal)
+                strDmColIdx.Add(j)
             End If
+        Next
+        For j As Integer = 0 To xlsData.Columns.Count - 1
+            Dim cellVal As String = CStr(If(IsDBNull(xlsData.Rows(pkRowIdx)(j)), "", xlsData.Rows(pkRowIdx)(j))).Trim()
+            If cellVal <> "" AndAlso colTypeMap.ContainsKey(cellVal) Then
+                strPkNames.Add(cellVal)
+                strPkColIdx.Add(j)
+            End If
+        Next
+
+        If strPkNames.Count = 0 Then
+            MessageBox.Show("Khong tim thay cot khoa chinh trong file Excel.", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        End If
+
+        If FieldInserDate <> String.Empty Then strDmNames.Add(FieldInserDate)
+        If FieldUserName <> String.Empty Then strDmNames.Add(FieldUserName)
+
+        Dim Datamember() As String = strDmNames.ToArray()
+        Dim ColDmIdx() As Integer = strDmColIdx.ToArray()
+        Dim Primary() As String = strPkNames.ToArray()
+        Dim ColPkIdx() As Integer = strPkColIdx.ToArray()
+
+        ' Cache ten field tu config row cho xu ly bang dac biet
+        Dim configDmName(ColDmIdx.Length - 1) As String
+        For ii As Integer = 0 To ColDmIdx.Length - 1
+            configDmName(ii) = CStr(If(IsDBNull(xlsData.Rows(dmRowIdx)(ColDmIdx(ii))), "", xlsData.Rows(dmRowIdx)(ColDmIdx(ii)))).ToUpper().Trim()
+        Next
+
+        Dim sb As New StringBuilder()
+        Dim batchCount As Integer = 0
+        Const BATCH_SIZE As Integer = 100
+
+        Dim dataStartIdx As Integer = LineStart - 1   ' chuyen sang 0-based
+        Dim isDataNull As Integer = 0
+        Dim currentRowIdx As Integer = dataStartIdx
+        Dim dtfromdate As DateTime
+
+        While currentRowIdx < xlsData.Rows.Count
+            ' Kiem tra o dau tien cua khoa co trong hay khong
+            Dim pkCellVal As Object = xlsData.Rows(currentRowIdx)(ColPkIdx(0))
+            Dim pkCellStr As String = CStr(If(IsDBNull(pkCellVal), "", pkCellVal)).Trim()
+            If pkCellStr = String.Empty Then
+                isDataNull += 1
+                If isDataNull >= 2 Then Exit While
+                currentRowIdx += 1
+                Continue While
+            End If
+            isDataNull = 0
+
+            Dim ojVal As Object
+            Dim dtDate As DateTime
+            Dim Primary_Value As New List(Of Object)
+            Dim Datamember_Value As New List(Of Object)
+            Dim excelRow As Integer = currentRowIdx + 1   ' de hien thi thong bao (1-based)
+
+            ' ── Doc gia tri khoa chinh ──────────────────────────────────────────────
+            For ii As Integer = 0 To ColPkIdx.Length - 1
+                ojVal = xlsData.Rows(currentRowIdx)(ColPkIdx(ii))
+                Dim pkType As String = ""
+                colTypeMap.TryGetValue(Primary(ii), pkType)
+                If IsDBNull(ojVal) Then
+                    MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + excelRow.ToString & ". " + GetLanguagesTranslated("Popup.Banluuytruongkhoakhongduocdetrong"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return False
+                End If
+                If pkType = "datetime" Then
+                    If TypeOf ojVal Is DateTime Then
+                        Primary_Value.Add(CType(ojVal, DateTime))
+                    ElseIf TypeOf ojVal Is Double Then
+                        Primary_Value.Add(DateTime.FromOADate(CDbl(ojVal)))
+                    Else
+                        Dim dtPk As DateTime
+                        If DateTime.TryParse(CStr(ojVal), dtPk) Then
+                            Primary_Value.Add(dtPk)
+                        Else
+                            MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + excelRow.ToString & ". " + GetLanguagesTranslated("Popup.Banluuytruongkhoakhongduocdetrong"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Return False
+                        End If
+                    End If
+                Else
+                    Dim pkStr As String = CStr(ojVal).Trim()
+                    If pkStr = String.Empty Then
+                        MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + excelRow.ToString & ". " + GetLanguagesTranslated("Popup.Banluuytruongkhoakhongduocdetrong"), "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return False
+                    End If
+                    Primary_Value.Add(ojVal)
+                End If
+            Next
+
+            ' ── Doc gia tri datamember ───────────────────────────────────────────────
+            For ii As Integer = 0 To ColDmIdx.Length - 1
+                ojVal = xlsData.Rows(currentRowIdx)(ColDmIdx(ii))
+                Dim dmType As String = ""
+                colTypeMap.TryGetValue(Datamember(ii), dmType)
+                If dmType = "datetime" Then
+                    If IsDBNull(ojVal) OrElse CStr(ojVal).Trim() = String.Empty Then
+                        Datamember_Value.Add(New DateTime(1900, 1, 1))
+                    Else
+                        If TypeOf ojVal Is DateTime Then
+                            dtDate = CType(ojVal, DateTime)
+                        ElseIf TypeOf ojVal Is Double Then
+                            dtDate = DateTime.FromOADate(CDbl(ojVal))
+                        Else
+                            If Not DateTime.TryParse(CStr(ojVal), dtDate) Then dtDate = New DateTime(1900, 1, 1)
+                        End If
+                        ' Theo doi dtfromdate cho bang dac biet
+                        If String.Equals(TableName, "HR_EmployeeRegisMaternityLeave", StringComparison.OrdinalIgnoreCase) AndAlso configDmName(ii) = "FROMDATE" Then
+                            dtfromdate = dtDate
+                        End If
+                        If String.Equals(TableName, "HR_EmployeeWarning", StringComparison.OrdinalIgnoreCase) AndAlso configDmName(ii) = "DATE_" Then
+                            dtfromdate = dtDate
+                        End If
+                        Datamember_Value.Add(dtDate)
+                    End If
+                Else
+                    If IsDBNull(ojVal) Then
+                        Datamember_Value.Add(Nothing)
+                    Else
+                        Datamember_Value.Add(CStr(ojVal).Trim())
+                    End If
+                End If
+            Next
+
+            If FieldInserDate <> String.Empty Then Datamember_Value.Add(Now)
+            If FieldUserName <> String.Empty Then Datamember_Value.Add(obj.UserName)
+
+            ' ── Luu vao DB ──────────────────────────────────────────────────────────
+            If needsPerRowCheck Then
+                If LuuKhongGhiLog(False, TableName, Primary, Primary_Value.ToArray(), Datamember, Datamember_Value.ToArray()) = False Then
+                    MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + excelRow.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return False
+                End If
+            Else
+                Dim rowSql As String = TaoSQLKhongGhiLog(False, TableName, Primary, Primary_Value.ToArray(), Datamember, Datamember_Value.ToArray())
+                If rowSql = String.Empty Then
+                    MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + ": " + excelRow.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    Return False
+                End If
+                sb.AppendLine(rowSql)
+                batchCount += 1
+                If batchCount >= BATCH_SIZE Then
+                    If Not kn.SaveData(sb.ToString()) Then
+                        MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + " batch gan dong " + excelRow.ToString, "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Return False
+                    End If
+                    sb.Clear()
+                    batchCount = 0
+                End If
+            End If
+
+            currentRowIdx += 1
         End While
-        MessageBox.Show(GetLanguagesTranslated("Popup.Thuchienketthuc"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Xls.Page.End()
-        Xls.Out.File(urlTemplate)
-        Return b
+
+        ' Flush batch con lai
+        If batchCount > 0 Then
+            If Not kn.SaveData(sb.ToString()) Then
+                MessageBox.Show(GetLanguagesTranslated("Popup.Coloitaidong") + " batch cuoi", "", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return False
+            End If
+        End If
+
+        MessageBox.Show(GetLanguagesTranslated("Popup.Nhapthanhcong"), "", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Return True
     End Function
     Public Function NhapExcel(ByVal SheetName As String, ByVal TableName As String, ByVal LineConfigDatamember As Integer, ByVal LineConfigPrimary As Integer, ByVal LineStart As Integer, ByVal PathOfFile As String, Optional ByVal FieldInserDate As String = "", Optional ByVal FieldUserName As String = "") As Boolean
         Dim b As Boolean = True
@@ -4048,12 +4306,12 @@ Public Class ThuVienChucNang
                     Else
                         oj = CType(ct, DevExpress.XtraEditors.DateTimeOffsetEdit).EditValue 'CType(ct, Infragistics.Win.UltraWinEditors.UltraDateTimeEditor).Value
                     End If
-                'ElseIf ct.GetType.ToString = "Janus.Windows.EditControls.UIComboBox" Then '
-                '    If GetParameterForStore = True Then
-                '        oj = "N'" + CType(ct, Janus.Windows.EditControls.UIComboBox).SelectedItem.Value.ToString.Trim + "'"
-                '    Else
-                '        oj = CType(ct, Janus.Windows.EditControls.UIComboBox).SelectedItem.Value
-                '    End If
+                    'ElseIf ct.GetType.ToString = "Janus.Windows.EditControls.UIComboBox" Then '
+                    '    If GetParameterForStore = True Then
+                    '        oj = "N'" + CType(ct, Janus.Windows.EditControls.UIComboBox).SelectedItem.Value.ToString.Trim + "'"
+                    '    Else
+                    '        oj = CType(ct, Janus.Windows.EditControls.UIComboBox).SelectedItem.Value
+                    '    End If
                 ElseIf ct.GetType.ToString = "DevExpress.XtraEditors.ComboBoxEdit" Then '"Infragistics.Win.UltraWinEditors.UltraComboEditor"
                     If Not IsNothing(CType(ct, ComboBoxEdit).SelectedItem) Then 'CType(ct, Infragistics.Win.UltraWinEditors.UltraComboEditor).SelectedItem
                         If GetParameterForStore = True Then
