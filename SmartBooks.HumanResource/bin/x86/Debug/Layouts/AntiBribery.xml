@@ -39,7 +39,7 @@
       <property name="Name">colEmployee_Firstname</property>
       <property name="VisibleIndex">2</property>
       <property name="Visible">true</property>
-      <property name="Width">81</property>
+      <property name="Width">130</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -47,7 +47,7 @@
       <property name="Name">colEmployee_LastName</property>
       <property name="VisibleIndex">3</property>
       <property name="Visible">true</property>
-      <property name="Width">73</property>
+      <property name="Width">85</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
       <property name="Summary" iskey="true" value="1">
@@ -96,7 +96,7 @@
       <property name="Name">colBirthPlace</property>
       <property name="VisibleIndex">8</property>
       <property name="Visible">true</property>
-      <property name="Width">84</property>
+      <property name="Width">100</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -128,7 +128,7 @@
       <property name="Name">colID_place</property>
       <property name="VisibleIndex">12</property>
       <property name="Visible">true</property>
-      <property name="Width">134</property>
+      <property name="Width">132</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -160,7 +160,7 @@
       <property name="Name">colNation</property>
       <property name="VisibleIndex">17</property>
       <property name="Visible">true</property>
-      <property name="Width">60</property>
+      <property name="Width">80</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -176,7 +176,7 @@
       <property name="Name">colAddress_Permanent</property>
       <property name="VisibleIndex">19</property>
       <property name="Visible">true</property>
-      <property name="Width">265</property>
+      <property name="Width">494</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -184,7 +184,7 @@
       <property name="Name">colNativePlace</property>
       <property name="VisibleIndex">20</property>
       <property name="Visible">true</property>
-      <property name="Width">87</property>
+      <property name="Width">95</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -200,7 +200,7 @@
       <property name="Name">colFactory_ID</property>
       <property name="VisibleIndex">23</property>
       <property name="Visible">true</property>
-      <property name="Width">54</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -208,7 +208,7 @@
       <property name="Name">colDepartmentCode</property>
       <property name="VisibleIndex">25</property>
       <property name="Visible">true</property>
-      <property name="Width">101</property>
+      <property name="Width">156</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -216,7 +216,7 @@
       <property name="Name">colSectionCode</property>
       <property name="VisibleIndex">27</property>
       <property name="Visible">true</property>
-      <property name="Width">82</property>
+      <property name="Width">102</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -232,7 +232,7 @@
       <property name="Name">colposition</property>
       <property name="VisibleIndex">30</property>
       <property name="Visible">true</property>
-      <property name="Width">202</property>
+      <property name="Width">305</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -280,7 +280,7 @@
       <property name="Name">colChucDanh</property>
       <property name="VisibleIndex">38</property>
       <property name="Visible">true</property>
-      <property name="Width">147</property>
+      <property name="Width">216</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -328,7 +328,7 @@
       <property name="Name">colBankAccount</property>
       <property name="VisibleIndex">44</property>
       <property name="Visible">true</property>
-      <property name="Width">89</property>
+      <property name="Width">185</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -336,7 +336,7 @@
       <property name="Name">colTel</property>
       <property name="VisibleIndex">45</property>
       <property name="Visible">true</property>
-      <property name="Width">75</property>
+      <property name="Width">77</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -360,7 +360,7 @@
       <property name="Name">colQualification</property>
       <property name="VisibleIndex">48</property>
       <property name="Visible">true</property>
-      <property name="Width">67</property>
+      <property name="Width">74</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -392,7 +392,7 @@
       <property name="Name">colEmail</property>
       <property name="VisibleIndex">52</property>
       <property name="Visible">true</property>
-      <property name="Width">64</property>
+      <property name="Width">170</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -433,7 +433,7 @@
       <property name="Name">colTonGiao</property>
       <property name="VisibleIndex">56</property>
       <property name="Visible">true</property>
-      <property name="Width">64</property>
+      <property name="Width">94</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -524,7 +524,7 @@
       <property name="Name">colInsertDate</property>
       <property name="VisibleIndex">64</property>
       <property name="Visible">true</property>
-      <property name="Width">127</property>
+      <property name="Width">128</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -644,7 +644,7 @@
       <property name="Name">colDepartmentName</property>
       <property name="VisibleIndex">79</property>
       <property name="Visible">true</property>
-      <property name="Width">101</property>
+      <property name="Width">156</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -684,7 +684,7 @@
       <property name="Name">colChucDanhName</property>
       <property name="VisibleIndex">84</property>
       <property name="Visible">true</property>
-      <property name="Width">147</property>
+      <property name="Width">216</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -708,7 +708,7 @@
       <property name="Name">colPositionFullName</property>
       <property name="VisibleIndex">89</property>
       <property name="Visible">true</property>
-      <property name="Width">202</property>
+      <property name="Width">305</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -732,7 +732,7 @@
       <property name="Name">colLyDoNghi</property>
       <property name="VisibleIndex">95</property>
       <property name="Visible">true</property>
-      <property name="Width">68</property>
+      <property name="Width">115</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -789,7 +789,7 @@
       <property name="Name">colKhuVuc</property>
       <property name="VisibleIndex">102</property>
       <property name="Visible">true</property>
-      <property name="Width">58</property>
+      <property name="Width">75</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -813,7 +813,7 @@
       <property name="Name">colDepartmentCode1</property>
       <property name="VisibleIndex">105</property>
       <property name="Visible">true</property>
-      <property name="Width">111</property>
+      <property name="Width">156</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -877,7 +877,7 @@
       <property name="Name">colTinh_TP_ThuongTru</property>
       <property name="VisibleIndex">29</property>
       <property name="Visible">true</property>
-      <property name="Width">266</property>
+      <property name="Width">391</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -885,7 +885,7 @@
       <property name="Name">colHuyen_ThiXa_ThuongTru</property>
       <property name="VisibleIndex">31</property>
       <property name="Visible">true</property>
-      <property name="Width">266</property>
+      <property name="Width">391</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -893,7 +893,7 @@
       <property name="Name">colXa_Phuong_ThuongTru</property>
       <property name="VisibleIndex">33</property>
       <property name="Visible">true</property>
-      <property name="Width">266</property>
+      <property name="Width">391</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -909,7 +909,7 @@
       <property name="Name">colTantat</property>
       <property name="VisibleIndex">88</property>
       <property name="Visible">true</property>
-      <property name="Width">74</property>
+      <property name="Width">94</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -917,7 +917,7 @@
       <property name="Name">colCCCDCu</property>
       <property name="VisibleIndex">90</property>
       <property name="Visible">true</property>
-      <property name="Width">67</property>
+      <property name="Width">83</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -941,7 +941,7 @@
       <property name="Name">colResonTerminated1</property>
       <property name="VisibleIndex">96</property>
       <property name="Visible">true</property>
-      <property name="Width">113</property>
+      <property name="Width">246</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -949,7 +949,7 @@
       <property name="Name">colResonTerminated</property>
       <property name="VisibleIndex">109</property>
       <property name="Visible">true</property>
-      <property name="Width">92</property>
+      <property name="Width">246</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -988,65 +988,9 @@
       <property name="DisplayFormat">Count: {0}</property>
     </property>
   </property>
-  <property name="ActiveFilterString">Contains([Employee_LastName], 'hiệp') And [Factory_ID] = 'SK2'</property>
-  <property name="MRUFiltersInfo" iskey="true" value="5">
+  <property name="ActiveFilterString" />
+  <property name="MRUFiltersInfo" iskey="true" value="1">
     <property name="Item1" isnull="true" iskey="true">
-      <property name="NonColumnFilter" />
-      <property name="ColumnsFilter" iskey="true" value="2">
-        <property name="Item1" isnull="true" iskey="true">
-          <property name="Type">AutoFilter</property>
-          <property name="FilterString">Contains([Employee_LastName], 'hiệp')</property>
-          <property name="DisplayText" />
-          <property name="ColumnName">colEmployee_LastName</property>
-        </property>
-        <property name="Item2" isnull="true" iskey="true">
-          <property name="Type">Custom</property>
-          <property name="FilterString">[Factory_ID] = 'SK2'</property>
-          <property name="DisplayText" />
-          <property name="ColumnName">colFactory_ID</property>
-        </property>
-      </property>
-    </property>
-    <property name="Item2" isnull="true" iskey="true">
-      <property name="NonColumnFilter" />
-      <property name="ColumnsFilter" iskey="true" value="1">
-        <property name="Item1" isnull="true" iskey="true">
-          <property name="Type">AutoFilter</property>
-          <property name="FilterString">Contains([Employee_LastName], 'hà')</property>
-          <property name="DisplayText" />
-          <property name="ColumnName">colEmployee_LastName</property>
-        </property>
-      </property>
-    </property>
-    <property name="Item3" isnull="true" iskey="true">
-      <property name="NonColumnFilter" />
-      <property name="ColumnsFilter" iskey="true" value="2">
-        <property name="Item1" isnull="true" iskey="true">
-          <property name="Type">AutoFilter</property>
-          <property name="FilterString">Contains([Employee_LastName], 'hà')</property>
-          <property name="DisplayText" />
-          <property name="ColumnName">colEmployee_LastName</property>
-        </property>
-        <property name="Item2" isnull="true" iskey="true">
-          <property name="Type">Custom</property>
-          <property name="FilterString">[Factory_ID] = 'FACTORY O'</property>
-          <property name="DisplayText" />
-          <property name="ColumnName">colFactory_ID</property>
-        </property>
-      </property>
-    </property>
-    <property name="Item4" isnull="true" iskey="true">
-      <property name="NonColumnFilter" />
-      <property name="ColumnsFilter" iskey="true" value="1">
-        <property name="Item1" isnull="true" iskey="true">
-          <property name="Type">AutoFilter</property>
-          <property name="FilterString">Contains([Employee_LastName], 'bích')</property>
-          <property name="DisplayText" />
-          <property name="ColumnName">colEmployee_LastName</property>
-        </property>
-      </property>
-    </property>
-    <property name="Item5" isnull="true" iskey="true">
       <property name="NonColumnFilter" />
       <property name="ColumnsFilter" iskey="true" value="1">
         <property name="Item1" isnull="true" iskey="true">
