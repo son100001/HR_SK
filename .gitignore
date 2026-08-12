@@ -529,3 +529,5 @@ markdowns/fix_language/ScanLangFull.exe
 markdowns/fix_language/UpdatePaths.ps1
 /SmartBooks.HumanResource/bin/x86/Debug/Layouts
 /SmartBooks.HumanResource/bin/x86/Debug/Layouts
+*.xml
+/SmartBooks.HumanResource/bin/x86/Debug/Layouts

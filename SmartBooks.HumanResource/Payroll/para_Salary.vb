@@ -888,4 +888,59 @@ Public Class para_Salary
             kn.SaveData("update Setup set [Value] = 2 where ID=N'" + obj.UserName + "' and FunctionID ='KH'")
         End If
     End Sub
+
+    Public Overrides Sub ExecSubOrFunctionOfVB()
+        If ReportRow("ReportCode") = "SalarySendWebNotice" Then
+            GuiThongBaoLuongWeb()
+        End If
+    End Sub
+
+    ''' <summary>Gửi thông báo lương lên web (chuông + push) cho nhân viên trong kỳ hoặc đang chọn trên lưới.</summary>
+    Private Sub GuiThongBaoLuongWeb()
+        If IsNothing(Table) OrElse Table.Rows.Count = 0 OrElse Not Table.Columns.Contains("Employee_ID") Then
+            MessageBox.Show("Vui lòng tải danh sách phiếu lương trước khi thực hiện chức năng gửi thông báo.", "Gửi thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        ' Toàn bộ NV trong kỳ = distinct Employee_ID trên dữ liệu lưới đang xem
+        Dim danhSachAll As New List(Of String)
+        For Each r As DataRow In Table.Rows
+            If Not IsDBNull(r("Employee_ID")) AndAlso r("Employee_ID").ToString.Trim <> String.Empty Then
+                If Not danhSachAll.Contains(r("Employee_ID").ToString.Trim) Then
+                    danhSachAll.Add(r("Employee_ID").ToString.Trim)
+                End If
+            End If
+        Next
+
+        ' NV đang chọn trên lưới (dùng lưới của tab hiện tại; item chỉ đăng ký cho tab Tổng quát)
+        Dim luoi As DevExpress.XtraGrid.Views.Grid.GridView = If(IsNothing(HRFORM_Gridview), GridView1, HRFORM_Gridview)
+        Dim danhSachSelected As New List(Of String)
+        For numberRow As Integer = 0 To luoi.SelectedRowsCount - 1
+            Dim r As DataRow = luoi.GetDataRow(luoi.GetSelectedRows(numberRow))
+            If Not IsNothing(r) AndAlso Not IsDBNull(r("Employee_ID")) AndAlso r("Employee_ID").ToString.Trim <> String.Empty Then
+                If Not danhSachSelected.Contains(r("Employee_ID").ToString.Trim) Then
+                    danhSachSelected.Add(r("Employee_ID").ToString.Trim)
+                End If
+            End If
+        Next
+
+        ' Kỳ lương: lấy từ dữ liệu lưới, thiếu thì dùng tham số tháng/năm đang chọn
+        Dim thang As Integer = obj.PARA_MONTH
+        Dim nam As Integer = obj.PARA_YEAR
+        If Table.Columns.Contains("Salary_Month") AndAlso Table.Columns.Contains("Salary_Year") _
+            AndAlso Not IsDBNull(Table.Rows(0)("Salary_Month")) AndAlso Not IsDBNull(Table.Rows(0)("Salary_Year")) Then
+            Integer.TryParse(Table.Rows(0)("Salary_Month").ToString, thang)
+            Integer.TryParse(Table.Rows(0)("Salary_Year").ToString, nam)
+        End If
+
+        Dim f As New frmGuiThongBaoWeb
+        f.DanhSachAll = danhSachAll
+        f.DanhSachSelected = danhSachSelected
+        f.TypeOfNoti = "SalaryNotice_" & nam.ToString("0000") & thang.ToString("00")
+        f.TieuDe = "HR · Thông báo lương tháng " & thang & "/" & nam
+        f.ActionUrl = "/main/hr_report/payroll/monthly_yearly_total_salary"
+        f.DefaultMessage = "Phiếu lương tháng " & thang & "/" & nam & " đã có trên web. Vui lòng đăng nhập để xem chi tiết."
+        f.ShowDialog()
+    End Sub
 End Class

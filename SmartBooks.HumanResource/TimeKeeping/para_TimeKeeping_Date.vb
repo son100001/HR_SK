@@ -1218,7 +1218,49 @@ Public Class para_TimeKeeping_Date
             End If
         ElseIf ReportRow("ReportCode") = "WorkingTimeImportDetailExcel" Then
             NhapBangCongChiTiet()
+        ElseIf ReportRow("ReportCode") = "WorkingTimeSendWebNotice" Then
+            GuiThongBaoCongWeb()
         End If
+    End Sub
+
+    ''' <summary>Gửi thông báo công lên web (chuông + push) cho nhân viên trong kỳ hoặc đang chọn trên lưới.</summary>
+    Private Sub GuiThongBaoCongWeb()
+        If IsNothing(Table) OrElse Table.Rows.Count = 0 OrElse Not Table.Columns.Contains("Employee_ID") Then
+            MessageBox.Show("Vui lòng tải danh sách bảng công trước khi thực hiện chức năng gửi thông báo.", "Gửi thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Exit Sub
+        End If
+
+        ' Toàn bộ NV trong kỳ = distinct Employee_ID trên dữ liệu lưới đang xem
+        Dim danhSachAll As New List(Of String)
+        For Each r As DataRow In Table.Rows
+            If Not IsDBNull(r("Employee_ID")) AndAlso r("Employee_ID").ToString.Trim <> String.Empty Then
+                If Not danhSachAll.Contains(r("Employee_ID").ToString.Trim) Then
+                    danhSachAll.Add(r("Employee_ID").ToString.Trim)
+                End If
+            End If
+        Next
+
+        ' NV đang chọn trên lưới
+        Dim danhSachSelected As New List(Of String)
+        For numberRow As Integer = 0 To GridView1.SelectedRowsCount - 1
+            Dim r As DataRow = GridView1.GetDataRow(GridView1.GetSelectedRows(numberRow))
+            If Not IsNothing(r) AndAlso Not IsDBNull(r("Employee_ID")) AndAlso r("Employee_ID").ToString.Trim <> String.Empty Then
+                If Not danhSachSelected.Contains(r("Employee_ID").ToString.Trim) Then
+                    danhSachSelected.Add(r("Employee_ID").ToString.Trim)
+                End If
+            End If
+        Next
+
+        Dim ky As DateTime = obj.PARA_FROMDATE
+        Dim f As New frmGuiThongBaoWeb
+        f.DanhSachAll = danhSachAll
+        f.DanhSachSelected = danhSachSelected
+        f.TypeOfNoti = "TimeKeepingNotice_" & ky.ToString("yyyyMM")
+        f.TieuDe = "HR · Thông báo công tháng " & ky.Month & "/" & ky.Year
+        f.ActionUrl = "/main/hr_report/employee_report/timekeeping_for_employee"
+        f.DefaultMessage = "Bảng công tháng " & ky.Month & "/" & ky.Year & " đã được cập nhật. Vui lòng đăng nhập web kiểm tra và phản hồi cho HR nếu có sai sót."
+        f.ShowDialog()
     End Sub
 
     Private Sub Gridex2_KeyUp(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs)

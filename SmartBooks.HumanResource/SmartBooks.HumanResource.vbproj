@@ -389,6 +389,10 @@
     </Compile>
     <Compile Include="BaseForms\PublicFunction.vb" />
     <Compile Include="BaseForms\ReportCommon.vb" />
+    <Compile Include="ThongBaoWeb\WebNotificationClient.vb" />
+    <Compile Include="ThongBaoWeb\frmGuiThongBaoWeb.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="BaseForms\ReportViewer.vb">
       <SubType>Form</SubType>
     </Compile>

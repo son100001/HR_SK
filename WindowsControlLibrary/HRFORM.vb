@@ -848,6 +848,15 @@ Public Class HRFORM
         'End If
         If bShowParaForm = True Then
             frm.ShowDialog()
+        Else
+            ' Report dạng "chạy code VB" (ExecSubOrFunctionOfVB=1) + ParameterFormNotShow=1:
+            ' bỏ qua form Tham số, gọi thẳng code VB. (Nếu không, frmPara không hiện nên
+            ' bThucHienLenh không được set -> code VB sẽ không bao giờ chạy.)
+            If Not IsDBNull(row(0)("ExecSubOrFunctionOfVB")) AndAlso row(0)("ExecSubOrFunctionOfVB") = True Then
+                ReportRow = row(0)
+                ExecSubOrFunctionOfVB()
+                Exit Sub
+            End If
         End If
         If frm.bThucHienLenh = True Then
             If Not IsDBNull(row(0)("ExecSubOrFunctionOfVB")) Then
