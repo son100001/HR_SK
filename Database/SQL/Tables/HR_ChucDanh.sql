@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[HR_ChucDanh] (
+    [ID] INT IDENTITY(1,1) NOT NULL,
+    [ChucDanh] NVARCHAR(50) NOT NULL,
+    [NameVN] NVARCHAR(100) NULL,
+    [NameEN] NVARCHAR(100) NULL,
+    [NameKR] NVARCHAR(100) NULL,
+    [InsertDate] DATETIME NULL,
+    [UserName] NVARCHAR(50) NULL
+);
+
+ALTER TABLE [dbo].[HR_ChucDanh] ADD CONSTRAINT [PK_HR_ChucDanh] PRIMARY KEY ([ChucDanh] ASC);

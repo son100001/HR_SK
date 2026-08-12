@@ -1,0 +1,4 @@
+﻿CREATE TABLE [dbo].[HR_DiaChi] (
+    [ID] INT IDENTITY(1,1) NOT NULL,
+    [DiaChi] NVARCHAR(255) NULL
+);

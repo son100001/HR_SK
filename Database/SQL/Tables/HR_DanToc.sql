@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[HR_DanToc] (
+    [MaDanToc] NVARCHAR(50) NOT NULL,
+    [TenDanToc] NVARCHAR(50) NULL,
+    [InsertDate] DATETIME NULL,
+    [UserName] NVARCHAR(50) NULL,
+    [ID] INT IDENTITY(1,1) NOT NULL
+);
+
+ALTER TABLE [dbo].[HR_DanToc] ADD CONSTRAINT [PK_HR_DanToc] PRIMARY KEY ([MaDanToc] ASC);

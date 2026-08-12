@@ -1,0 +1,11 @@
+﻿CREATE TABLE [dbo].[SetUp] (
+    [ID] NVARCHAR(255) NOT NULL,
+    [Value] NVARCHAR(255) NULL,
+    [Comment_VN] NVARCHAR(255) NULL,
+    [Comment_EN] NVARCHAR(255) NULL,
+    [FunctionID] NVARCHAR(255) NULL,
+    [InsertDate] DATETIME NULL,
+    [UserName] NVARCHAR(50) NULL
+);
+
+ALTER TABLE [dbo].[SetUp] ADD CONSTRAINT [PK_SetUp] PRIMARY KEY ([ID] ASC);

@@ -1,0 +1,14 @@
+﻿CREATE TABLE [dbo].[HR_TheBHYT] (
+    [ID] INT IDENTITY(1,1) NOT NULL,
+    [MaSoThe] NVARCHAR(50) NOT NULL,
+    [Employee_ID] NVARCHAR(50) NOT NULL,
+    [MaBenhVien] NVARCHAR(200) NULL,
+    [fromdate] DATETIME NULL,
+    [todate] DATETIME NULL,
+    [NgayTraThe] DATETIME NULL,
+    [Remark] NVARCHAR(MAX) NULL,
+    [InsertDate] DATETIME NULL,
+    [UserName] NVARCHAR(50) NULL
+);
+
+ALTER TABLE [dbo].[HR_TheBHYT] ADD CONSTRAINT [PK_HR_TheBHYT] PRIMARY KEY ([MaSoThe] ASC);

@@ -1,0 +1,32 @@
+﻿CREATE TABLE [dbo].[HR_BangCongNgoaiLe] (
+    [Employee_ID] NVARCHAR(50) NOT NULL,
+    [Ngay] DATETIME NOT NULL,
+    [wt1] FLOAT NULL,
+    [wt2] FLOAT NULL,
+    [wt3] FLOAT NULL,
+    [wt4] FLOAT NULL,
+    [wt5] FLOAT NULL,
+    [wt6] FLOAT NULL,
+    [wt7] FLOAT NULL,
+    [wt8] FLOAT NULL,
+    [wt9] FLOAT NULL,
+    [wt10] FLOAT NULL,
+    [wt11] FLOAT NULL,
+    [wt12] FLOAT NULL,
+    [wt13] FLOAT NULL,
+    [wt14] FLOAT NULL,
+    [wt15] FLOAT NULL,
+    [wt16] FLOAT NULL,
+    [wt17] FLOAT NULL,
+    [wt18] FLOAT NULL,
+    [wt19] FLOAT NULL,
+    [wt20] FLOAT NULL,
+    [isProbation] BIT NULL,
+    [isNewPosition] BIT NULL,
+    [isNewContract] BIT NULL,
+    [InsertDate] DATETIME NULL,
+    [InsertBy] NVARCHAR(50) NULL,
+    [GhiChu] NVARCHAR(MAX) NULL
+);
+
+ALTER TABLE [dbo].[HR_BangCongNgoaiLe] ADD CONSTRAINT [PK_HR_BangCongNgoaile] PRIMARY KEY ([Employee_ID] ASC, [Ngay] ASC);

@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[HR_TinhCongLogDetail] (
+    [ID] INT IDENTITY(1,1) NOT NULL,
+    [RunID] UNIQUEIDENTIFIER NOT NULL,
+    [BatchID] INT NOT NULL,
+    [Employee_ID] NVARCHAR(50) NULL,
+    [Step] NVARCHAR(50) NOT NULL,
+    [LogTime] DATETIME NOT NULL DEFAULT (getdate()),
+    [Info] NVARCHAR(MAX) NULL
+);
+
+ALTER TABLE [dbo].[HR_TinhCongLogDetail] ADD CONSTRAINT [PK__HR_TinhC__3214EC2785B650B0] PRIMARY KEY ([ID] ASC);
+
+CREATE NONCLUSTERED INDEX [IX_HR_TinhCongLogDetail_RunBatch] ON [dbo].[HR_TinhCongLogDetail] ([RunID] ASC, [BatchID] ASC, [ID] ASC);

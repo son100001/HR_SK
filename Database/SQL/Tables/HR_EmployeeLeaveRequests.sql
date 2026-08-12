@@ -1,0 +1,31 @@
+﻿CREATE TABLE [dbo].[HR_EmployeeLeaveRequests] (
+    [ID] INT IDENTITY(1,1) NOT NULL,
+    [Employee_ID] NVARCHAR(50) NOT NULL,
+    [LeaveType_ID] NVARCHAR(50) NOT NULL,
+    [Fromdate] DATETIME NOT NULL,
+    [Todate] DATETIME NOT NULL,
+    [Reason] NVARCHAR(255) NULL,
+    [PlanStatus] VARCHAR(50) NULL,
+    [Remark] NVARCHAR(255) NULL,
+    [TrangThai] NVARCHAR(50) NULL,
+    [ApproveDate] DATETIME NULL,
+    [ApproverName] NVARCHAR(50) NOT NULL,
+    [InsertDate] DATETIME NULL,
+    [UserName] NVARCHAR(50) NULL,
+    [isDaNopGiay] BIT NULL,
+    [isBlock] BIT NULL,
+    [isChoUngPhep] BIT NULL,
+    [HourLeave] FLOAT NULL,
+    [RasomVaoMuon] INT NULL,
+    [ApproveLevel] NVARCHAR(50) NULL,
+    [ThuTuDuyet] INT NULL,
+    [Picture] IMAGE NULL,
+    [ChiGuiThongBao] NVARCHAR(100) NULL,
+    [ImageBinary] NVARCHAR(MAX) NULL,
+    [ImageFileName] NVARCHAR(255) NULL,
+    [ImageFileType] NVARCHAR(50) NULL,
+    [ImageFileSize] INT NULL,
+    [CurrentStepSince] DATETIME NULL
+);
+
+ALTER TABLE [dbo].[HR_EmployeeLeaveRequests] ADD CONSTRAINT [PK_HR_EmployeeLeaveRequests] PRIMARY KEY ([Employee_ID] ASC, [Fromdate] ASC);

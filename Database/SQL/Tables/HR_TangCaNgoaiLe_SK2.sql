@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[HR_TangCaNgoaiLe_SK2] (
+    [ID] INT IDENTITY(1,1) NOT NULL,
+    [Factory_ID_SK2] NVARCHAR(50) NOT NULL,
+    [Ngay_SK2] DATETIME NOT NULL,
+    [Gio_SK2] FLOAT NULL,
+    [InsertDate] DATETIME NULL,
+    [UserName] NVARCHAR(50) NULL
+);
+
+ALTER TABLE [dbo].[HR_TangCaNgoaiLe_SK2] ADD CONSTRAINT [PK_HR_TangCaNgoaiLe_SK2] PRIMARY KEY ([Factory_ID_SK2] ASC, [Ngay_SK2] ASC);

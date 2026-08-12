@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[HR_Form] (
+    [ID] INT IDENTITY(1,1) NOT NULL,
+    [Group_] VARCHAR(100) NULL,
+    [FormID] VARCHAR(100) NOT NULL,
+    [Remark] NVARCHAR(MAX) NULL,
+    [InsertDate] DATETIME NULL,
+    [UserName] VARCHAR(50) NULL
+);
+
+ALTER TABLE [dbo].[HR_Form] ADD CONSTRAINT [PK_HR_Form] PRIMARY KEY ([FormID] ASC);
