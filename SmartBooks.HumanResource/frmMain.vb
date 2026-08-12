@@ -1250,6 +1250,7 @@ Public Class frmMain
         addMethod("TimeKeeping", "TienCom", GetType(frmTienCom))
         addMethod("TimeKeeping", "BaoCaoCong", GetType(frmBaoCaoCong))
         addMethod("TimeKeeping", "BankAccountOfEmployee", GetType(frmBankAccountOfEmployee))
+        addMethod("TimeKeeping", "NhapDuLieuCong", GetType(frmNhapDuLieuCong))
 
         addMethod("Payroll", "DanhSachNguoiPhuThuoc", GetType(frmDanhSachNguoiPhuThuoc))
         addMethod("Payroll", "MucLuong", GetType(frmMucLuong))

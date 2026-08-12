@@ -718,6 +718,12 @@
     <Compile Include="TimeKeeping\frmGoOut.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TimeKeeping\frmNhapDuLieuCong.designer.vb">
+      <DependentUpon>frmNhapDuLieuCong.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TimeKeeping\frmNhapDuLieuCong.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TimeKeeping\frmRegisMaxOvertime.Designer.vb">
       <DependentUpon>frmRegisMaxOvertime.vb</DependentUpon>
     </Compile>
@@ -1090,6 +1096,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TimeKeeping\frmGoOut.resx">
       <DependentUpon>frmGoOut.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeKeeping\frmNhapDuLieuCong.resx">
+      <DependentUpon>frmNhapDuLieuCong.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeKeeping\frmRegisMaxOvertime.resx">
       <DependentUpon>frmRegisMaxOvertime.vb</DependentUpon>

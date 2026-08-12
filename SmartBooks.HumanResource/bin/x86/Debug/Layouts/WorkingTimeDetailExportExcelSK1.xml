@@ -245,12 +245,12 @@
       <property name="MaxWidth">0</property>
     </property>
   </property>
-  <property name="GroupSummary" iskey="true" value="11">
+  <property name="GroupSummary" iskey="true" value="13">
     <property name="Item1" isnull="true" iskey="true">
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
+      <property name="FieldName">FactoryName</property>
       <property name="SummaryType">Count</property>
       <property name="DisplayFormat">Count: {0}</property>
     </property>
@@ -258,7 +258,7 @@
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
+      <property name="FieldName">FactoryName</property>
       <property name="SummaryType">Count</property>
       <property name="DisplayFormat">Count: {0}</property>
     </property>
@@ -266,7 +266,7 @@
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />
-      <property name="FieldName">Employee_ID</property>
+      <property name="FieldName">FactoryName</property>
       <property name="SummaryType">Count</property>
       <property name="DisplayFormat">Count: {0}</property>
     </property>
@@ -330,7 +330,23 @@
       <property name="Mode">AllRows</property>
       <property name="ShowInGroupColumnFooterName" />
       <property name="Tag" isnull="true" />
-      <property name="FieldName">Ngay</property>
+      <property name="FieldName">Employee_ID</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item12" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_ID</property>
+      <property name="SummaryType">Count</property>
+      <property name="DisplayFormat">Count: {0}</property>
+    </property>
+    <property name="Item13" isnull="true" iskey="true">
+      <property name="Mode">AllRows</property>
+      <property name="ShowInGroupColumnFooterName" />
+      <property name="Tag" isnull="true" />
+      <property name="FieldName">Employee_ID</property>
       <property name="SummaryType">Count</property>
       <property name="DisplayFormat">Count: {0}</property>
     </property>

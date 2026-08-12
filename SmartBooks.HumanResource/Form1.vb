@@ -94,6 +94,7 @@ Public Class Form1
     Friend WithEvents EmpRegisParameter As DevExpress.XtraNavBar.NavBarItem
     Friend WithEvents BacTayNghe As DevExpress.XtraNavBar.NavBarItem
     Friend WithEvents DayVacationRemain As DevExpress.XtraNavBar.NavBarItem
+    Friend WithEvents NhapDuLieuCong As DevExpress.XtraNavBar.NavBarItem
     Dim kn As New connect(obj.dataPath)
 
 #Region " Windows Form Designer generated code "
@@ -225,6 +226,7 @@ Public Class Form1
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.pFA = New System.Windows.Forms.PictureBox()
         Me.Limg = New System.Windows.Forms.ImageList(Me.components)
+        Me.NhapDuLieuCong = New DevExpress.XtraNavBar.NavBarItem()
         Me.Panel3.SuspendLayout()
         CType(Me.NavBarControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel5.SuspendLayout()
@@ -248,7 +250,7 @@ Public Class Form1
         Me.NavBarControl1.BackColor = System.Drawing.Color.White
         Me.NavBarControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.NavBarControl1.Groups.AddRange(New DevExpress.XtraNavBar.NavBarGroup() {Me.Setup, Me.EmployeeInformation, Me.TimeKeeping, Me.Payroll, Me.BaoHiem})
-        Me.NavBarControl1.Items.AddRange(New DevExpress.XtraNavBar.NavBarItem() {Me.CompanyInformation, Me.CreateEditEmployee, Me.SetupShifts, Me.CreateEditDepartment, Me.CreateEditSection, Me.CreateEditTeam, Me.CreateEditPosition, Me.Factory, Me.CreateEditContract, Me.CreateEditContractFlow, Me.ListofUsers, Me.SetupPermission, Me.ReportPermission, Me.CreateEditPositionCategory, Me.TaoDieuChinhChucDanh, Me.TaoDieuChinhLoaiNghi, Me.TaoDieuChinhVungMien, Me.TaoDieuChinhDanhMuc, Me.SetUpFollowDate, Me.MayChamCong, Me.TaoDieuChinhLoaiCong, Me.TaoDieuChinhDanhMucLuong, Me.HR_Hospital, Me.Salary_Name, Me.Register, Me.RunQuerySQL, Me.JobCodeCategory, Me.HazardCategory, Me.SetupHolidaysSheet, Me.EmployeeFamilyInformation, Me.TransferDepartment, Me.ChuyenChucVu, Me.QuanLyTheTuNhanVien, Me.Disable, Me.TerminationAsignment, Me.Discipline, Me.Award, Me.HeavyAndToxic, Me.CapPhatAo, Me.QuaTrinhHocTapCongTac, Me.TrainingRecord, Me.HealthCheck, Me.License, Me.DiseasesRecord, Me.SurgeryHistory, Me.DanhSachNguoiPhuThuoc, Me.MucLuong, Me.MucLuongNhanVien, Me.CaiDatPhuCap, Me.BacTayNgheNhanVien, Me.SalaryComponents, Me.luongcodinh, Me.CreateEditEmployeeContract, Me.ThanhToanBaoHiem, Me.KeKhaiThueTNCN, Me.QuyetToanThueTNCN, Me.chucdanh, Me.tinhluong, Me.Payslip, Me.BaoCaoLuong, Me.EmpRegisParameter, Me.BacTayNghe, Me.EmpRegisTimeShift, Me.DanhSachDangKyDiLam, Me.MaxOvertime, Me.TimeKeepingDaily, Me.CongBatThuong, Me.EmpRegisPregnant, Me.DangKyNghiSinh, Me.TimeKeepingData, Me.HR_MaxOvertimeInPeriod, Me.GoOut, Me.RoundShift, Me.DangKyCaTheoNhom, Me.DangKyPhepTheoGio, Me.TienCom, Me.BaoCaoCong, Me.BankAccountOfEmployee, Me.BaoCaoBaoHiem, Me.QuanLySoBHXH, Me.TheBHYT, Me.RegistSIHI, Me.DayVacationRemain})
+        Me.NavBarControl1.Items.AddRange(New DevExpress.XtraNavBar.NavBarItem() {Me.CompanyInformation, Me.CreateEditEmployee, Me.SetupShifts, Me.CreateEditDepartment, Me.CreateEditSection, Me.CreateEditTeam, Me.CreateEditPosition, Me.Factory, Me.CreateEditContract, Me.CreateEditContractFlow, Me.ListofUsers, Me.SetupPermission, Me.ReportPermission, Me.CreateEditPositionCategory, Me.TaoDieuChinhChucDanh, Me.TaoDieuChinhLoaiNghi, Me.TaoDieuChinhVungMien, Me.TaoDieuChinhDanhMuc, Me.SetUpFollowDate, Me.MayChamCong, Me.TaoDieuChinhLoaiCong, Me.TaoDieuChinhDanhMucLuong, Me.HR_Hospital, Me.Salary_Name, Me.Register, Me.RunQuerySQL, Me.JobCodeCategory, Me.HazardCategory, Me.SetupHolidaysSheet, Me.EmployeeFamilyInformation, Me.TransferDepartment, Me.ChuyenChucVu, Me.QuanLyTheTuNhanVien, Me.Disable, Me.TerminationAsignment, Me.Discipline, Me.Award, Me.HeavyAndToxic, Me.CapPhatAo, Me.QuaTrinhHocTapCongTac, Me.TrainingRecord, Me.HealthCheck, Me.License, Me.DiseasesRecord, Me.SurgeryHistory, Me.DanhSachNguoiPhuThuoc, Me.MucLuong, Me.MucLuongNhanVien, Me.CaiDatPhuCap, Me.BacTayNgheNhanVien, Me.SalaryComponents, Me.luongcodinh, Me.CreateEditEmployeeContract, Me.ThanhToanBaoHiem, Me.KeKhaiThueTNCN, Me.QuyetToanThueTNCN, Me.chucdanh, Me.tinhluong, Me.Payslip, Me.BaoCaoLuong, Me.EmpRegisParameter, Me.BacTayNghe, Me.EmpRegisTimeShift, Me.DanhSachDangKyDiLam, Me.MaxOvertime, Me.TimeKeepingDaily, Me.CongBatThuong, Me.EmpRegisPregnant, Me.DangKyNghiSinh, Me.TimeKeepingData, Me.HR_MaxOvertimeInPeriod, Me.GoOut, Me.RoundShift, Me.DangKyCaTheoNhom, Me.DangKyPhepTheoGio, Me.TienCom, Me.BaoCaoCong, Me.BankAccountOfEmployee, Me.BaoCaoBaoHiem, Me.QuanLySoBHXH, Me.TheBHYT, Me.RegistSIHI, Me.DayVacationRemain, Me.NhapDuLieuCong})
         Me.NavBarControl1.Location = New System.Drawing.Point(0, 0)
         Me.NavBarControl1.Name = "NavBarControl1"
         Me.NavBarControl1.OptionsNavPane.ExpandedWidth = 383
@@ -262,7 +264,7 @@ Public Class Form1
         Me.TimeKeeping.Caption = "Công"
         Me.TimeKeeping.Expanded = True
         Me.TimeKeeping.ImageOptions.SvgImage = Global.SmartBooks.HumanResource.My.Resources.Resources.groupbydate
-        Me.TimeKeeping.ItemLinks.AddRange(New DevExpress.XtraNavBar.NavBarItemLink() {New DevExpress.XtraNavBar.NavBarItemLink(Me.MaxOvertime), New DevExpress.XtraNavBar.NavBarItemLink(Me.HR_MaxOvertimeInPeriod), New DevExpress.XtraNavBar.NavBarItemLink(Me.RoundShift), New DevExpress.XtraNavBar.NavBarItemLink(Me.EmpRegisTimeShift), New DevExpress.XtraNavBar.NavBarItemLink(Me.DangKyCaTheoNhom), New DevExpress.XtraNavBar.NavBarItemLink(Me.TimeKeepingData), New DevExpress.XtraNavBar.NavBarItemLink(Me.GoOut), New DevExpress.XtraNavBar.NavBarItemLink(Me.TimeKeepingDaily), New DevExpress.XtraNavBar.NavBarItemLink(Me.CongBatThuong), New DevExpress.XtraNavBar.NavBarItemLink(Me.EmpRegisPregnant), New DevExpress.XtraNavBar.NavBarItemLink(Me.DangKyNghiSinh), New DevExpress.XtraNavBar.NavBarItemLink(Me.DangKyPhepTheoGio), New DevExpress.XtraNavBar.NavBarItemLink(Me.DanhSachDangKyDiLam), New DevExpress.XtraNavBar.NavBarItemLink(Me.TienCom), New DevExpress.XtraNavBar.NavBarItemLink(Me.BaoCaoCong), New DevExpress.XtraNavBar.NavBarItemLink(Me.DayVacationRemain)})
+        Me.TimeKeeping.ItemLinks.AddRange(New DevExpress.XtraNavBar.NavBarItemLink() {New DevExpress.XtraNavBar.NavBarItemLink(Me.MaxOvertime), New DevExpress.XtraNavBar.NavBarItemLink(Me.HR_MaxOvertimeInPeriod), New DevExpress.XtraNavBar.NavBarItemLink(Me.RoundShift), New DevExpress.XtraNavBar.NavBarItemLink(Me.EmpRegisTimeShift), New DevExpress.XtraNavBar.NavBarItemLink(Me.DangKyCaTheoNhom), New DevExpress.XtraNavBar.NavBarItemLink(Me.TimeKeepingData), New DevExpress.XtraNavBar.NavBarItemLink(Me.GoOut), New DevExpress.XtraNavBar.NavBarItemLink(Me.TimeKeepingDaily), New DevExpress.XtraNavBar.NavBarItemLink(Me.CongBatThuong), New DevExpress.XtraNavBar.NavBarItemLink(Me.EmpRegisPregnant), New DevExpress.XtraNavBar.NavBarItemLink(Me.DangKyNghiSinh), New DevExpress.XtraNavBar.NavBarItemLink(Me.DangKyPhepTheoGio), New DevExpress.XtraNavBar.NavBarItemLink(Me.DanhSachDangKyDiLam), New DevExpress.XtraNavBar.NavBarItemLink(Me.TienCom), New DevExpress.XtraNavBar.NavBarItemLink(Me.BaoCaoCong), New DevExpress.XtraNavBar.NavBarItemLink(Me.DayVacationRemain), New DevExpress.XtraNavBar.NavBarItemLink(Me.NhapDuLieuCong)})
         Me.TimeKeeping.Name = "TimeKeeping"
         Me.TimeKeeping.TopVisibleLinkIndex = 8
         '
@@ -965,6 +967,12 @@ Public Class Form1
         Me.Limg.Images.SetKeyName(4, "")
         Me.Limg.Images.SetKeyName(5, "")
         Me.Limg.Images.SetKeyName(6, "")
+        '
+        'NhapDuLieuCong
+        '
+        Me.NhapDuLieuCong.Caption = "NhapDuLieuCong"
+        Me.NhapDuLieuCong.ImageOptions.SmallImage = Global.SmartBooks.HumanResource.My.Resources.Resources.next_16x168
+        Me.NhapDuLieuCong.Name = "NhapDuLieuCong"
         '
         'Form1
         '

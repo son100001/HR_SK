@@ -10,6 +10,11 @@
 >
 > **Quy định quản lý File tạm (Antigravity Temp Files):** 
 > Các file mã nguồn, file thực thi hoặc kết quả (.cs, .exe, .ps1, .txt,...) được sinh ra trong quá trình Antigravity xử lý công việc **PHẢI** được di chuyển vào một thư mục con bên trong thư mục `markdowns` cấp cao nhất. Tên thư mục con phải mô tả rõ nội dung công việc (Ví dụ: `markdowns\fix_language`). Sau khi xử lý xong và được nghiệm thu, nếu cần dọn dẹp, chỉ việc xóa toàn bộ thư mục con đó.
+>
+> **Quy định khi thay đổi Database (Deploy Scripts):** 
+> Database đang connect (`HR_SnK_Dev_260811` trên `113.161.180.44`) có thể chỉ là bản dev/snapshot, **không chắc chắn là server thật của khách hàng**. Mọi thay đổi chạy trực tiếp trên DB này (tạo/sửa index, function, store, table...) sẽ **không** tự có trên môi trường khác. Mỗi lần thực hiện 1 thay đổi DB, phải tạo kèm 1 file `.sql` deploy (idempotent — dùng `IF NOT EXISTS`/`IF OBJECT_ID(...) IS NOT NULL`, hoặc `CREATE OR ALTER` cho function/procedure) trong `Database/DeployScripts/` để mang chạy thủ công ở môi trường khác nếu cần. Chi tiết & ví dụ: [HR_REPORT_ENGINE.md](file:///e:/SourceCodeHR/SnK_Dev/markdowns/HR_REPORT_ENGINE.md).
+>
+> ⚠️ **Lỗi encoding khi chạy file `.sql` có comment tiếng Việt:** `sqlcmd -i file.sql` (không kèm `-f 65001`) đọc sai codepage file UTF-8, làm hỏng NVARCHAR chứa tiếng Việt **ngay trong dữ liệu lưu ở DB** (không chỉ lỗi hiển thị). **Không dùng `sqlcmd -i` để chạy script có tiếng Việt.** Thay vào đó: đọc file bằng `[System.IO.File]::ReadAllText($path, [System.Text.Encoding]::UTF8)` rồi chạy từng batch (tách theo dòng `GO`) qua `SqlCommand.ExecuteNonQuery()` (ADO.NET luôn xử lý Unicode đúng), hoặc dùng `bcp`/`-w` (Unicode mode) khi export. Sau khi chạy xong, luôn export lại và `grep` tìm ký tự lạ (`Ã|á»|â€"`) để xác nhận không bị mojibake trước khi coi là xong.
 
 ---
 
@@ -20,6 +25,9 @@
 | **Tổng quan kiến trúc** | [ARCHITECTURE_OVERVIEW.md](file:///e:/SourceCodeHR/POCONS/markdowns/ARCHITECTURE_OVERVIEW.md) | Solution structure, dependency flow, DB connection, multi-language, permission, reports |
 | **Template tạo form mới** | [TEMPLATE_NEW_FORM.md](file:///e:/SourceCodeHR/POCONS/markdowns/TEMPLATE_NEW_FORM.md) | Hướng dẫn step-by-step tạo form nghiệp vụ mới từ đầu |
 | **Xử lý Đa ngôn ngữ** | [LANGUAGE_HANDLING.md](file:///e:/SourceCodeHR/POCONS/markdowns/LANGUAGE_HANDLING.md) | Quy tắc dịch thuật, cấu trúc file JSON ngôn ngữ và cách thêm form mới |
+| **HR_Report – Report/Action Engine** | [HR_REPORT_ENGINE.md](file:///e:/SourceCodeHR/SnK_Dev/markdowns/HR_REPORT_ENGINE.md) | Bảng cấu hình trung tâm: ReportCode → template/function/store/parameter, dùng bởi HRFORM (port từ Kido_New, đã điều chỉnh theo khác biệt thật của SnK_Dev) |
+| **SQL Performance Playbook** | [SQL_PERFORMANCE_PLAYBOOK.md](file:///e:/SourceCodeHR/SnK_Dev/markdowns/SQL_PERFORMANCE_PLAYBOOK.md) | Cẩm nang portable: object nào (Split, udf_TinhCong...) cần sửa gì để tăng tốc + pattern tổng quát (MSTVF, thiếu index, cursor RBAR) — đã đối chiếu khả năng áp dụng trực tiếp lên `HR_SnK_Dev_260811` |
+| SQL Performance History | [SQL_PERFORMANCE_HISTORY.md](file:///e:/SourceCodeHR/SnK_Dev/markdowns/SQL_PERFORMANCE_HISTORY.md) | Nhật ký các lần tối ưu đã áp dụng trên `HR_SnK_Dev_260811` (không portable — riêng cho DB này) |
 
 ---
 

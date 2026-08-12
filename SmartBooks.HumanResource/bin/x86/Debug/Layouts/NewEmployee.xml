@@ -112,7 +112,7 @@
       <property name="Name">colBirthDate</property>
       <property name="VisibleIndex">10</property>
       <property name="Visible">true</property>
-      <property name="Width">71</property>
+      <property name="Width">70</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -120,7 +120,7 @@
       <property name="Name">colID_date</property>
       <property name="VisibleIndex">11</property>
       <property name="Visible">true</property>
-      <property name="Width">68</property>
+      <property name="Width">69</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -392,7 +392,7 @@
       <property name="Name">colEmail</property>
       <property name="VisibleIndex">52</property>
       <property name="Visible">true</property>
-      <property name="Width">64</property>
+      <property name="Width">110</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -732,7 +732,7 @@
       <property name="Name">colLyDoNghi</property>
       <property name="VisibleIndex">95</property>
       <property name="Visible">true</property>
-      <property name="Width">68</property>
+      <property name="Width">97</property>
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
