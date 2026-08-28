@@ -1,4 +1,4 @@
-﻿--exec sp_ketchuyendulieuxinrangoai '2026-04-01','2026-06-30'
+﻿--exec sp_ketchuyendulieuxinrangoai '2026-06-01','2026-08-31'
 CREATE proc [dbo].[sp_ketchuyendulieuxinrangoai]
 @fromdate datetime,
 @todate datetime
@@ -19,18 +19,21 @@ begin
 		 ,UserName
 		   )
 	 select 
-		   Employee_ID
-		   ,Fromdate
-		   ,fromtime
-		   ,totime
+		   erml.Employee_ID
+		   ,erml.Fromdate
+		   ,erml.fromtime
+		   ,erml.totime
 		   ,'Private'
 		   ,null
-		   ,InsertDate
+		   ,erml.InsertDate
 		   ,'Auto'
 		   from
-		   HR_SNK.[dbo].HR_EmployeeRegisMaternityLeave 
+		   HR_SNK.[dbo].HR_EmployeeRegisMaternityLeave erml
+		   left join
+		   HR_GoOut gt
+		   on erml.Employee_ID collate SQL_Latin1_General_CP1_CI_AS = gt.Employee_ID and erml.Fromdate = gt.TimeDate
 		   where (Fromdate between @fromdate and @todate ) and Fromdate = Todate and [Type] in ('P','P16') --and HourLeave < 8
-					and ToTime is not null and FromTime is not null
+					and ToTime is not null and FromTime is not null and gt.Employee_ID is null
 	
 	COMMIT TRAN -- Transaction Success!
 	select 'ThucHienThanhCong' as ThongBao

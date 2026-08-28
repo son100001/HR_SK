@@ -1,5 +1,8 @@
+﻿
+--select * from [dbo].[udf_BangDangKyCaTheoViTri]('2025-09-01','2025-09-30',null,null,null,null,null,null,null)
 CREATE FUNCTION [dbo].[udf_BangDangKyCaTheoViTri]
 (
+	-- Add the parameters for the function here
 	@fromdate datetime,
 	@todate datetime,
 	@fact as nvarchar(50)=null,
@@ -30,4 +33,5 @@ RETURN
 	on su.ID='CaMacDinh'
 	where empl.ComStartedDate<=@todate and (empl.TernimationDate is null or empl.TernimationDate>@fromdate)
 );
+
 GO

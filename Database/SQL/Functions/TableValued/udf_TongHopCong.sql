@@ -79,7 +79,7 @@ BEGIN
 		or (@TypeOfReport=3 and (wt.Ngay >= isnull(isnull(CT_TV.Ngay,nkhdct.NgayKyHDChinhThuc),case when nkhdct_v.NgayKyHDChinhThuc > @todate then @todate + 1 else @fromdate end) or (nkhdct_v.NgayKyHDChinhThuc > @NgayCuoiThang))) --=isnull(isnull(CT_TV.Ngay,nkhdct.NgayKyHDChinhThuc),@fromdate))
 		or @TypeOfReport=1
 	) and wt.Ngay between @fromdate and @todate	
-	or @TypeOfReport = 2
+	--or @TypeOfReport = 2
 	group by wt.Employee_ID,CT_TV.Ngay, nkhdct.NgayKyHDChinhThuc, nkhdct_v.NgayKyHDChinhThuc
 	-- Return the result of the function
 	RETURN

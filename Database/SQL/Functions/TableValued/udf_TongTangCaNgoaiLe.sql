@@ -15,7 +15,7 @@ begin
 	select Factory_ID_SK2, Ngay_SK2, Gio_SK2
 	from
 	HR_TangCaNgoaiLe_SK2
-	where Ngay_SK2 between @fromdate and @todate
+	where Ngay_SK2 between @fromdate and @todate and Factory_ID_SK2 = 'SK2-Assembly'
 	return
 end
 GO

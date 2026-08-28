@@ -1,6 +1,6 @@
 ﻿
-CREATE   PROCEDURE [dbo].[sp_RejectLeaveRequestGoOut] 
-	@ID INT, 
+CREATE   PROCEDURE [dbo].[sp_RejectLeaveRequestGoOut]
+	@ID INT,
 	@Employee_ID nvarchar(50) = null,
 	@TimeDate datetime = null,
 	@TimeOut_ datetime = null,
@@ -14,7 +14,7 @@ CREATE   PROCEDURE [dbo].[sp_RejectLeaveRequestGoOut]
 	@TrangThai nvarchar(50) = null
 AS
 BEGIN
-	--exec [dbo].[sp_RejectLeaveRequestGoOut] '1'
+	-- exec [dbo].[sp_RejectLeaveRequestGoOut] '1'
 	DECLARE @ApproverName NVARCHAR(100)
 		, @Approver nvarchar(50)
 		, @ThuTuDuyet int
@@ -35,30 +35,47 @@ BEGIN
 		where ID = @ID
 	end
 
+	-- Đơn đã Rejected rồi thì dừng ngay, không xử lý lại lần nữa. Chặn double-click / gọi lại API
+	-- từ chối 2 lần cho cùng 1 đơn — không thì INSERT vào HR_RequestLeaveGoOut_History bên dưới sẽ
+	-- đụng khóa chính (Request_ID, Approver_ID) đã ghi ở lần từ chối trước.
+	IF EXISTS (
+		SELECT 1
+		FROM HR_LeaveRequestGoOut
+		WHERE ID = @ID
+			AND TrangThai = N'Rejected'
+	)
+		RETURN;
+
 	select @Employee_Name = dbo.udf_FullName(Employee_Firstname, Employee_LastName)
 	from SmartBooks_Employee
 	where Employee_ID = @Employee_ID
 
 	select @EmailDuPhong = [Value] from SetUp where FunctionID = 'Email' and ID = 'EmailDuPhong'
-	
-	--Get basic information from HR_LeaveRequestGoOut
+
+	-- Get basic information from HR_LeaveRequestGoOut
 	Select @ThuTuDuyet = ThuTuDuyet + 1, @ApproverName = ApproverName, @Approver = ApproveLevel
 	from
 	HR_LeaveRequestGoOut
 	where @ID = ID
-	
-	--Get Basic information of Aprrover
+
+	-- Get Basic information of Aprrover
 	select @DepartmentName = DepartmentName, @Approver1_Name = dbo.udf_FullName (Employee_Firstname, Employee_LastName), @ChucDanh = ChucDanh
-			,@ApproveLevel = LvDuyet
+			, @ApproveLevel = LvDuyet
 	from
 	udf_EmployeeFilter ('VN',null,null,null,null,null,null,@Approver,GETDATE())
-	
+
 	update HR_LeaveRequestGoOut
 	set TrangThai = 'Rejected'
 	WHERE ID = @ID
 
-	insert into HR_RequestLeaveGoOut_History (Request_ID, Approver_ID, Approver_Name, Approve_Date, ApproveLevel, DepartmentCode, Chucdanh)
-	select @ID, @Approver, @Approver1_Name, GETDATE(), @ApproveLevel, @DepartmentName, @ChucDanh
+	-- Chốt phòng thủ thứ 2 — xem ghi chú đầu file. Chỉ ghi khi (Request_ID, Approver_ID) chưa có,
+	-- để không bao giờ tự đụng PK_HR_RequestLeaveGoOut_History dù bị gọi trùng vì lý do gì.
+	IF NOT EXISTS (
+		SELECT 1 FROM HR_RequestLeaveGoOut_History
+		WHERE Request_ID = @ID AND Approver_ID = @Approver
+	)
+		insert into HR_RequestLeaveGoOut_History (Request_ID, Approver_ID, Approver_Name, Approve_Date, ApproveLevel, DepartmentCode, Chucdanh)
+		select @ID, @Approver, @Approver1_Name, GETDATE(), @ApproveLevel, @DepartmentName, @ChucDanh
 
 	Delete HR_DanhSachNguoiNhanThongBao
 	where Employee_ID = @Employee_ID and Type_ = 'RejectGoOut'

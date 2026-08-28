@@ -77,7 +77,7 @@ BEGIN
 
     SELECT @ChiGuiThongBao = ISNULL(ga.ChiGuiThongBao, N'')
     FROM HR_GetApprover ga
-    WHERE ga.Code        = @Approver
+    WHERE ga.Code = @Approver
       AND ga.Employee_ID = @Employee_ID
       AND ga.RequestType = @RequestType;
 
@@ -97,14 +97,19 @@ BEGIN
         ELSE
             SET @TimeIn = [dbo].[GhepGioVaoNgay](@TimeOut_ + 1, @TimeIn);
 
-        -- Block save when an active (Pending/Approved) request overlaps the requested time range.
-        -- Two intervals [A,B] and [C,D] overlap when A < D AND C < B.
+        -- Block save when ANY request (bất kể TrangThai — Pending/Approved/Rejected đều tính) đã
+        -- có trùng/chồng khung giờ trong cùng ngày. Hai khoảng [A,B] và [C,D] chồng lấn khi
+        -- A < D AND C < B. Trước đây lọc "AND TrangThai IN ('Pending','Approved')" khiến đơn
+        -- Rejected trùng y hệt TimeOut_ lọt qua chốt này rồi bị SQL Server chặn thẳng bằng lỗi
+        -- PRIMARY KEY constraint PK_HR_LeaveRequestGoOut (khóa chính thật là Employee_ID+TimeOut_,
+        -- không phải ID) — xem ghi chú đầu file HR_RequestLeaveGoOut_OverlapCheck.sql.
+        -- (@ID IS NULL OR ID <> @ID): @ID chỉ NULL khi tạo mới (không có "chính mình" để loại trừ,
+        -- đúng); @ID có giá trị thật khi sửa nên tự loại được chính dòng đang sửa.
         IF EXISTS (
             SELECT 1
             FROM HR_LeaveRequestGoOut
             WHERE Employee_ID             = @Employee_ID
               AND CONVERT(date, TimeDate) = CONVERT(date, @TimeDate)
-              AND TrangThai               IN (N'Pending', N'Approved')
               AND TimeOut_                < @TimeIn
               AND @TimeOut_               < TimeIn
               AND (@ID IS NULL OR ID     <> @ID)
@@ -114,29 +119,34 @@ BEGIN
         END
         ELSE
         BEGIN
-            IF EXISTS (
-                SELECT Employee_ID
-                FROM HR_LeaveRequestGoOut
-                WHERE Employee_ID = @Employee_ID AND TimeOut_ = @TimeOut_ AND ID IS NOT NULL
-            )
+            -- ================================================================================
+            -- TẠO MỚI (độc lập) vs SỬA (đúng dòng theo ID) — xem ghi chú đầu file
+            -- HR_RequestSave_SplitInsertUpdate.sql.
+            -- ================================================================================
+            IF @ID IS NOT NULL
             BEGIN
-                UPDATE HR_LeaveRequestGoOut
-                SET Employee_ID      = @Employee_ID,
-                    TimeDate         = @TimeDate,
-                    LeaveType_ID     = @LeaveType_ID,
-                    ShiftName        = @ShiftName,
-                    TimeOut_         = @TimeOut_,
-                    TimeIn           = @TimeIn,
-                    Remark           = @Remark,
-                    UserName         = @UserName,
-                    InsertDate       = GETDATE(),
-                    TrangThai        = @TrangThai,
-                    ApproveDate      = @ApproveDate,
-                    ApproverName     = @Approver,
-                    ApproveLevel     = @ApproveLevel,
-                    ThuTuDuyet       = @ThuTuDuyet,
-                    CurrentStepSince = GETDATE()
-                WHERE (Employee_ID = @Employee_ID AND TimeDate = @TimeDate) OR ID = ISNULL(@ID, 0);
+                IF NOT EXISTS (SELECT 1 FROM HR_LeaveRequestGoOut WHERE ID = @ID)
+                    SET @ThongBao = N'RequestNotFound'
+                ELSE
+                BEGIN
+                    UPDATE HR_LeaveRequestGoOut
+                    SET Employee_ID      = @Employee_ID,
+                        TimeDate         = @TimeDate,
+                        LeaveType_ID     = @LeaveType_ID,
+                        ShiftName        = @ShiftName,
+                        TimeOut_         = @TimeOut_,
+                        TimeIn           = @TimeIn,
+                        Remark           = @Remark,
+                        UserName         = @UserName,
+                        InsertDate       = GETDATE(),
+                        TrangThai        = @TrangThai,
+                        ApproveDate      = @ApproveDate,
+                        ApproverName     = @Approver,
+                        ApproveLevel     = @ApproveLevel,
+                        ThuTuDuyet       = @ThuTuDuyet,
+                        CurrentStepSince = GETDATE()
+                    WHERE ID = @ID;
+                END
             END
             ELSE
             BEGIN
@@ -152,39 +162,42 @@ BEGIN
                 );
             END
 
-            -- Rebuild notification recipient list only when save succeeds.
-            IF @ApproveLevel IS NULL
+            IF ISNULL(@ThongBao, N'') = N''
             BEGIN
-                DELETE HR_DanhSachNguoiNhanThongBao
-                WHERE Employee_ID = @Employee_ID AND Type_ = N'RequestGoOut';
+                -- Rebuild notification recipient list only when save succeeded.
+                IF @ApproveLevel IS NULL
+                BEGIN
+                    DELETE HR_DanhSachNguoiNhanThongBao
+                    WHERE Employee_ID = @Employee_ID AND Type_ = N'RequestGoOut';
 
-                INSERT INTO HR_DanhSachNguoiNhanThongBao (
-                    Employee_ID, Approver_ID, Fullname, Type_, Email1, Sended, ChiNhanThongBao,
-                    NotifyViaWeb, NotifyViaEmail, NotifyViaZalo
-                )
-                SELECT @Employee_ID, dt.[Data], @Fullname, N'RequestGoOut', ISNULL(empl.Email, N''), 0,
-                    CASE WHEN @ApproveLevel IS NULL THEN 1 ELSE 0 END,
-                    ch.NotifyViaWeb, ch.NotifyViaEmail, ch.NotifyViaZalo
-                FROM Split(@ChiGuiThongBao, ',') dt
-                LEFT JOIN SmartBooks_Employee empl ON dt.[Data] = empl.Employee_ID
-                CROSS APPLY dbo.udf_ApprovalNotifyChannels_Web(@RequestType, @FlowCode, NULL, 1) ch
-                WHERE dt.[Data] <> N'';
-            END
-            ELSE
-            BEGIN
-                DELETE HR_DanhSachNguoiNhanThongBao
-                WHERE Employee_ID = @Employee_ID AND Type_ = N'RequestGoOut';
+                    INSERT INTO HR_DanhSachNguoiNhanThongBao (
+                        Employee_ID, Approver_ID, Fullname, Type_, Email1, Sended, ChiNhanThongBao,
+                        NotifyViaWeb, NotifyViaEmail, NotifyViaZalo
+                    )
+                    SELECT @Employee_ID, dt.[Data], @Fullname, N'RequestGoOut', ISNULL(empl.Email, N''), 0,
+                        CASE WHEN @ApproveLevel IS NULL THEN 1 ELSE 0 END,
+                        ch.NotifyViaWeb, ch.NotifyViaEmail, ch.NotifyViaZalo
+                    FROM Split(@ChiGuiThongBao, ',') dt
+                    LEFT JOIN SmartBooks_Employee empl ON dt.[Data] = empl.Employee_ID
+                    CROSS APPLY dbo.udf_ApprovalNotifyChannels_Web(@RequestType, @FlowCode, NULL, 1) ch
+                    WHERE dt.[Data] <> N'';
+                END
+                ELSE
+                BEGIN
+                    DELETE HR_DanhSachNguoiNhanThongBao
+                    WHERE Employee_ID = @Employee_ID AND Type_ = N'RequestGoOut';
 
-                INSERT INTO HR_DanhSachNguoiNhanThongBao (
-                    Employee_ID, Approver_ID, Fullname, Type_, Email1, Sended, ChiNhanThongBao,
-                    NotifyViaWeb, NotifyViaEmail, NotifyViaZalo
-                )
-                SELECT @Employee_ID, dt.[Data], @Fullname, N'RequestGoOut', ISNULL(empl.Email, N''), 0, 0,
-                    ch.NotifyViaWeb, ch.NotifyViaEmail, ch.NotifyViaZalo
-                FROM Split(@ApproveLevel, ',') dt
-                LEFT JOIN SmartBooks_Employee empl ON dt.[Data] = empl.Employee_ID
-                CROSS APPLY dbo.udf_ApprovalNotifyChannels_Web(@RequestType, @FlowCode, @ThuTuDuyet, 0) ch
-                WHERE dt.[Data] <> N'';
+                    INSERT INTO HR_DanhSachNguoiNhanThongBao (
+                        Employee_ID, Approver_ID, Fullname, Type_, Email1, Sended, ChiNhanThongBao,
+                        NotifyViaWeb, NotifyViaEmail, NotifyViaZalo
+                    )
+                    SELECT @Employee_ID, dt.[Data], @Fullname, N'RequestGoOut', ISNULL(empl.Email, N''), 0, 0,
+                        ch.NotifyViaWeb, ch.NotifyViaEmail, ch.NotifyViaZalo
+                    FROM Split(@ApproveLevel, ',') dt
+                    LEFT JOIN SmartBooks_Employee empl ON dt.[Data] = empl.Employee_ID
+                    CROSS APPLY dbo.udf_ApprovalNotifyChannels_Web(@RequestType, @FlowCode, @ThuTuDuyet, 0) ch
+                    WHERE dt.[Data] <> N'';
+                END
             END
         END
     END

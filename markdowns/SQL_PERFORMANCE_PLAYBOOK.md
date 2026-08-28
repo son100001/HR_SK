@@ -37,6 +37,24 @@
 >   khả năng áp dụng. Xem [SQL_PERFORMANCE_HISTORY.md](SQL_PERFORMANCE_HISTORY.md) để biết trạng thái mới
 >   nhất trước khi bắt tay sửa (tránh áp dụng trùng lặp).
 
+> [!IMPORTANT]
+> **Cập nhật 2026-08-28 — DB làm việc chính đã đổi sang `HR_SnK_Dev` (cùng server `113.161.180.44`).**
+> `HR_SnK_Dev_260811` chỉ còn là snapshot cũ. `HR_SnK_Dev` là **DB đang có người dùng thật** (không phải
+> DB test như `_260811`) và **mới hơn** — nhiều object đã được viết lại so với `_260811`.
+>
+> Hệ quả bắt buộc nhớ khi port fix từ lịch sử cũ sang: **không được chạy lại nguyên văn các deploy
+> script `2026-08-12_*` lên `HR_SnK_Dev`** — chúng chứa thân hàm của bản `_260811` CŨ HƠN, chạy lên sẽ
+> làm mất code mới. Cụ thể đã xác nhận ngày 2026-08-28:
+> - `dbo.Split`: `HR_SnK_Dev` trả về 2 cột `(Data, order_)` ≠ 1 cột của `_260811` → xem cảnh báo ở mục A1.
+> - `dbo.udf_BangPhepTheoNgayTinhPhep`: bug `@emp`-scope mà `_260811` phải fix **không còn tồn tại** ở
+>   `HR_SnK_Dev` — cả khối `DELETE`/`UPDATE` chứa bug đó đã bị comment out sẵn trong bản mới.
+> - `dbo.sp_TinhCong`, `dbo.sp_TinhLuong`, `udf_TinhCong`, `sp_XuLyGioDayDuLieu`… đều đã đổi; có thêm
+>   2 bảng mới `HR_GioDayDuLieu`, `HR_WTDaily_GioDayDuLieu` mà `_260811` không có.
+>
+> **Quy trình đúng:** đọc thân object THẬT của DB đích (`sys.sql_modules`, hoặc export sẵn ở
+> [`Database/SQL/`](../Database/SQL/) — nay đã đồng bộ từ `HR_SnK_Dev`), rồi áp dụng *ý tưởng* fix lên
+> thân hàm mới, chứ không copy nguyên file deploy cũ.
+
 ---
 
 ## A. Áp dụng nhanh — object đã biết cần sửa gì (kiểm tra trên DB mới, apply thẳng nếu khớp)
@@ -82,6 +100,60 @@ GO
 Giữ nguyên tên hàm/tham số/tên cột kết quả (`Data`)/hành vi trim + token rỗng → tương thích ngược 100%,
 **không cần sửa bất kỳ caller nào**. An toàn dùng ở mọi compatibility level (không cần `STRING_SPLIT`,
 không giới hạn đệ quy).
+
+> [!WARNING]
+> **BẮT BUỘC kiểm tra chữ ký `Split` của DB đích trước khi dán bản trên vào — không phải DB nào cũng
+> giống nhau.** Trên `HR_SnK_Dev` (2026-08-28) `dbo.Split` trả về **2 cột `(Data, order_)`**, không phải
+> 1 cột `(Data)` như `HR_SnK_Dev_260811`/`HR_KIDO_35`. Có 7 stored procedure dùng cột `order_` thật
+> (`sp_Approval_EscalatePending_Web`, `sp_ApproveLeaveRequest`, `sp_ApproveLeaveRequestGoOut`,
+> `sp_BangPhepMultiple_Web`, `sp_BangPhepXinRaNgoai_Web`, `usp_InsertUpdateHR_EmployeeLeaveRequests`,
+> `usp_InsertUpdateHR_RequestLeaveGoOut`) → chạy bản XML 1 cột ở trên sẽ **làm hỏng cả 7 proc**.
+> Kiểm tra bằng: `SELECT name FROM sys.columns WHERE object_id = OBJECT_ID('dbo.Split');`
+>
+> Khi cần giữ `order_`, dùng **bản tally set-based** dưới đây thay cho bản XML — nó vừa sinh được
+> `order_` có thứ tự **đảm bảo** (bản XML `.nodes()` không có cách sinh số thứ tự đảm bảo), vừa **không
+> phụ thuộc `SET QUOTED_IDENTIFIER ON`** (bẫy vận hành đã ghi nhận ở mục A1 bản XML):
+>
+> ```sql
+> CREATE FUNCTION [dbo].[Split] (@RowData NVARCHAR(max), @SplitOn NVARCHAR(5))
+> RETURNS TABLE
+> AS
+> RETURN
+> (
+>     WITH L0(c) AS (SELECT 1 UNION ALL SELECT 1),
+>          L1(c) AS (SELECT 1 FROM L0 a CROSS JOIN L0 b),
+>          L2(c) AS (SELECT 1 FROM L1 a CROSS JOIN L1 b),
+>          L3(c) AS (SELECT 1 FROM L2 a CROSS JOIN L2 b),
+>          L4(c) AS (SELECT 1 FROM L3 a CROSS JOIN L3 b),
+>          Tally(n) AS (
+>             SELECT TOP (CASE WHEN @RowData IS NULL OR @SplitOn IS NULL OR @SplitOn = N''
+>                              THEN 0 ELSE DATALENGTH(@RowData) / 2 END)
+>                    ROW_NUMBER() OVER (ORDER BY (SELECT NULL))
+>             FROM L4 a CROSS JOIN L4 b
+>          ),
+>          Pos(n) AS (
+>             SELECT 0
+>             UNION ALL
+>             SELECT n FROM Tally WHERE SUBSTRING(@RowData, n, DATALENGTH(@SplitOn) / 2) = @SplitOn
+>          )
+>     SELECT
+>         CAST(LTRIM(RTRIM(SUBSTRING(@RowData, p.n + 1,
+>               ISNULL(LEAD(p.n) OVER (ORDER BY p.n), DATALENGTH(@RowData) / 2 + 1) - p.n - 1
+>         ))) AS NVARCHAR(1000)) AS Data,
+>         CAST(ROW_NUMBER() OVER (ORDER BY p.n) AS INT) AS order_
+>     FROM Pos p
+> );
+> ```
+>
+> Bản tally này tái hiện đúng cả các case biên của vòng `WHILE` gốc: `@RowData` NULL → 1 dòng NULL;
+> `@RowData = N''` → 1 dòng rỗng; **`@SplitOn` rỗng/NULL → KHÔNG tách, trả nguyên chuỗi** (khớp
+> `CHARINDEX(N'', x) = 0` — quan trọng vì trong `HR_SnK_Dev` có 7 lời gọi truyền dấu phân cách rỗng);
+> token rỗng liền nhau và dấu phân cách ở đầu/cuối vẫn sinh dòng rỗng tương ứng.
+>
+> Đo trên `HR_SnK_Dev` (2026-08-28, 5 lần lặp): `CROSS APPLY` 3.000 dòng **430 ms → 28 ms (~15x)**;
+> gọi 500 lần đơn lẻ **159 ms → 34 ms (~4,7x)**; `IN (SELECT ... FROM Split(...))` 15 ms → 12 ms.
+> ⚠️ Lần đo ĐƠN LẺ đầu tiên cho kết quả ngược (18 ms → 29 ms) do chi phí compile — **luôn đo lặp nhiều
+> lần và có bước warm-up trước khi kết luận**, đừng tin 1 lần chạy.
 
 **Trước khi drop:** check permission riêng trên object (`SELECT * FROM sys.database_permissions WHERE
 major_id = OBJECT_ID('dbo.Split')`) để cấp lại nếu có.

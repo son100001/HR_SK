@@ -2,7 +2,7 @@
 --where fromdate <= '2020-01-01'
 --exec sp_KetChuyenDuLieuSalaryComponent '2010-01-01','2018-02-28'
 --exec sp_KetChuyenDuLieuSalaryComponent '2018-04-01','2023-09-30'
---exec sp_KetChuyenDuLieuSalaryComponentNew '2010-11-01','2026-04-30'
+--exec sp_KetChuyenDuLieuSalaryComponentNew '2010-11-01','2026-08-31'
 CREATE procedure [dbo].[sp_KetChuyenDuLieuSalaryComponentNew]
 @fromdate datetime,
 @todate datetime
@@ -13,7 +13,7 @@ begin
 	from
 	HR_SalaryComponent sc
 	where ((fromdate between @fromdate and @todate) or (isnull(Todate,@todate+1) between @fromdate and @todate)) --and SalaryComponent in ('PCTN', 'PCDT', 'PCT', 'PCK', 'TKD','PCTT', 'LBH', 'LCB')
-
+			and InsertSource = 'KetChuyen'
 	--Insert into HR_KIDO_35.dbo.HR_SalaryComponent(Employee_ID, Fromdate, Todate, Amount, SalaryComponent, UserName) --1
 	--select Employee_ID, fromdate, todate, Amount, 'PCTN'
 	--from   HR_PREX.dbo.HR_PhuCapCoDinh_Chitiet sc
@@ -35,6 +35,24 @@ begin
 	from
 	HR_SNK.dbo.HR_SalaryComponentFollowMonth
 	where DATEFROMPARTS(Year_,Month_,1) between @fromdate and @todate and Month_ <= 12
+
+	delete sc
+	from
+	HR_SnK_Dev.dbo.HR_SalaryComponent sc
+	left join
+	HR_SnK_Dev.dbo.HR_SalaryComponent sc1
+	on sc.Employee_ID = sc1.Employee_ID and sc.Fromdate = sc1.Fromdate 
+		and case sc.SalaryComponent when 'A1LCB' then 'LCB'
+												when 'A2PCTN' then 'TN'
+												when 'A7PCDH' then 'PCNNDH'
+												when 'A51PCCD' then 'PCCD'
+												when 'A5PCDT' then 'PCDT'
+												when 'A3PCXXNT' then 'TCXX'
+												when 'A9PCABC' then 'TCABC'
+												when 'A8PCPCCC' then 'PCCC'
+												when 'A4PCCC' then 'TCC'
+												else '' end = sc1.SalaryComponent
+	where sc1.Employee_ID is not null and sc.Fromdate between @fromdate and @todate and sc.InsertSource = 'KetChuyen'
 
 	Update HR_SnK_Dev.dbo.HR_SalaryComponent
 	set SalaryComponent = case SalaryComponent when 'A1LCB' then 'LCB'

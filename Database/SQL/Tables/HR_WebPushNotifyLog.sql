@@ -10,7 +10,9 @@
     [SentAt] DATETIME NOT NULL DEFAULT (getdate()),
     [IsRead] BIT NOT NULL DEFAULT ((0)),
     [RequestId] NVARCHAR(50) NULL,
-    [ApprovalType] NVARCHAR(50) NULL
+    [ApprovalType] NVARCHAR(50) NULL,
+    [MessageKey] NVARCHAR(100) NULL,
+    [MessageParams] NVARCHAR(1000) NULL
 );
 
 ALTER TABLE [dbo].[HR_WebPushNotifyLog] ADD CONSTRAINT [PK__HR_WebPu__3214EC07AE99D4BA] PRIMARY KEY ([Id] ASC);

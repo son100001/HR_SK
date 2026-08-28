@@ -91,6 +91,7 @@ BEGIN
     BEGIN
         SELECT
             empl.PositionFullName AS DepartmentName,
+            empl.ChucDanh,
             lrg.Employee_ID,
             dbo.udf_FullName(empl.Employee_Firstname, empl.Employee_LastName) AS FullName,
             lrg.TrangThai,
@@ -108,6 +109,7 @@ BEGIN
         OUTER APPLY (
             SELECT TOP 1
                 employeeInfo.PositionFullName,
+                employeeInfo.ChucDanh,
                 employeeInfo.Employee_Firstname,
                 employeeInfo.Employee_LastName
             FROM udf_EmployeeFilter(@LAN, NULL, NULL, NULL, NULL, NULL, NULL, lrg.Employee_ID, GETDATE()) employeeInfo
@@ -220,6 +222,7 @@ BEGIN
     BEGIN
         SELECT
             empl.PositionFullName AS DepartmentName,
+            empl.ChucDanh,
             lrg.Employee_ID,
             dbo.udf_FullName(empl.Employee_Firstname, empl.Employee_LastName) AS FullName,
             lrg.TrangThai,
@@ -237,6 +240,7 @@ BEGIN
         OUTER APPLY (
             SELECT TOP 1
                 employeeInfo.PositionFullName,
+                employeeInfo.ChucDanh,
                 employeeInfo.Employee_Firstname,
                 employeeInfo.Employee_LastName
             FROM udf_EmployeeFilter(@LAN, NULL, NULL, NULL, NULL, NULL, NULL, lrg.Employee_ID, GETDATE()) employeeInfo

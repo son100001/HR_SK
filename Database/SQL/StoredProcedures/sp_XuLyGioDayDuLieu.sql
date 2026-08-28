@@ -148,7 +148,7 @@ BEGIN
 		where AccessDate between @NgayDauThang and @NgayCuoiThang and UserName = 'Auto1'
 		--select * from @tblNumericDataPV
 		-- Insert giờ ra
-		
+		--select 'a' as a
 		insert into HR_TimeKeeping_Data (Employee_ID, AccessDate, AccessTime, Device_ID, CardNumber, DeviceIP, InOutStatus, InsertSource, Reason, Remark, UserName, InsertDate)
 		select src.Employee_ID, src.AccessDate, dateadd(minute,2,src.AccessTime) as AccessTime, src.Device_ID, src.CardNumber, src.DeviceIP, src.InOutStatus, src.InsertSource, src.Reason, src.Remark, src.UserName, src.InsertDate
 		from
@@ -166,7 +166,7 @@ BEGIN
 						Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9, Day10, Day11, Day12, Day13, Day14, Day15, Day16, Day17
 						, Day18, Day19, Day20, Day21, Day22, Day23, Day24, Day25, Day26, Day27, Day28, Day29, Day30, Day31
 					FROM HR_GioDayDuLieu
-					WHERE LoaiGio = 'QR' and Thang = @Month and Nam = @Year
+					WHERE LoaiGio = 'GR' and Thang = @Month and Nam = @Year
 				) src
 				UNPIVOT (
 					ThoiGian FOR NgayThang IN (
@@ -182,9 +182,10 @@ BEGIN
 		) src
 		left join
 		HR_TimeKeeping_Data wt
-		on src.Employee_ID = wt.Employee_ID and src.AccessDate = wt.AccessDate and src.AccessTime = wt.AccessTime
-		where wt.Employee_ID is null
-
+		on src.Employee_ID = wt.Employee_ID and src.AccessDate = wt.AccessDate and DATEADD(minute, DATEDIFF(minute, 0, src.AccessTime), 0) = DATEADD(minute, DATEDIFF(minute, 0, wt.AccessTime), 0)
+		where wt.Employee_ID is null and src.AccessTime is not null
+		
+		--select 'a1' as a
 		/*insert into HR_TimeKeeping_Data (Employee_ID, AccessDate, AccessTime, Device_ID, CardNumber, DeviceIP, InOutStatus, InsertSource, Reason, Remark, UserName, InsertDate)
 		select src.Employee_ID, src.DayNumber
 				, dbo.GhepGioVaoNgay (src.DayNumber,case when  /*dateadd(ms,10,dateadd(minute, (- [d1] - case when [d1] > 4 and RestTimeFrom is not null then 1 else 0 end) * 60 - ABS(CHECKSUM(NEWID())) % 16, dbo.GhepGioVaoNgay(src.DayNumber,ToTime)))*/ as AccessTime
@@ -219,7 +220,7 @@ BEGIN
 						Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9, Day10, Day11, Day12, Day13, Day14, Day15, Day16, Day17
 						, Day18, Day19, Day20, Day21, Day22, Day23, Day24, Day25, Day26, Day27, Day28, Day29, Day30, Day31
 					FROM HR_GioDayDuLieu
-					WHERE LoaiGio = 'QV' and Thang = @Month and Nam = @Year
+					WHERE LoaiGio = 'GV' and Thang = @Month and Nam = @Year
 				) src
 				UNPIVOT (
 					ThoiGian FOR NgayThang IN (
@@ -235,8 +236,9 @@ BEGIN
 		) src
 		left join
 		HR_TimeKeeping_Data wt
-		on src.Employee_ID = wt.Employee_ID and src.AccessDate = wt.AccessDate and src.AccessTime = wt.AccessTime
-		where wt.Employee_ID is null
+		on src.Employee_ID = wt.Employee_ID and src.AccessDate = wt.AccessDate and DATEADD(minute, DATEDIFF(minute, 0, src.AccessTime), 0) = DATEADD(minute, DATEDIFF(minute, 0, wt.AccessTime), 0)
+		where wt.Employee_ID is null and src.AccessTime is not null
+		--select 'a2' as a
 		/*insert into HR_TimeKeeping_Data (Employee_ID, AccessDate, AccessTime, Device_ID, CardNumber, DeviceIP, InOutStatus, InsertSource, Reason, Remark, UserName, InsertDate)
 		select src.Employee_ID, src.DayNumber, dateadd(ms,10,dateadd(MINUTE, (isnull([d1.5],0) + isnull([d2.1],0))*60 + ABS(CHECKSUM(NEWID())) % 16, dbo.GhepGioVaoNgay(src.DayNumber,ToTime))) as AccessTime, 'MCC' as Device_ID, src.Employee_ID as CardNumber, null as DeviceIP, 2 as InOutStatus, 'Auto' as InsertSource, null as Reason, null as Remark, 'Auto' as UserName, getdate() as InsertDate
 		from
@@ -301,13 +303,15 @@ BEGIN
 		--from
 		--@tblNumericData src
 		--where LoaiGio in ('d2','d2.7','d3','d3.9')
-		/*
+		
 		--Xử lý phép
 		Delete from HR_DangKyPhepTheoGio
-		where Remark = 'Auto'
+		where /*Remark = 'Auto1' and*/ DateLeave between @NgayDauThang and @NgayCuoiThang
+
+		exec sp_Insert_HR_BangPhepDaNghi @NgayDauThang, @NgayCuoiThang
 
 		insert into HR_DangKyPhepTheoGio (Employee_ID, DateLeave, TypeOfLeave, HourLeave, LeaveType_ID, Remark, InsertDate, UserName)
-		select src.Employee_ID, src.Ngay, 1 as TypeOfLeave, case when cast(GioNghi as float) = 0 then 8.0 else cast(GioNghi as float) end as GioNghi, lt.LeaveType_ID, 'Auto' as Remark, GETDATE() as InsertDate, 'Auto' as UserName
+		select src.Employee_ID, src.Ngay, 'Rasom' as TypeOfLeave, case when cast(GioNghi as float) = 0 then 8.0 else cast(GioNghi as float) end as GioNghi, lt.LeaveType_ID, 'Auto1' as Remark, GETDATE() as InsertDate, 'Auto' as UserName
 		from
 		(
 			select Employee_ID, Thang, Nam, LoaiGio1, loaigio2, SUBSTRING(LoaiGio2,1,PATINDEX('%[^0-9.]%', LoaiGio2 + ' ') - 1) as GioNghi, SUBSTRING(replace(LoaiGio2,N'Ô','O'), PATINDEX('%[^0-9.]%', replace(LoaiGio2,N'Ô','O') + ' '), LEN(replace(LoaiGio2,N'Ô','O'))) AS LoaiNghi , DATEFROMPARTS(Nam,Thang,case when LEN(LoaiGio1) = 4 then right(LoaiGio1,1) else right(LoaiGio1,2) end) as Ngay
@@ -327,6 +331,7 @@ BEGIN
 					And (TRY_CAST(Day28 AS FLOAT) IS NULL OR Day28 LIKE '%[^0-9.]%' OR Day28 LIKE '%.%.%') And (TRY_CAST(Day29 AS FLOAT) IS NULL OR Day29 LIKE '%[^0-9.]%' OR Day29 LIKE '%.%.%') And (TRY_CAST(Day30 AS FLOAT) IS NULL OR Day30 LIKE '%[^0-9.]%' OR Day30 LIKE '%.%.%') 
 					And (TRY_CAST(Day31 AS FLOAT) IS NULL OR Day31 LIKE '%[^0-9.]%' OR Day31 LIKE '%.%.%') 
 					And Thang = @Month and Nam = @Year
+					and gddl.LoaiGio = 'LN'
 			) src
 			unpivot
 			(
@@ -337,8 +342,14 @@ BEGIN
 		left join
 		SmartBooks_LeaveType lt
 		on src.LoaiNghi = lt.AbsentSign
+		left join
+		HR_BangPhepDaNghi bpdn
+		on src.Employee_ID = bpdn.Employee_ID and src.Ngay = bpdn.DateLeave --and bpdn.LeaveType_ID = 14
 		where lt.LeaveType_ID is not null --and src.Employee_ID = 'MS2307'
-		*/
+				and isnull(bpdn.LeaveType_ID,14) = 14
+		
+		exec sp_Insert_HR_BangPhepDaNghi @NgayDauThang, @NgayCuoiThang
+
 		/*
 		--Chu y xoa du lieu cong goc
 		delete tito
@@ -355,6 +366,17 @@ BEGIN
 		where tito.AccessDate between @NgayDauThang and @NgayCuoiThang and tito.UserName <> 'Auto' and tito2.Employee_ID is not null
 		*/
 		--exec sp_XuLyPhepDayDuLieu @Month, @Year, @fact, @dept, @sect, @team, @pos, @posc, @Emp
+
+		Delete HR_SalaryComponentFollowMonth
+		where SalaryComponent = 'CCNT' and UserName = 'Auto1' and Month_ = @Month and Year_ = @Year
+
+		insert into HR_SalaryComponentFollowMonth (Employee_ID, SalaryComponent, Amount, Year_, Month_, Remark, InsertDate, UserName)
+		select Employee_ID, 'CCNT', ChuyenCan, @Year, @Month, null, GETDATE(), 'Auto1'
+		from
+		HR_GioDayDuLieu
+		where Thang = @Month and Nam = @Year and LoaiGio = 'GV'
+
+		--insert into HR_SalaryCoponent ()
 		
 		select 'ThanhCong' as ThongBao
 		

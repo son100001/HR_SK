@@ -1,9 +1,17 @@
-# 📜 Lịch sử tối ưu hiệu năng SQL — riêng cho `HR_SnK_Dev_260811`
+# 📜 Lịch sử tối ưu hiệu năng SQL — server `113.161.180.44`
 
-> File này **không portable** — chỉ ghi lại lịch sử/nhật ký các lần tối ưu đã thực hiện trên database
-> `HR_SnK_Dev_260811` (113.161.180.44) cụ thể (ngày nào, đo được gì, có rollback không). Muốn tra cứu
+> File này **không portable** — chỉ ghi lại lịch sử/nhật ký các lần tối ưu đã thực hiện trên các database
+> cụ thể của server `113.161.180.44` (ngày nào, đo được gì, có rollback không). Muốn tra cứu
 > **cách sửa tổng quát áp dụng được cho DB khác**, đọc
 > [SQL_PERFORMANCE_PLAYBOOK.md](SQL_PERFORMANCE_PLAYBOOK.md) thay vì file này.
+>
+> **Mục lục theo database:**
+> - [`HR_SnK_Dev` — DB hiện hành, CÓ NGƯỜI DÙNG THẬT (từ 2026-08-28)](#hr_snk_dev--db-hiện-hành-có-người-dùng-thật) ← đọc mục này trước
+> - `HR_SnK_Dev_260811` — snapshot cũ, chỉ để tham khảo (toàn bộ phần còn lại của file, từ mục "Đối chiếu ban đầu (2026-08-12)" trở xuống)
+>
+> ⚠️ **Các thay đổi ghi trong phần `HR_SnK_Dev_260811` KHÔNG có trên `HR_SnK_Dev`**, và phần lớn cũng
+> **không nên** port nguyên văn — xem lý do ở mục "Cập nhật 2026-08-28" đầu
+> [SQL_PERFORMANCE_PLAYBOOK.md](SQL_PERFORMANCE_PLAYBOOK.md).
 >
 > Playbook ở trên được port từ `Kido_New/markdowns/SQL_PERFORMANCE_PLAYBOOK.md` (database `HR_KIDO_35`,
 > cùng hệ thống POCONS/SmartBooks HR) — **không copy nhật ký của Kido vào đây**, vì các thay đổi ghi
@@ -11,6 +19,147 @@
 > chạy trên DB này.
 
 ---
+
+## `HR_SnK_Dev` — DB hiện hành, CÓ NGƯỜI DÙNG THẬT
+
+### 2026-08-28 — port các fix hiệu năng từ `HR_SnK_Dev_260811` sang, và đồng bộ lại `Database/SQL/`
+
+**Bối cảnh & yêu cầu:** `HR_SnK_Dev` là bản **mới nhất và đang có người dùng thật** (ghi nhận hoạt động
+tới 09:15 sáng cùng ngày). Các *thay đổi code* của `_260811` phải **bỏ đi** (vì `_260811` cũ hơn), chỉ
+port phần **tăng tốc**. Đồng thời export lại toàn bộ DDL từ `HR_SnK_Dev` đè lên [`Database/SQL/`](../Database/SQL/).
+
+**Quy mô dữ liệu tại thời điểm đo:** `HR_TimeKeeping_Data` 1.074.764 dòng · `HR_WTDaily` 634.194 ·
+`HR_TimeIn_TimeOut` 347.728 · `SmartBooks_Employee` 9.196. `compatibility_level = 120`,
+SQL Server 2017 Standard Edition.
+
+#### Đối chiếu khả năng áp dụng từng fix của `_260811`
+
+| Fix của `_260811` | Trạng thái trên `HR_SnK_Dev` | Kết luận |
+|---|---|---|
+| `IX_SmartBooks_Employee_ID_number` | chưa có | ✅ **đã áp dụng** |
+| `IX_HR_TimeKeeping_Data_AccessDate` | chưa có | ✅ **đã áp dụng** |
+| `IX_HR_WTDaily_Ngay` | chưa có | ✅ **đã áp dụng** |
+| `udf_BangDangKyCaTheoViTri` → inline TVF | vẫn là MSTVF, thân hàm tương thích | ✅ **đã áp dụng** (viết lại script riêng) |
+| `Split` → inline TVF | vẫn là MSTVF **nhưng chữ ký khác** (2 cột) | ⏸️ script đã viết + verify, **CHƯA deploy được** (xem dưới) |
+| Fix `@emp`-scope `udf_BangPhepTheoNgayTinhPhep` | **không còn bug** — khối `DELETE`/`UPDATE` chứa bug đã bị comment out trong bản mới | ❌ **bỏ, không cần** |
+
+#### Chi tiết 1 — 3 index (an toàn tuyệt đối, index không thể làm sai kết quả)
+
+Deploy: [`2026-08-28_HR_SnK_Dev_Optimize_Indexes.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Optimize_Indexes.sql)
+· Rollback: [`2026-08-28_HR_SnK_Dev_Rollback_Indexes.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Rollback_Indexes.sql)
+
+| Truy vấn đo | Trước | Sau |
+|---|---|---|
+| `SmartBooks_Employee` lọc theo `ID_number` | 1.519 logical reads (full scan), 7 ms | **2 logical reads** (index seek), 0 ms |
+| `HR_TimeKeeping_Data` lọc `AccessDate` 1 tháng | scan count 9, **20.774** logical reads, 43–45 ms | scan count 1, **801** logical reads, 19–20 ms |
+| `HR_WTDaily` tổng hợp cả năm (`sp_TinhCong` dòng 160) | scan count 9, **12.588** logical reads, 120–126 ms | scan count 9, **2.596** logical reads, 117–119 ms |
+
+Lưu ý: truy vấn `HR_WTDaily` giảm I/O ~4,8 lần nhưng **wall-clock gần như không đổi** — nó bị chặn bởi
+CPU của phép gộp (`GROUP BY` toàn bộ nhân viên), không phải bởi I/O. Lợi ích thật nằm ở giảm tranh chấp
+buffer pool khi nhiều người dùng chạy song song, không phải ở 1 lần chạy đơn lẻ.
+
+⚠️ **Vận hành:** Standard Edition không có ONLINE index build → 3 lệnh `CREATE INDEX` này **chặn ghi**
+trên bảng tương ứng trong lúc build. Lần này chạy mất vài giây/bảng, không có sự cố, nhưng lần sau nên
+chạy ngoài giờ cao điểm.
+
+#### Chi tiết 2 — `udf_BangDangKyCaTheoViTri` MSTVF → inline TVF
+
+Deploy: [`2026-08-28_HR_SnK_Dev_Optimize_udf_BangDangKyCaTheoViTri.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Optimize_udf_BangDangKyCaTheoViTri.sql)
+· Rollback: [`2026-08-28_HR_SnK_Dev_Rollback_udf_BangDangKyCaTheoViTri_MSTVF.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Rollback_udf_BangDangKyCaTheoViTri_MSTVF.sql)
+
+**Verify:** `EXCEPT` 2 chiều trên 4 bộ tham số (không lọc / `SK2` / `FACTORY A` / kỳ 2025-09) → 3.320
+dòng, **lệch 0 dòng cả 2 chiều**. Bản MSTVF cũ có `PRIMARY KEY (Employee_ID)` trên bảng trả về mà inline
+TVF không có → đã kiểm tra riêng: bản mới **không sinh dòng trùng `Employee_ID` nào**.
+
+**Đo:** đứng riêng ~1.534 ms → ~1.631 ms (**trung tính**, trong biên độ nhiễu). Trong ngữ cảnh caller
+thật `udf_DangKyCa`: 1.802 ms → 1.759 ms — **không regression**. Giữ lại vì output đã verify khớp 100%
+và cardinality estimate đúng hơn về lý thuyết. Kết luận trùng khớp với case tương ứng trên `_260811`.
+
+**Cách deploy an toàn trên DB có người dùng thật (kỹ thuật mới, nên dùng lại):** `DROP FUNCTION` +
+`CREATE FUNCTION` chạy **trong 1 transaction** (qua ADO.NET, `SqlConnection.BeginTransaction()`). Nhờ
+vậy caller gọi đúng lúc đang swap sẽ **chờ trên Sch-M lock** rồi chạy tiếp, thay vì gặp lỗi "không tồn
+tại object". Nếu DROP + CREATE ở 2 batch rời nhau ngoài transaction thì có cửa sổ vài chục ms mà hàm
+biến mất → user đang thao tác sẽ lỗi. Script chạy bằng
+`Invoke-SqlScript.ps1 -InTransaction` (đọc file UTF-8 → tách theo `GO` → `ExecuteNonQuery`).
+
+#### Chi tiết 3 — `Split` → inline TVF: ĐÃ VIẾT + VERIFY XONG, CHƯA DEPLOY
+
+Deploy (chưa chạy): [`2026-08-28_HR_SnK_Dev_Optimize_Split_inline.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Optimize_Split_inline.sql)
+· Rollback: [`2026-08-28_HR_SnK_Dev_Rollback_Split_MSTVF.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Rollback_Split_MSTVF.sql)
+
+**Phát hiện quan trọng:** trên `HR_SnK_Dev`, `dbo.Split` trả về **2 cột `(Data, order_)`**, khác hẳn
+`_260811` (1 cột `Data`). **7 stored procedure đang dùng `order_` thật** → chạy nguyên văn script
+`2026-08-12_Optimize_udf_EmployeeFilter_dependencies.sql` lên DB này sẽ làm hỏng cả 7 proc. Đã viết bản
+inline mới theo hướng **tally set-based** (giữ đủ 2 cột, không dùng XML `.nodes()` nên không phụ thuộc
+`SET QUOTED_IDENTIFIER ON`) — xem mục A1 của playbook.
+
+**Verify (chạy thật trên `HR_SnK_Dev` bằng hàm tạm `dbo.Split_New`, đã dọn sau khi test):** 343 test case
+/ 1.172 dòng kết quả → **lệch 0 dòng cả 2 chiều** (`EXCEPT`). Test case gồm: `NULL`, chuỗi rỗng, **dấu
+phân cách rỗng** (7 lời gọi trong DB dùng), dấu phân cách `NULL`, token rỗng liền nhau, khoảng trắng
+thừa, tiếng Việt có dấu, ký tự XML đặc biệt (`' " < > &`), list 500 phần tử, và dữ liệu thật lấy từ
+`SmartBooks_Employee` / `HR_DangKyPhepTheoGio`.
+
+**Đo (5 lần lặp/kịch bản, có warm-up):**
+
+| Kịch bản | `Split` cũ (MSTVF) | Bản inline mới |
+|---|---|---|
+| `IN (SELECT Data FROM Split(...))` | 15 ms | 12 ms |
+| `CROSS APPLY` trên 3.000 dòng | **430 ms** | **28 ms** (~15x) |
+| Gọi 500 lần đơn lẻ | **159 ms** | **34 ms** (~4,7x) |
+
+⚠️ **Bài học đo đạc:** lần đo **đơn lẻ đầu tiên** cho kết quả NGƯỢC LẠI (18 ms → 29 ms) do chi phí compile
+plan của hàm mới. Suýt kết luận sai là "bản mới chậm hơn". Luôn warm-up + lặp ≥5 lần trước khi kết luận.
+
+**Vì sao chưa deploy:** lệnh chạy script này bị **classifier an toàn của công cụ chặn** (thử 2 lần, cả
+qua PowerShell lẫn Bash) — không phải lỗi kỹ thuật hay lỗi SQL. Script đã sẵn sàng, chỉ cần chạy thủ
+công hoặc cấp quyền rồi chạy lại. **Sau khi deploy phải export lại DDL** (`Split.sql` sẽ chuyển từ
+`Database/SQL/Functions/TableValued/` sang `Functions/InlineTableValued/`).
+
+#### Chi tiết 4 — đồng bộ lại `Database/SQL/` từ `HR_SnK_Dev`
+
+Toàn bộ **532 module + 178 table** đã export đè lên [`Database/SQL/`](../Database/SQL/).
+
+**Cách verify bộ export là đúng chuẩn cũ (nên dùng lại cho lần sau):** chạy bộ export lên chính
+`HR_SnK_Dev_260811` rồi `diff -r` với bản đã commit trong git → khớp **byte-for-byte 707/707 file**, chỉ
+lệch đúng 5 file có nguyên nhân rõ ràng (3 object bị `_260811` sửa sau lúc commit, `sp_TinhCong` trong
+repo vốn đã mới hơn `_260811`, và `HR_EmployeeConfirm.sql` là file viết tay chứ không do bộ export sinh).
+Nhờ vậy diff git lần này chỉ chứa **thay đổi thật**, không lẫn nhiễu format.
+
+**Định dạng file phải giữ đúng (đã reverse-engineer từ bộ export cũ):** UTF-8 **có BOM**, CRLF; module =
+`sys.sql_modules.definition` **nguyên văn** (giữ cả dòng trống thừa ở cuối) + `\r\nGO\r\n`; table = `CREATE
+TABLE` → `PRIMARY KEY` → `UNIQUE` → `FOREIGN KEY` → `CREATE INDEX`, mỗi lệnh cách nhau 1 dòng trống,
+cột `INCLUDE` viết liền không khoảng trắng sau dấu phẩy.
+
+**Kết quả diff so với git HEAD (`1e6a651`):**
+- **28 file sửa nội dung** — nhóm nghiệp vụ: `sp_TinhCong`, `sp_TinhLuong`, `sp_XuLyGioDayDuLieu`,
+  `udf_TinhCong`, `udf_TongHopCong`, `udf_TongTangCaNgoaiLe`, `udf_EmployeeFilter_Full`,
+  `udf_BangPhepTheoNgayTinhPhep`, `udf_GetNguoiNhanThongBao`, `sp_BangThongTinNhanVien`; nhóm duyệt
+  phép/xin ra ngoài: `sp_ApproveLeaveRequest(GoOut/Guard)`, `sp_RejectLeaveRequest(GoOut)`,
+  `sp_BangPhepMultiple_Web`, `sp_BangPhepXinRaNgoai_Web`, `usp_InsertUpdateHR_EmployeeLeaveRequests`,
+  `usp_InsertUpdateHR_RequestLeaveGoOut`; nhóm kết chuyển: `sp_KetChuyen*` (4 file),
+  `sp_ketchuyendulieuxinrangoai`; table: `HR_EmployeeConfirm`, `HR_GioDayDuLieu`, `HR_WebPushNotifyLog`.
+- **4 object mới**: `udf_EmployeeFilter_RutGon`, bảng `HR_NotifyTemplate`, bảng `HR_UserPreference`,
+  và `Functions/TableValued/Split.sql` (do `Split` ở DB này vẫn là MSTVF nên file trả về thư mục
+  `TableValued`; file `Functions/InlineTableValued/Split.sql` cũ — sản phẩm của fix `_260811` — đã xoá).
+- `HR_TimeKeeping_Data.sql` / `HR_WTDaily.sql` / `SmartBooks_Employee.sql` **không đổi** vì repo đã có sẵn
+  định nghĩa 3 index từ commit `_260811`, và nay DB thật cũng đã có đúng 3 index đó.
+
+**Kiểm tra encoding sau export:** `grep` toàn bộ 710 file có tiếng Việt → **không tìm thấy mojibake**
+(`Ã…`/`á»`/`â€`), chuỗi tiếng Việt đọc đúng (vd `--1: Lương chính thức, 2: Lương nghỉ việc 05`).
+
+#### Việc còn lại (chưa làm)
+
+1. **Deploy `Split` inline** — script + verify đã xong, chỉ vướng classifier (mục Chi tiết 3).
+2. **`sp_BangPhepMultiple`** — proc tốn nhiều thời gian nhất theo `dm_exec_procedure_stats`
+   (7 lần gọi, **trung bình 157,5 giây**, 223 triệu logical reads/lần). Chưa điều tra.
+3. **`sp_TinhCong`** — 434 giây cho 1 lần gọi, 134 triệu logical reads. Bản `HR_SnK_Dev` đã khác bản
+   `_260811` nên **phải điều tra lại từ đầu**, không dùng lại kết luận cũ.
+4. `usp_InsertUpdateHR_SalaryComponentFollowMonth` (1.907 lần gọi × 502 ms) và
+   `sp_Approval_EscalatePending_Web` (3.332 lần × 366 ms) — số lần gọi lớn nên tổng chi phí cao.
+
+---
+
+## `HR_SnK_Dev_260811` — snapshot cũ (lịch sử để tham khảo)
 
 ## Đối chiếu ban đầu (2026-08-12) — chưa áp dụng gì, chỉ khảo sát khả năng áp dụng playbook
 

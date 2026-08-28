@@ -11,4 +11,4 @@
 
 ALTER TABLE [dbo].[HR_EmployeeConfirm] ADD CONSTRAINT [PK_HR_EmployeeConfirm] PRIMARY KEY ([Employee_ID] ASC, [Confirm_Month] ASC, [Confirm_Year] ASC, [ConfirmType] ASC);
 
-CREATE NONCLUSTERED INDEX [IX_HR_EmployeeConfirm_Period_Type] ON [dbo].[HR_EmployeeConfirm] ([Confirm_Year] ASC, [Confirm_Month] ASC, [ConfirmType] ASC) INCLUDE ([Employee_ID], [ConfirmStatus], [ConfirmDate], [Remark]);
+CREATE NONCLUSTERED INDEX [IX_HR_EmployeeConfirm_Period_Type] ON [dbo].[HR_EmployeeConfirm] ([Confirm_Year] ASC, [Confirm_Month] ASC, [ConfirmType] ASC) INCLUDE ([ConfirmDate],[ConfirmStatus],[Employee_ID],[Remark]);

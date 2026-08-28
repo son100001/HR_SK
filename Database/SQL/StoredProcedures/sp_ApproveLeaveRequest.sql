@@ -1,7 +1,6 @@
 ﻿
---exec sp_ApproveLeaveRequest 61
-CREATE PROCEDURE [dbo].[sp_ApproveLeaveRequest] 
-	@ID INT, 
+CREATE   PROCEDURE [dbo].[sp_ApproveLeaveRequest]
+	@ID INT,
 	@Employee_ID nvarchar(50) = null,
 	@LeaveType_ID NVARCHAR(50) = NULL,
 	@Fromdate DATETIME = NULL,
@@ -33,8 +32,8 @@ BEGIN
 		, @FlowCode nvarchar(50)
 		, @RequestType nvarchar(50) = N'RequestLeave'
 
-	--Get ID if ID is null
-	If @ID is null 
+	-- Get ID if ID is null
+	If @ID is null
 		select @ID = ID
 		from
 		HR_EmployeeLeaveRequests
@@ -46,7 +45,20 @@ BEGIN
 		HR_EmployeeLeaveRequests
 		where ID = @ID
 
-	--Get basic information from HR_EmployeeLeaveRequests
+	-- Đơn đã Approved rồi thì dừng ngay, không xử lý lại lần nữa. Chặn double-click / gọi lại API
+	-- duyệt 2 lần cho cùng 1 đơn — không thì ThuTuDuyet bị cộng thêm 1 lần nữa (nhảy cấp), và
+	-- INSERT vào HR_RequestLeave_History bên dưới sẽ đụng khóa chính (Request_ID, Approver_ID) đã
+	-- ghi ở lần duyệt trước. Sao chép nguyên mẫu từ sp_ApproveLeaveRequestGoOut (đã có sẵn chốt
+	-- này từ trước).
+	IF EXISTS (
+		SELECT 1
+		FROM HR_EmployeeLeaveRequests
+		WHERE ID = @ID
+			AND TrangThai = N'Approved'
+	)
+		RETURN;
+
+	-- Get basic information from HR_EmployeeLeaveRequests
 	Select @ThuTuDuyet = ThuTuDuyet + 1, @ApproverName = ApproverName, @Approver = ApproveLevel
 	from
 	HR_EmployeeLeaveRequests
@@ -65,11 +77,11 @@ BEGIN
 
 	SET @ActualApprover = ISNULL(NULLIF(@ActualApprover, ''), ISNULL(NULLIF(@UserName, ''), @ApproverCurrentFirst))
 
-	
+
 	SELECT @NotifyOnlyApprovers = ISNULL(ChiGuiThongBao, '')
 	FROM HR_EmployeeLeaveRequests
 	WHERE ID = @ID
---Get the next approver group in the line. If the current level has many approvers,
+-- Get the next approver group in the line. If the current level has many approvers,
 	--one approval skips the whole current level and moves to the next distinct level.
 	SELECT TOP 1
 		@ThuTuDuyet = nextApprover.Order_,
@@ -109,7 +121,7 @@ BEGIN
 	)
 	SET @Approver1 = ISNULL(NULLIF(@Approver1, ''), @Approver1First)
 	select @Employee_Name = Employee_Firstname + ' ' + Employee_LastName from SmartBooks_Employee where Employee_ID = @Employee_ID
-	-- select @EmailDuPhong = [Value] from SetUp where FunctionID = 'Email' and ID = 'EmailDuPhong' -- tắt email dự phòng
+	-- select @EmailDuPhong = [Value] from SetUp where FunctionID = 'Email' and ID = 'EmailDuPhong' -- tất email dự phòng
 
 	SELECT @FlowCode = dbo.udf_ResolveApprovalFlow(@Employee_ID, @RequestType, GETDATE());
 	IF @FlowCode IS NULL
@@ -118,44 +130,54 @@ BEGIN
 		FROM udf_EmployeeFilter_Web(N'VN', NULL, NULL, NULL, NULL, NULL, NULL, @Employee_ID, GETDATE()) ef;
 	END
 
-	--Check information if done set stt is Approved
+	-- Check information if done set stt is Approved
 	if @Approver1 is not null
 		set @TrangThai = 'Pending'
 	else set @TrangThai = 'Approved'
 
-	--Get Basic information of Aprrover
+	-- Get Basic information of Aprrover
 	select @DepartmentName = DepartmentName, @Approver1_Name = dbo.udf_FullName (Employee_Firstname, Employee_LastName), @ChucDanh = ChucDanh
-			,@ApproveLevel = LvDuyet
+			, @ApproveLevel = LvDuyet
 	from
 	udf_EmployeeFilter ('VN',null,null,null,null,null,null,@ActualApprover,GETDATE())
-	
-	--Begin insert Approve
+
+	-- Begin insert Approve
 	Begin transaction InsertApprove
 		UPDATE HR_EmployeeLeaveRequests
-		SET TrangThai = @TrangThai,ApproveDate=GETDATE(),ApproveLevel = @Approver1, ThuTuDuyet = @ThuTuDuyet
+		SET TrangThai = @TrangThai,
+			ApproveDate = GETDATE(),
+			ApproveLevel = @Approver1,
+			ThuTuDuyet = @ThuTuDuyet,
+			CurrentStepSince = CASE WHEN @TrangThai = N'Pending' THEN GETDATE() ELSE NULL END
 		WHERE ID = @ID
-		
+
 		IF @Approver1 is null
 		BEGIN
-			INSERT INTO [dbo].[HR_EmployeeRegisMaternityLeave] (Employee_ID,LeaveType_ID,Fromdate,ToDate,Reason,PlanStatus,Remark,InsertDate,UserName,isDaNopGiay,isBlock,isChoUngPhep)
+			INSERT INTO [dbo].[HR_EmployeeRegisMaternityLeave] (Employee_ID, LeaveType_ID, Fromdate, ToDate, Reason, PlanStatus, Remark, InsertDate, UserName, isDaNopGiay, isBlock, isChoUngPhep)
 			SELECT [Employee_ID]
-				,[LeaveType_ID]
-				,[Fromdate]
-				,[ToDate]
-				,[Reason]
-				,[PlanStatus]
-				,[Remark]
-				,GETDATE()
-				,@ActualApprover
-				,[isDaNopGiay]
-				,[isBlock]
-				,[isChoUngPhep]
+				, [LeaveType_ID]
+				, [Fromdate]
+				, [ToDate]
+				, [Reason]
+				, [PlanStatus]
+				, [Remark]
+				, GETDATE()
+				, @ActualApprover
+				, [isDaNopGiay]
+				, [isBlock]
+				, [isChoUngPhep]
 				FROM [dbo].[HR_EmployeeLeaveRequests]
 				WHERE ID = @ID
 		END
 
-		insert into HR_RequestLeave_History (Request_ID, Approver_ID, Approver_Name, Approve_Date, ApproveLevel, DepartmentCode, Chucdanh)
-		select @ID, @ActualApprover, @Approver1_Name, GETDATE(), @ApproveLevel, @DepartmentName, @ChucDanh
+		-- Chốt phòng thủ thứ 2 — xem ghi chú đầu file. Chỉ ghi khi (Request_ID, Approver_ID) chưa
+		-- có, để không bao giờ tự đụng PK_HR_RequestLeave_History dù bị gọi trùng vì lý do gì.
+		IF NOT EXISTS (
+			SELECT 1 FROM HR_RequestLeave_History
+			WHERE Request_ID = @ID AND Approver_ID = @ActualApprover
+		)
+			insert into HR_RequestLeave_History (Request_ID, Approver_ID, Approver_Name, Approve_Date, ApproveLevel, DepartmentCode, Chucdanh)
+			select @ID, @ActualApprover, @Approver1_Name, GETDATE(), @ApproveLevel, @DepartmentName, @ChucDanh
 
 		if @TrangThai = 'Approved' begin
 			exec sp_Insert_HR_BangPhepDaNghi @fromdate,@todate,null,null,null,null,null,null,@Employee_ID
@@ -201,7 +223,7 @@ BEGIN
 
 	if @@ERROR = 0
 		Commit transaction InsertApprove
-	else 
+	else
 		Rollback transaction InsertApprove
 END
 

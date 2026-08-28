@@ -53,6 +53,7 @@ BEGIN
 		,@TyGiaUSD float, @NgayApDungTyGia datetime, @LuongTinhBH float
 		,@TienCom float, @XangXe float, @PCCC float, @ThuongABC float
 		,@Ngay2 datetime,@Ngay3 datetime, @Ngay12 datetime, @Ngay13 datetime, @Ngay22 datetime, @Ngay23ThangTruoc datetime, @Ngay2ThangSau datetime, @Ngay3ThangSau datetime, @Ngay15 datetime
+		,@Ngay8ThangSau datetime
 		
 	 set @TrangThaiKH=[dbo].[udf_TrangThaiKH](@UserName)
 	
@@ -69,6 +70,7 @@ BEGIN
 	set @Ngay23ThangTruoc = DATEFROMPARTS(Year(@NgayDauThangTruoc),Month(@NgayDauThangTruoc),23)
 	set @Ngay2ThangSau = dateadd(Month,1,@Ngay2)
 	set @Ngay3ThangSau = dateadd(Month,1,@Ngay3)
+	set @Ngay8ThangSau = dateadd(day,5,@Ngay3ThangSau)
 
 	if @TypeOfReport = 2
 		set @fromdate = @NgayDauThangTruoc
@@ -566,7 +568,7 @@ BEGIN
 		select Employee_ID, sum(case when dateadd(year,1,BirthDate) between @fromdate and @todate and day(BirthDate) < 15 then 1 when dateadd(year,6,Birthdate) between @fromdate and @todate and day(Birthdate) > 15 then 1 when dateadd(year,6,Birthdate) >= @todate then 1 else 0 end) * 100000 as TienConNho
 		from
 		SmartBooks_Employee_Family
-		where RelatedType = 6 and dateadd(year,6,Birthdate) >= @fromdate and dateadd(year,1,Birthdate) <= @Ngay15
+		where RelatedType = 6 and dateadd(year,6,Birthdate) >= @fromdate and dateadd(year,1,Birthdate) <= @Ngay15 and InsertDate < @Ngay8ThangSau
 		group by Employee_ID
 	) ef
 	on empl.Employee_ID = ef.Employee_ID

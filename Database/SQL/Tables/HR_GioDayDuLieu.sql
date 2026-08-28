@@ -34,6 +34,7 @@
     [Day29] NVARCHAR(50) NULL,
     [Day30] NVARCHAR(50) NULL,
     [Day31] NVARCHAR(50) NULL,
+    [ChuyenCan] FLOAT NULL,
     [InsertDate] NVARCHAR(50) NULL,
     [UserName] NVARCHAR(50) NULL
 );

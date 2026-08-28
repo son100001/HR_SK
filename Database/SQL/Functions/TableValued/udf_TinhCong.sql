@@ -1,7 +1,7 @@
 ﻿CREATE FUNCTION [dbo].[udf_TinhCong]
 (
 	-- Add the parameters for the function here
-	-- select * from [dbo].[udf_TinhCong]('2025-09-07','2025-09-07',181,null,null,null,null,null,null,'C1079')
+	-- select * from [dbo].[udf_TinhCong]('2026-06-01','2026-06-30',181,null,null,null,null,null,null,'')
 
 	@fromdate datetime,
 	@todate datetime,

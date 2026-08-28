@@ -1,5 +1,5 @@
 ﻿
-CREATE PROCEDURE [dbo].[sp_ApproveLeaveRequestGoOutGuard]
+CREATE   PROCEDURE [dbo].[sp_ApproveLeaveRequestGoOutGuard]
     @ID INT,
     @GioVaoThucTe datetime = NULL,
     @Employee_ID nvarchar(50) = null,
@@ -22,58 +22,35 @@ BEGIN
         @ExistingGioVaoThucTe datetime,
         @GoOutEmployee_ID nvarchar(50),
         @RecordTimeOut datetime,
-        @RecordTimeDate datetime,
-        @RecordShiftName nvarchar(50),
-        @ShiftFromTime datetime,
-        @ShiftToTime datetime,
-        @CaStart datetime,
-        @CaEnd datetime,
+        @MaxHours int,
         @Now datetime = GETDATE(),
         @Employee_Name nvarchar(100),
         @EmailDuPhong nvarchar(100);
 
-    IF @ID IS NULL
-        SELECT @ID = ID
-        FROM HR_LeaveRequestGoOut
-        WHERE Employee_ID = @Employee_ID
-          AND TimeDate = @TimeDate
-          AND TimeOut_ = @TimeOut_
-          AND TimeIn = @TimeIn;
-
     SELECT
         @ExistingGioVaoThucTe = goout.GioVaoThucTe,
         @GoOutEmployee_ID = goout.Employee_ID,
-        @RecordTimeOut = goout.TimeOut_,
-        @RecordTimeDate = goout.TimeDate,
-        @RecordShiftName = goout.ShiftName
+        @RecordTimeOut = goout.TimeOut_
     FROM HR_GoOut goout
     WHERE goout.ID = @ID;
 
+    -- Phải chặn tường minh: bỏ 50001 rồi thì không còn gì đỡ hộ trường hợp ID sai.
+    IF @GoOutEmployee_ID IS NULL
+        THROW 50007, 'HRReport.GuardConfirmRequestNotFound', 1;
+
     IF @ExistingGioVaoThucTe IS NOT NULL
-    BEGIN
-        SELECT 'DaNhapDuLieuVao' AS Thongbao;
-        RETURN;
-    END;
+        THROW 50006, 'HRReport.GuardConfirmAlreadyDone', 1;
 
     IF @GioVaoThucTe IS NULL
         SET @GioVaoThucTe = @Now;
 
-    SELECT
-        @ShiftFromTime = shifts.FromTime,
-        @ShiftToTime = shifts.ToTime
-    FROM HR_Shifts shifts
-    WHERE shifts.ShiftName = @RecordShiftName;
+    SELECT @MaxHours = TRY_CAST([Value] AS int)
+    FROM SetUp
+    WHERE FunctionID = 'HR'
+      AND ID = 'GuardConfirmMaxHours';
 
-    IF ISNULL(@RecordShiftName, '') = '' OR @ShiftFromTime IS NULL OR @ShiftToTime IS NULL
-        THROW 50001, 'HRReport.GuardConfirmShiftNotFound', 1;
-
-    SET @CaStart = CAST([dbo].[GhepGioVaoNgay](@RecordTimeDate, @ShiftFromTime) AS datetime);
-    SET @CaEnd = CAST([dbo].[GhepGioVaoNgay](
-        CASE
-            WHEN DATEPART(HOUR, @ShiftToTime) > DATEPART(HOUR, @ShiftFromTime) THEN @RecordTimeDate
-            ELSE DATEADD(DAY, 1, @RecordTimeDate)
-        END,
-        @ShiftToTime) AS datetime);
+    IF ISNULL(@MaxHours, 0) <= 0
+        SET @MaxHours = 12;
 
     IF @GioVaoThucTe < @RecordTimeOut
         THROW 50002, 'HRReport.GuardConfirmBeforeTimeOut', 1;
@@ -81,11 +58,9 @@ BEGIN
     IF @GioVaoThucTe > @Now
         THROW 50003, 'HRReport.GuardConfirmFutureTime', 1;
 
-    IF @GioVaoThucTe < @CaStart OR @GioVaoThucTe > @CaEnd
-        THROW 50004, 'HRReport.GuardConfirmOutsideShift', 1;
-
-    IF @Now < @CaStart OR @Now > @CaEnd
-        THROW 50005, 'HRReport.GuardConfirmActionOutsideShift', 1;
+    -- Neo vào giờ ra của chính đơn, KHÔNG neo vào khung ca — xem ghi chú đầu file.
+    IF @GioVaoThucTe > DATEADD(HOUR, @MaxHours, @RecordTimeOut)
+        THROW 50004, 'HRReport.GuardConfirmExceedMaxHours', 1;
 
     SELECT @Employee_Name = Employee_Firstname + ' ' + Employee_LastName
     FROM SmartBooks_Employee

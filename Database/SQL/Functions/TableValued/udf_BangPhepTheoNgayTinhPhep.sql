@@ -2,7 +2,7 @@
 (
 	-- Add the parameters for the function here
 	--select * from [dbo].[udf_DanhSachNhanVienDuocHuongNghiLe]('2022-05-20','2022-05-20')
-	--select * from [dbo].[udf_BangPhepTheoNgayTinhPhep](2,'2025-11-01','2025-11-30',null,null,null,null,null,null,null,null) where Employee_ID = 'C16734'
+	--select * from [dbo].[udf_BangPhepTheoNgayTinhPhep](2,'2026-06-01','2026-06-30',null,null,null,null,null,null,null,null) where Employee_ID = 'C6162'
 	@TypeOfReport int,--2 theo công, 1-- theo giờ quẹt vào
 	@fromdate datetime,
 	@todate datetime,
@@ -98,7 +98,7 @@ BEGIN
 	[dbo].[udf_BangThoiGian](@fromdate,@todate) ngay
 	left join
 	SmartBooks_Employee empl
-	on ngay.Date_>=empl.StartedDate and (empl.ternimationdate is null or empl.ternimationdate between @fromdate and @todate)
+	on ngay.Date_>=empl.StartedDate and isnull(empl.ternimationdate,@todate) > @fromdate
 	left join
 	--[dbo].[udf_TraVeBangTransfer_Horizontal](@todate,@emp)tf
 	--on empl.Employee_ID=tf.Employee_ID
@@ -160,18 +160,18 @@ BEGIN
 	-- Return the result of the function
 	
 	--Đặc thù Shinsung sợi 9h
-	update bptntp
-	set bptntp.HourLeave = case when bptntp.HourLeave = 4 then 4.5 when bptntp.HourLeave = 8 then 9 else bptntp.HourLeave/8*9 end
-	from
-	@rtnBangPhepTheoNgayTinhPhep bptntp
-	left join
-	udf_EmployeeFilter ('VN',null,null,null,null,null,null,@emp,GETDATE()) emp
-	on bptntp.Employee_ID = emp.Employee_ID
-	where emp.DepartmentCode like N'Production_Soi%'
+	--update bptntp
+	--set bptntp.HourLeave = case when bptntp.HourLeave = 4 then 4.5 when bptntp.HourLeave = 8 then 9 else bptntp.HourLeave/8*9 end
+	--from
+	--@rtnBangPhepTheoNgayTinhPhep bptntp
+	--left join
+	--udf_EmployeeFilter ('VN',null,null,null,null,null,null,@emp,GETDATE()) emp
+	--on bptntp.Employee_ID = emp.Employee_ID
+	--where emp.DepartmentCode like N'Production_Soi%'
 
-	delete @rtnBangPhepTheoNgayTinhPhep
-	where Employee_ID in (select Employee_ID from udf_EmployeeFilter ('VN',null,null,null,null,null,null,@emp,@todate) where DepartmentCode not like N'Production_Soi%')
-			and datename(weekday,DateLeave) = 'Sunday' and LeaveType_ID = 14
+	--delete @rtnBangPhepTheoNgayTinhPhep
+	--where Employee_ID in (select Employee_ID from udf_EmployeeFilter ('VN',null,null,null,null,null,null,null,@todate) where DepartmentCode not like N'Production_Soi%')
+	--		and datename(weekday,DateLeave) = 'Sunday' and LeaveType_ID = 14
 
 
 	RETURN

@@ -16,6 +16,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    -- Mode 10: Employee leave request list.
     IF @TypeOfReport = 10
     BEGIN
         SELECT
@@ -178,6 +179,7 @@ BEGIN
             OR (bptn.DateLeave IS NOT NULL AND bptn.LeaveType_ID <> '14')
         ORDER BY Fromdate DESC;
     END
+    -- Mode 11: Pending employee leave requests (legacy/filter).
     ELSE IF @TypeOfReport = 11
     BEGIN
         SELECT
@@ -231,10 +233,12 @@ BEGIN
             AND elr.TrangThai IN ('Pending')
         ORDER BY Fromdate DESC;
     END
+    -- Mode 12: Pending leave approvals for the current approver.
     ELSE IF @TypeOfReport = 12
     BEGIN
         SELECT
             empl.PositionFullName AS DepartmentName,
+            empl.ChucDanh,
             elr.Employee_ID,
             dbo.udf_FullName(empl.Employee_Firstname, empl.Employee_LastName) AS FullName,
             elr.TrangThai,
@@ -260,6 +264,7 @@ BEGIN
         OUTER APPLY (
             SELECT TOP 1
                 employeeInfo.PositionFullName,
+                employeeInfo.ChucDanh,
                 employeeInfo.Employee_Firstname,
                 employeeInfo.Employee_LastName
             FROM udf_EmployeeFilter(@LAN, NULL, NULL, NULL, NULL, NULL, NULL, elr.Employee_ID, GETDATE()) employeeInfo
@@ -284,10 +289,12 @@ BEGIN
             AND (elr.Fromdate BETWEEN @fromdate AND @todate OR elr.Todate BETWEEN @fromdate AND @todate)
         ORDER BY elr.Fromdate;
     END
+    -- Mode 13: Leave approval history handled by the current approver.
     ELSE IF @TypeOfReport = 13
     BEGIN
         SELECT
             empl.PositionFullName AS DepartmentName,
+            empl.ChucDanh,
             elr.Employee_ID,
             dbo.udf_FullName(empl.Employee_Firstname, empl.Employee_LastName) AS FullName,
             elr.TrangThai,
@@ -313,6 +320,7 @@ BEGIN
         OUTER APPLY (
             SELECT TOP 1
                 employeeInfo.PositionFullName,
+                employeeInfo.ChucDanh,
                 employeeInfo.Employee_Firstname,
                 employeeInfo.Employee_LastName
             FROM udf_EmployeeFilter(@LAN, NULL, NULL, NULL, NULL, NULL, NULL, elr.Employee_ID, GETDATE()) employeeInfo

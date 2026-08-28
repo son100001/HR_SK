@@ -3,7 +3,7 @@
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
---exec sp_KetChuyenDuLieuNhanVienTuBanCu '2000-02-01','2026-06-30'
+--exec sp_KetChuyenDuLieuNhanVienTuBanCu '2000-02-01','2026-09-30'
 CREATE PROCEDURE [dbo].[sp_KetChuyenDuLieuNhanVienTuBanCu]
 	-- Add the parameters for the stored procedure here
 	@fromdate datetime,
@@ -87,6 +87,7 @@ BEGIN
 		   ,PhuongXa
 		   ,QuanHuyen
 		   ,TinhThanhPho
+		   ,isManager
 		   )
      select 
             SBE.Employee_ID
@@ -161,6 +162,7 @@ BEGIN
 		   ,sbe.PhuongXa
 		   ,sbe.QuanHuyen
 		   ,sbe.TinhThanhPho
+		   ,sbe.isManager
 		from
 		HR_SNK.dbo.SmartBooks_Employee SBE
 		LEFT JOIN
@@ -240,6 +242,7 @@ BEGIN
 		,sb.PhuongXa			   = sbe.PhuongXa
 		,sb.QuanHuyen			   = sbe.QuanHuyen
 		,sb.TinhThanhPho		   = sbe.TinhThanhPho
+		,sb.isManager			   = sbe.isManager
 	from			 
 	SmartBooks_Employee SB						 
 	LEFT JOIN			
@@ -299,10 +302,10 @@ BEGIN
 	where PlanTernimationDate between @fromdate and @todate
 
 	insert into HR_TerminationAsignment (Employee_ID, PlanTernimationDate, ResonTerminated, DecisionCode, DecisionStatus, NgayNopDon, Remark, InsertDate, UserName, ThangTinhLuong)
-	select Employee_ID, NgayQDNghiViec, '25', Employee_ID + cast(Year(NgayQDNghiViec) as nvarchar(50)) as DecisionCode, 'Approved', null, ResonTerminated, NgayQDNghiViec, 'Auto', null
+	select Employee_ID, TernimationDate, '25', Employee_ID + cast(Year(NgayQDNghiViec) as nvarchar(50)) as DecisionCode, 'Approved', null, ResonTerminated, NgayQDNghiViec, 'Auto', null
 	from
 	HR_SNK.dbo.SmartBooks_Employee
-	where isnull(NgayQDNghiViec,dateadd(day,1,@todate)) between @fromdate and @todate
+	where isnull(TernimationDate,@todate+1) between @fromdate and @todate
 
 	--update SmartBooks_Employee
 	--set Position_ID = 'Già hoá'
@@ -337,6 +340,8 @@ BEGIN
 	--exec sp_XulyNhapNhanVienMoi 'admin'
 
 	exec sp_KetChuyenDuLieuChuyenViTri @fromdate, @todate
+
+	exec sp_KetChuyenDuLieuGiaDinh @fromdate, @todate
 
 	--declare sqlQuere
 

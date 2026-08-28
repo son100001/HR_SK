@@ -24,7 +24,16 @@ RETURNS @rtnGetNguoiNhanThongBao TABLE (
     UrlApproveGoOut nvarchar(100),
     ApprovedBy_ID nvarchar(50),
     ApprovedByName nvarchar(200),
-    Request_ID nvarchar(50)
+    Request_ID nvarchar(50),
+    -- Chi tiet don (moi)
+    ReqFromDate datetime,
+    ReqToDate datetime,
+    ReqTimeOut datetime,
+    ReqTimeIn datetime,
+    ReqReason nvarchar(500),
+    LeaveTypeVN nvarchar(100),
+    LeaveTypeEN nvarchar(255),
+    LeaveTypeKR nvarchar(100)
 )
 AS
 BEGIN
@@ -32,7 +41,9 @@ BEGIN
         Employee_ID, Approver_ID, Fullname, Type_, Email, Sended, ChiNhanThongBao,
         NotifyViaWeb, NotifyViaEmail, NotifyViaZalo,
         [EmailSender], PassEmail, SMTP_Client, [Port], [SSL], UrlApprove, UrlApproveGoOut,
-        ApprovedBy_ID, ApprovedByName, Request_ID
+        ApprovedBy_ID, ApprovedByName, Request_ID,
+        ReqFromDate, ReqToDate, ReqTimeOut, ReqTimeIn, ReqReason,
+        LeaveTypeVN, LeaveTypeEN, LeaveTypeKR
     )
     SELECT
         dsnntb.Employee_ID,
@@ -54,7 +65,15 @@ BEGIN
         su.UrlApproveGoOut,
         COALESCE(goOutApproved.Approver_ID, leaveApproved.Approver_ID) AS ApprovedBy_ID,
         COALESCE(goOutApproved.ApproverName, leaveApproved.ApproverName) AS ApprovedByName,
-        COALESCE(goOutReq.Request_ID, leaveReq.Request_ID) AS Request_ID
+        COALESCE(goOutReq.Request_ID, leaveReq.Request_ID) AS Request_ID,
+        COALESCE(goOutReq.ReqFromDate, leaveReq.ReqFromDate) AS ReqFromDate,
+        leaveReq.ReqToDate                                    AS ReqToDate,
+        goOutReq.ReqTimeOut                                   AS ReqTimeOut,
+        goOutReq.ReqTimeIn                                    AS ReqTimeIn,
+        COALESCE(goOutReq.ReqReason, leaveReq.ReqReason)      AS ReqReason,
+        leaveReq.LeaveTypeVN                                  AS LeaveTypeVN,
+        leaveReq.LeaveTypeEN                                  AS LeaveTypeEN,
+        leaveReq.LeaveTypeKR                                  AS LeaveTypeKR
     FROM HR_DanhSachNguoiNhanThongBao dsnntb
     LEFT JOIN (
         SELECT
@@ -79,7 +98,7 @@ BEGIN
         FROM HR_LeaveRequestGoOut req
         INNER JOIN HR_RequestLeaveGoOut_History h ON h.Request_ID = req.ID
         LEFT JOIN SmartBooks_Employee empl ON empl.Employee_ID = h.Approver_ID
-        WHERE dsnntb.Type_ IN ('RequestGoOut', 'RejectGoOut')
+        WHERE dsnntb.Type_ IN ('RequestGoOut', 'RejectGoOut', 'RequestGoOutGuard', 'GoOutGuardConfirmed')
           AND req.Employee_ID = dsnntb.Employee_ID
         ORDER BY h.Approve_Date DESC, h.Request_ID DESC
     ) goOutApproved
@@ -99,15 +118,28 @@ BEGIN
         ORDER BY h.Approve_Date DESC, h.Request_ID DESC
     ) leaveApproved
     OUTER APPLY (
-        SELECT TOP 1 CAST(req.ID AS nvarchar(50)) AS Request_ID
+        SELECT TOP 1
+            CAST(req.ID AS nvarchar(50)) AS Request_ID,
+            req.TimeDate  AS ReqFromDate,
+            req.TimeOut_  AS ReqTimeOut,
+            req.TimeIn    AS ReqTimeIn,
+            req.Remark    AS ReqReason
         FROM HR_LeaveRequestGoOut req
-        WHERE dsnntb.Type_ IN ('RequestGoOut', 'RejectGoOut')
+        WHERE dsnntb.Type_ IN ('RequestGoOut', 'RejectGoOut', 'RequestGoOutGuard', 'GoOutGuardConfirmed')
           AND req.Employee_ID = dsnntb.Employee_ID
         ORDER BY req.InsertDate DESC, req.ID DESC
     ) goOutReq
     OUTER APPLY (
-        SELECT TOP 1 CAST(req.ID AS nvarchar(50)) AS Request_ID
+        SELECT TOP 1
+            CAST(req.ID AS nvarchar(50)) AS Request_ID,
+            req.Fromdate AS ReqFromDate,
+            req.Todate   AS ReqToDate,
+            req.Reason   AS ReqReason,
+            lt.LeaveType_VN AS LeaveTypeVN,
+            lt.LeaveType_EN AS LeaveTypeEN,
+            lt.LeaveType_KR AS LeaveTypeKR
         FROM HR_EmployeeLeaveRequests req
+        LEFT JOIN SmartBooks_LeaveType lt ON lt.LeaveType_ID = req.LeaveType_ID
         WHERE dsnntb.Type_ IN ('RequestLeave', 'RejectLeave')
           AND req.Employee_ID = dsnntb.Employee_ID
         ORDER BY req.InsertDate DESC, req.ID DESC

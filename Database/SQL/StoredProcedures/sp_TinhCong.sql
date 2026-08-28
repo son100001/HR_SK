@@ -3,7 +3,7 @@ CREATE PROCEDURE [dbo].[sp_TinhCong]
 	-- Add the parameters for the stored procedure here
 	--select * from HR_TimeIn_TimeOut where Employee_ID='2666' and OT_date='2020-2-22'
 	--select * from HR_WTDaily where Employee_ID='2666' and ngay between '2020-2-1' and '2020-2-29'
-	--exec [dbo].[sp_TinhCong] '2026-06-01','2026-06-30','admin',null,null,null,null,null,null,'C10967'
+	--exec [dbo].[sp_TinhCong] '2026-06-01','2026-06-30','admin',null,null,null,null,null,null,'C12781'
 	@fromdate datetime,
 	@todate datetime,
 	@UserName nvarchar(50)=null,
@@ -46,10 +46,11 @@ BEGIN
 			,@RealLateIn float, @RealEarlyOut float, @Thu7DuocNghi datetime = null, @SoPhutChoDiMuon float, @OldSoPhutChoDiMuon float
 			,@GioTCToiDa float, @OldGioTCToiDa float, @MaCong1 nvarchar(50), @TongTC float, @ThuTu int, @rn int, @todate1 datetime
 			,@GioDayDuLieu nvarchar(50), @OldGioDayDuLieu nvarchar(50)
+			, @SoNgaySauKhiMangBauDuocHuongThaiSan int, @FirstTimeIn datetime, @LastTimeOut datetime, @WorkingDay datetime, @TimeOut datetime, @TimeIn datetime, @RealTimeIn datetime, @RealTimeOut datetime, @MinOverTime float
 			set @SoPhutTieuChuan=14
 		set @NgayDauNam=DATEFROMPARTS(datepart(year,@fromdate),datepart(MONTH,@fromdate),1)
 		set @NgayCuoiNam=dateadd(year,1,@NgayDauNam)-1
-		set @GioTangCaToiDaTheoNam_Goc=300
+		--set @GioTangCaToiDaTheoNam_Goc=1000
 		select @GioTangCaToiDaTheoNam_Goc=Value from HR_SetUpFollowDate where Group_='TangCaToiDaTheoNam' and Fromdate<=@todate and (Todate is null or Todate>=@fromdate) order by Fromdate asc
 		set @GioTangCaToiDaTheoThang_Goc=30
 		select @GioTangCaToiDaTheoThang_Goc=Value from HR_SetUpFollowDate where Group_='TangCaToiDaTheoThang' and Fromdate<=@todate and (Todate is null or Todate>=@fromdate) order by Fromdate asc
@@ -109,28 +110,28 @@ BEGIN
 		from
 		udf_ReturnTableSetupHourTimeKeeping_List (@Emp, @fromdate, @todate, @SoNgaySauKhiMangThaiDuocHuongCheDoThaiSan)
 
-		DECLARE @HR_WTDAILY_GioDayDuLieu TABLE
-		(
-			Employee_ID nvarchar(50)
-			,Ngay datetime
-			,MaCong varchar(50)
-			,wt float
-			,InsertSource varchar(50)
-			,remark nvarchar(50)
-			,InsertDate datetime
-			,UserName nvarchar(50)
-		)
+		--DECLARE @HR_WTDAILY_GioDayDuLieu TABLE
+		--(
+		--	Employee_ID nvarchar(50)
+		--	,Ngay datetime
+		--	,MaCong varchar(50)
+		--	,wt float
+		--	,InsertSource varchar(50)
+		--	,remark nvarchar(50)
+		--	,InsertDate datetime
+		--	,UserName nvarchar(50)
+		--)
 
-		insert into @HR_WTDAILY_GioDayDuLieu (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
-		select Employee_ID, Ngay, MaCong, 'GDDL', wt, Remark, InsertDate, UserName
-		from
-		HR_WTDaily_GioDayDuLieu
-		where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
+		--insert into @HR_WTDAILY_GioDayDuLieu (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
+		--select Employee_ID, Ngay, MaCong, 'GDDL', wt, Remark, InsertDate, UserName
+		--from
+		--HR_WTDaily_GioDayDuLieu
+		--where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
 
-		insert into HR_WTDaily (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
-		select Employee_ID, Ngay, MaCong, 'GDDL', wt, Remark, InsertDate, UserName
-		from
-		@HR_WTDAILY_GioDayDuLieu
+		--insert into HR_WTDaily (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
+		--select Employee_ID, Ngay, MaCong, 'GDDL', wt, Remark, InsertDate, UserName
+		--from
+		--@HR_WTDAILY_GioDayDuLieu
 		--where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
 
 		--select * from #returnTableSetupHourTimekeeping
@@ -163,7 +164,7 @@ BEGIN
 		tc.Employee_ID, erml.LeaveType_ID
 		,tc.TimeDate,AccessTime,tc.InOutStatus,tc.ShiftName,tc.maxovertime,ISNULL(tc.maxovertimeB,0),isnull(tc.MaxOverTimeHol,0),isnull(tc.maxovertimeLunch,0),tc.CheDo,tc.HolSunTypeOfOT
 		,shifts.FromTime,shifts.ToTime,shifts.RestTimeFrom,shifts.RestTimeTo,shifts.AllowLateIn as AllowLateIn,shifts.AllowEarlyOut,shifts.MinMinute,empl.StartedDate,gout.TimeIn as GoutTimeIn,gout.TimeOut_ as GoutTimeOut,gout.LeaveType_ID as GoutLeaveType
-		,isnull(tc.ChoPhepMuonSoPhut,shifts.AllowLateIn) as ChoPhepSoPhutMuon, ttcnl.Gio,wtt.Employee_ID
+		,isnull(tc.ChoPhepMuonSoPhut,shifts.AllowLateIn) as ChoPhepSoPhutMuon, ttcnl.Gio,null--,wtt.Employee_ID
 		from
 		[dbo].[udf_TinhCong](@fromdate,@todate,@SoNgaySauKhiMangThaiDuocHuongCheDoThaiSan,@fact,@Dept,@Sect,@Team,@Pos,@PosC,@Emp) tc
 		left join
@@ -184,14 +185,14 @@ BEGIN
 		left join
 		udf_TongTangCaNgoaiLe (@fromdate,@todate) ttcnl
 		on tc.AccessDate = ttcnl.Ngay and (empl.Factory_ID = ttcnl.Factory_ID or (empl.Factory_ID = 'SK2' and ttcnl.Factory_ID = 'SK2-Assembly'))
-		left join
-		(
-			select distinct Employee_ID, Ngay
-			from
-			HR_WTDaily_GioDayDuLieu
-			where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
-		) wtt
-		on tc.Employee_ID = wtt.Employee_ID and tc.AccessDate = wtt.Ngay
+		--left join
+		--(
+		--	select distinct Employee_ID, Ngay
+		--	from
+		--	@HR_WTDAILY_GioDayDuLieu
+		--	where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
+		--) wtt
+		--on tc.Employee_ID = wtt.Employee_ID and tc.AccessDate = wtt.Ngay
 		--left join
 		--@TabTongGioDaTangCaTrongNam tctn
 		--on tc.Employee_ID=tctn.Employee_ID
@@ -372,7 +373,7 @@ BEGIN
 								--Xử lý công KH
 								
 								set @TongTC = 0
-								select @TongTC = sum(wt) from @HR_WTDAILY where MaCong in ('CN_wt3','CN_wt5') and InsertSource not like 'TCT%' group by Employee_ID
+								select @TongTC = sum(wt) from @HR_WTDAILY where MaCong in ('CN_wt3','CN_wt5') and InsertSource not like 'TCT%' and InsertSource not like 'GDDL%' group by Employee_ID
 
 								if isnull(@TongTC,0) > 0 and @GioTangCaToiDaTheoNgay > 0 and isnull(@OldCheDo,0) = 0
 								begin
@@ -450,54 +451,44 @@ BEGIN
 						--Gán để kiểm tra dữ liệu có bị trùng nhau
 						set @OldInputEmployee_ID=@OldEmployee_ID set @OldInputTimeOut=@LastAccessTime
 						--Nếu quẹt vào ra trùng nhau thì xử lý
-						
-						--Xử lý đặc thù SK - Xử lý dữ liệu giờ công KH đẩy lên
 						/*
-						insert into HR_WTDaily (Employee_ID,Ngay,MaCong,wt,InsertSource,UserName)
-						select Employee_ID,Ngay,MaCong
-								,case when isnull(CongHCDem,0) > 0 then (case when TongCong <= @GioTangCaToiDaTheoNgay then CongDem when TongCong > @GioTangCaToiDaTheoNgay and MaCong = 'wt5' then CongDem else @GioTangCaToiDaTheoNgay - CongDem end) 
-									else (case when TongCong <= @GioTangCaToiDaTheoNgay then CongNgay when TongCong > @GioTangCaToiDaTheoNgay and MaCong = 'wt3' then CongNgay else @GioTangCaToiDaTheoNgay - CongNgay end)
-								 end
-								,'AutoGDDL1',@UserName
-						from
-						(
-							select Employee_ID, Ngay, case when MaCong in ('CN_wt3','wt3') then 'wt3' when MaCong in ('CN_wt5','wt5') then 'wt5' else MaCong end as MaCong
-									, sum(case when MaCong in ('CN_wt3','CN_wt5') then wt else 0 end) as CongKH
-									, sum(case when MaCong in ('wt3','wt5') then wt else 0 end) as CongGoc
-									, sum(case when MaCong in ('CN_wt3','CN_wt5','wt3','wt5') then wt else 0 end) as TongCong
-									, sum(case when MaCong in ('wt3','CN_wt3') then wt else 0 end) as CongNgay
-									, sum(case when MaCong in ('wt5','CN_wt5') then wt else 0 end) as CongDem
-									, sum(case when MaCong in ('wt9','CN_wt9') then wt else 0 end) as CongHCDem
-							from
-							HR_WTDaily
-							where Employee_ID = @OldEmployee_ID and Ngay = @OldTimeDate and MaCong in ('CN_wt3','CN_wt5','wt3','wt5','wt9')
-							group by Employee_ID, Ngay, case when MaCong in ('CN_wt3','wt3') then 'wt3' else 'wt5' end
-						) wt
-						where MaCong in ('wt3','wt5')
-						*/
-						if @GioDayDuLieu is not null begin
+						--Xử lý đặc thù SK - Xử lý dữ liệu giờ công KH đẩy lên
+
+						if @OldGioDayDuLieu is not null begin
+							/*
 							print 'test'
 							print @OldEmployee_ID
 							print @OldTimeDate
-
+							*/
 							delete @HR_WTDAILY
 
-							insert into @HR_WTDAILY (Employee_ID,Ngay,MaCong,wt,InsertSource)
-							select Employee_ID,Ngay,MaCong,wt,InsertSource
+							insert into @HR_WTDAILY (Employee_ID,Ngay,MaCong,wt,InsertSource,rn,DaXuLy)
+							select Employee_ID,Ngay,MaCong,wt,InsertSource + MaCong
+									,ROW_NUMBER () over (partition by Employee_ID order by Employee_ID) as rn, 0 as DaXuLy
 							from
 							@HR_WTDaily_GioDayDuLieu
-							where Employee_ID = @OldEmployee_ID and Ngay = @OldTimeDate --and InsertSource = 'Auto1'
+							where Employee_ID = @OldEmployee_ID and Ngay = @OldTimeDate and MaCong in ('CN_wt3','CN_wt5') --and InsertSource = 'Auto1'
 
 							set @TongTC = 0
-							select @TongTC = sum(wt) from @HR_WTDAILY where MaCong in ('CN_wt3','CN_wt5') and InsertSource not like 'TCT%' group by Employee_ID
+							select @TongTC = sum(wt) from @HR_WTDAILY where MaCong in ('CN_wt3','CN_wt5') and InsertSource not like 'TCT%' and Employee_ID = @OldEmployee_ID group by Employee_ID
 
+							--print 'agioday'
+							--print @TongTC
+							--print @GioTangCaToiDaTheoNgay
+							/*
+							select Employee_ID,Ngay,MaCong,wt,InsertSource + MaCong
+									,ROW_NUMBER () over (partition by Employee_ID order by Employee_ID) as rn, 0 as DaXuLy, @TongTC, @GioTangCaToiDaTheoNgay, @OldCheDo, @GioTangCaToiDaTheoNgay, @GioTangCaToiDaTheoNam
+							from
+							@HR_WTDaily_GioDayDuLieu
+							where Employee_ID = @OldEmployee_ID and Ngay = @OldTimeDate and MaCong in ('CN_wt3','CN_wt5') --and InsertSource = 'Auto1'
+							*/
 							if isnull(@TongTC,0) > 0 and @GioTangCaToiDaTheoNgay > 0 and isnull(@OldCheDo,0) = 0
 							begin
 								set @ThuTu = 3
 								set @rn = 0
 								While (@TongTC > 0 and @GioTangCaToiDaTheoNgay > 0) begin
 									select @rn = min(rn) from @HR_WTDAILY where DaXuLy = 0 and MaCong in ('CN_wt3','CN_wt5')
-
+									--print @ThuTu
 									Insert into @HR_WTDAILY (Employee_ID,Ngay,MaCong,wt,InsertSource,DaXuLy)
 									select top 1 Employee_ID,Ngay,case MaCong when 'CN_wt3' then 'wt3' else 'wt5' end as MaCong,case when wt > @GioTangCaToiDaTheoNgay then @GioTangCaToiDaTheoNgay else wt end as wt,'AutoK' + left(@ThuTu,3), @ThuTu
 									from
@@ -529,8 +520,14 @@ BEGIN
 							from
 							@HR_WTDAILY
 							where InsertSource like 'AutoK%'
+							/*
+							select Employee_ID,Ngay,'CN_' + MaCong as MaCong,-wt as wt,Cast(InsertSource as nvarchar(10))
+							from
+							@HR_WTDAILY
+							--where InsertSource like 'AutoK%'
 							
 							print 'Endtest2'
+							*/
 							--Kết thúc xử lý công KH
 								
 							--select *, @FirstAccessTimeEditted, @LastAccessTimeEditted, @ShiftFromTime, @ShiftToTime from @HR_WTDAILY
@@ -543,7 +540,7 @@ BEGIN
 							where InsertSource like 'AutoK%'
 						end
 						--Xử lý đặc thù SK - Xử lý dữ liệu giờ công KH đẩy lên
-
+						*/
 						--xử lý lại giờ tan ca của chế độ thai sản. Nếu không quẹt ra đúng giờ thì ko đc tính là ca thai sản
 						--if isnull(@OldCheDo,0)>=1 and @LastAccessTime<@ShiftToTime begin
 						--	set @ShiftToTime=dateadd(hour,1,@ShiftToTime)
@@ -650,6 +647,110 @@ BEGIN
 	--select 'a' as ab
 		--Xử lý giờ xin ra ngoài
 		--exec [dbo].[sp_TinhGioXinRaNgoai] @fromdate,@todate,@UserName,@fact,@Dept,@Sect,@Team,@Pos,@PosC,@Emp
+		
+		Delete @HR_WTDAILY
+		print 'abcd'
+		Declare @tblDangKyCa table (Employee_ID nvarchar(50), CheDo int, ShiftName nvarchar(50), AccessDate datetime, FactoryName nvarchar(50), primary key (Employee_ID, AccessDate))
+
+		Insert into @tblDangKyCa (Employee_ID, CheDo, ShiftName, AccessDate, FactoryName)
+		select Employee_ID, CheDo, ShiftName, AccessDate, FactoryName
+		from
+		udf_DangKyCa(@fromdate,@todate,@SoNgaySauKhiMangBauDuocHuongThaiSan,@fact,@dept,@sect,@team,@pos,@posc,@Emp) erts
+
+		DECLARE curXinRaNgoai CURSOR LOCAL FOR
+		--select goout.Employee_ID,goout.TimeDate,goout.TimeOut_,goout.TimeIn,erts.CheDo
+		--nếu sau này bật lại SP này thì giờ tính trừ công cũng dùng giờ vào thực tế.
+		select goout.Employee_ID, goout.TimeDate, goout.TimeOut_, COALESCE(goout.GioVaoThucTe, goout.TimeIn), erts.CheDo
+
+				,erts.ShiftName,shifts.FromTime,shifts.ToTime,shifts.AllowLateIn,shifts.MinMinute, goout.LeaveType_ID, tito.RealTimeIn, tito.RealTimeOut
+		from
+		HR_GoOut goout
+		left join
+		@tblDangKyCa erts
+		on goout.Employee_ID=erts.Employee_ID and goout.TimeDate=erts.AccessDate
+		left join
+		HR_Shifts shifts
+		on erts.ShiftName=shifts.ShiftName
+		left join
+		HR_TimeIn_TimeOut tito
+		on goout.Employee_ID = tito.Employee_ID and goout.TimeDate = tito.OT_date
+		where goout.TimeDate between @fromdate and @todate --and goout.LeaveType_ID<>'Business'
+								and goout.Employee_ID in (select Employee_ID from udf_EmployeeFilter('VN',@fact,@dept,@sect,@team,@pos,@posc,@Emp,@todate))
+		OPEN  curXinRaNgoai
+		FETCH NEXT FROM curXinRaNgoai INTO @Employee_ID,@WorkingDay,@TimeOut,@TimeIn,@CheDo,@ShiftName,@ShiftFromTime,@ShiftToTime,@AllowLateIn,@MinMinute,@LeaveType_ID,@RealTimeIn,@RealTimeOut
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			select @FirstTimeIn=AccessTime from [dbo].[udf_TinhCong_QuetVao](@WorkingDay,@WorkingDay,@SoNgaySauKhiMangBauDuocHuongThaiSan,@fact,@dept,@sect,@team,@pos,@posc,@Employee_ID)
+			select @LastTimeOut=AccessTime from [dbo].[udf_TinhCong_QuetRa](@WorkingDay,@WorkingDay,@SoNgaySauKhiMangBauDuocHuongThaiSan,@fact,@dept,@sect,@team,@pos,@posc,@Employee_ID)
+			
+			--xử lý dữ liệu xin ra ngooài
+			if DATEPART(Hour,@FirstTimeIn)<=DATEPART(Hour,@TimeOut) or @ShiftName not like '%Shift3' /*or @LeaveType_ID = 'Business'*/ begin
+				set @TimeOut=[dbo].[GhepGioVaoNgay](@FirstTimeIn,@TimeOut)
+			end else begin
+				set @TimeOut=[dbo].[GhepGioVaoNgay](@FirstTimeIn+1,@TimeOut)
+			end
+			if DATEPART(Hour,@FirstTimeIn)<=DATEPART(Hour,@TimeIn) or @ShiftName not like '%Shift3' /*or @LeaveType_ID = 'Business'*/ begin
+				set @TimeIn=[dbo].[GhepGioVaoNgay](@FirstTimeIn,@TimeIn)
+			end else begin
+				set @TimeIn=[dbo].[GhepGioVaoNgay](@FirstTimeIn+1,@TimeIn)
+			end
+
+			--select @FirstTimeIn, @LastTimeOut, @TimeOut, @TimeIn 
+
+			--if not (@TimeOut>=@LastTimeOut or @TimeIn<=@FirstTimeIn) begin
+				if @LeaveType_ID <> 'Business' begin
+					if @TimeIn>=@LastTimeOut begin
+						set @TimeIn=@LastTimeOut
+					end
+					if @TimeOut<@FirstTimeIn begin
+						set @TimeOut=@FirstTimeIn
+					end
+				end
+				--xử lý giờ vào và tan ca
+				set @ShiftFromTime=[dbo].[GhepGioVaoNgay](@WorkingDay,@ShiftFromTime)
+				set @ShiftToTime=[dbo].[GhepGioVaoNgay]((case when DATEPART(hour,@ShiftToTime)>DATEPART(hour,@ShiftFromTime) then @WorkingDay else @WorkingDay+1 end),@ShiftToTime)
+				--xử lý giờ quẹt vào ra
+				set @TimeOut=[dbo].[udf_DieuChinhGioQuetVao](@TimeOut,@ShiftFromTime,@AllowLateIn,NULL,NULL)
+				set @TimeIn=[dbo].[udf_DieuChinhGioQuetRa](@TimeIn,@ShiftToTime,@MinOverTime,NULL,NULL,0)
+				--Nhập dữ liệu quẹt tính công
+				delete @HR_WTDAILY
+			
+				insert into @HR_WTDAILY(Employee_ID,Ngay,MaCong,wt,InsertSource)
+				select @Employee_ID,@WorkingDay,MaCong
+				,[dbo].[udf_TinhGioCongChiTiet](@TimeOut,@TimeIn,FromTime,ToTime,RestTimeFrom,resttimeto
+												,null,0,0,0,Round_,@OldTimeDate,NumberOfDay,MaCong) as WorkingTime,'GOOUT_'+LEFT(REPLACE(convert(varchar, @TimeOut, 108),':',''),4)
+				from #returnTableSetupHourTimekeeping
+				where fromtime<@TimeIn and ToTime>@TimeOut and Employee_ID = @Employee_ID and Date_ = @WorkingDay
+				order by No_
+
+				delete @HR_WTDAILY
+				where wt = 0
+
+				--select @TimeOut as Tout, @TimeIn as Tin, @LastTimeOut as LTO, @FirstTimeIn as LTI,*
+				--from #returnTableSetupHourTimekeeping
+				--where fromtime<@TimeIn and ToTime>@TimeOut and Employee_ID = @Employee_ID and Date_ = @WorkingDay
+
+				--select * from @HR_WTDAILY
+
+				if @LeaveType_ID = 'Business' begin
+					if (@TimeIn not between @RealTimeIn and @RealTimeOut) or (@TimeOut not between @RealTimeIn and @RealTimeOut) begin
+						update @HR_WTDAILY set wt= -CASE WHEN MaCong not in ('wt1','wt9') THEN CEILING(wt * 2.0) / 2.0 ELSE wt END
+					end else begin
+						FETCH NEXT FROM cur INTO @Employee_ID,@WorkingDay,@TimeOut,@TimeIn,@CheDo,@ShiftName,@ShiftFromTime,@ShiftToTime,@AllowLateIn,@MinMinute,@LeaveType_ID,@RealTimeIn,@RealTimeOut
+						Continue
+					end
+				end else begin
+					update @HR_WTDAILY set wt= -CASE WHEN MaCong not in ('wt1','wt9') THEN CEILING(wt * 2.0) / 2.0 ELSE wt END
+				end
+				--select* from @HR_WTDAILY
+				--end
+				insert into HR_WTDAILY(Employee_ID,Ngay,MaCong,wt,InsertSource) select Employee_ID, Ngay, MaCong, wt, InsertSource from @HR_WTDAILY
+			--end
+		FETCH NEXT FROM curXinRaNgoai INTO @Employee_ID,@WorkingDay,@TimeOut,@TimeIn,@CheDo,@ShiftName,@ShiftFromTime,@ShiftToTime,@AllowLateIn,@MinMinute,@LeaveType_ID,@RealTimeIn,@RealTimeOut
+		END
+		CLOSE curXinRaNgoai
+		DEALLOCATE curXinRaNgoai
+
 		-- xoa gio cong =0
 		delete HR_WTDaily where isnull(wt,0)=0 and ngay between @fromdate and @todate
 		-- xu ly thai san
@@ -765,7 +866,7 @@ BEGIN
 		insert into HR_WTDaily(employee_id,ngay,macong,wt,insertsource,username,insertdate)
 		select dkc.Employee_ID,dkc.AccessDate,'wt1',8-isnull(ptn.HourLeave,0),'KhongQuetT',@username,getdate() 
 		from
-		udf_DangKyCa (@fromdate,@todate,@SoNgaySauKhiMangThaiDuocHuongCheDoThaiSan,@fact,@dept,@sect,@team,@pos,@posc,@Emp) dkc
+		@tblDangKyCa dkc
 		left join
 		HR_Shifts shi
 		on dkc.ShiftName = shi.ShiftName
@@ -833,7 +934,7 @@ BEGIN
 		from
 		HR_WTDaily wt
 		left join
-		udf_DangKyCa (@fromdate,@todate,@SoNgaySauKhiMangThaiDuocHuongCheDoThaiSan,'SK2',null,null,null,null,null,@Emp) dkc
+		@tblDangKyCa dkc
 		on wt.Employee_ID = dkc.Employee_ID and wt.Ngay = dkc.AccessDate and dkc.ShiftName like N'%Shift3'
 		left join
 		udf_TongTangCaNgoaiLe (@fromdate,@todate) ttcnl

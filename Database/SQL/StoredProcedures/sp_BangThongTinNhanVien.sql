@@ -119,6 +119,7 @@ BEGIN
             ,empl.NativePlace   
             ,CASE WHEN TonGiao IS NULL THEN N'Không' ELSE TonGiao END AS TonGiao
             ,NULL AS DanToc
+            ,empl.Nation
 			,empl.Nationality
 			
 			,empl.Address_Permanent, NULL AS SoNha_ThuongTru

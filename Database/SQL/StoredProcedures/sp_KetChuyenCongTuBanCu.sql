@@ -23,6 +23,8 @@ exec sp_KetChuyenDuLieuNghiPhep '2000-01-01', @todate
 
 exec sp_KetChuyenTangCaNgoaiLe @fromdate, @todate
 
+exec sp_ketchuyendulieuxinrangoai @fromdate, @todate
+
 IF @@ERROR <> 0 
     ROLLBACK;
 ELSE

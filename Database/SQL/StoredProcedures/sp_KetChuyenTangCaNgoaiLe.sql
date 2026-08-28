@@ -3,12 +3,12 @@
 @todate datetime
 as
 begin
---exec sp_KetChuyenTangCaNgoaiLe '2026-02-01', '2026-02-28'
+--exec sp_KetChuyenTangCaNgoaiLe '2026-06-01', '2026-06-30'
 	Delete HR_TangCaNgoaiLe_SK1
 	where Ngay_SK1 between @fromdate and @todate and UserName = 'Auto'
 
 	insert into HR_TangCaNgoaiLe_SK1 (Factory_ID_SK1, Ngay_SK1, Gio_SK1, InsertDate, UserName)
-	select OT.Factory, OT.Ngay, OT.SoGio, OT.InsertDate, 'Auto'
+	select cast(OT.Factory as nvarchar(50)), OT.Ngay, OT.SoGio, OT.InsertDate, 'Auto'
 	from
 	HR_SNK.dbo.HR_OTPLAN OT
 	left join
@@ -20,7 +20,7 @@ begin
 	where Ngay_SK2 between @fromdate and @todate and UserName = 'Auto'
 
 	insert into HR_TangCaNgoaiLe_SK2 (Factory_ID_SK2, Ngay_SK2, Gio_SK2, InsertDate, UserName)
-	select OT.Factory, OT.Ngay, OT.SoGio, OT.InsertDate, 'Auto'
+	select cast(OT.Factory as nvarchar(50)), OT.Ngay, OT.SoGio, GETDATE(), 'Auto'
 	from
 	HR_SNK.dbo.HR_OTPLANF2 OT
 	left join
