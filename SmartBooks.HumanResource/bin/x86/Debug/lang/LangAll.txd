@@ -1060,12 +1060,14 @@
 		<text key="TimeKeeping.frmGoOut">Employee request going Outside</text>
 		<text key="TimeKeeping.frmHourLeaveException">Exception leave</text>
 		<text key="TimeKeeping.frmHR_MaxOvertimeInPeriod">Overtime registration by time</text>
+		<text key="TimeKeeping.frmNhapDuLieuCong">Push attendance</text>
 		<text key="TimeKeeping.frmRegisMaxOvertime">Register Over Time</text>
 		<text key="TimeKeeping.frmRegistEmployeePregnant">Register child</text>
 		<text key="TimeKeeping.frmRoundShift">Shift Registration</text>
 		<text key="TimeKeeping.frmTienCom">Meal Allowance</text>
 		<text key="TimeKeeping.frmWorkingDaySpecial">Registration special workday</text>
 		<text key="TimeKeeping.frmWorkingTimeCompensation">Workday Compensation</text>
+		<text key="TimeKeeping.NhapDuLieuCong">Push attendance</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong">Option</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong.cbViewLeave">Show absent</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong.cbViewMaxOverTime">Show register overtime</text>
@@ -1196,6 +1198,7 @@
 		<text key="TopMenu.Form1.Factory">Create/Adjust Factory</text>
 		<text key="TopMenu.Form1.File">System</text>
 		<text key="TopMenu.Form1.frmBankAccountOfEmployee">Staff Bank Account</text>
+		<text key="TopMenu.Form1.frmNhapDuLieuCong">Push attendance</text>
 		<text key="TopMenu.Form1.gioithieu">Introduction to Smartbooks - Human Resource</text>
 		<text key="TopMenu.Form1.GoOut">Employee Request to Go Outside</text>
 		<text key="TopMenu.Form1.Group">Group</text>
@@ -1227,6 +1230,7 @@
 		<text key="TopMenu.Form1.MayChamCong">Create /Adjust Timekeeping machine</text>
 		<text key="TopMenu.Form1.MucLuong">Setup Pay Grade</text>
 		<text key="TopMenu.Form1.MucLuongNhanVien">Register Pay Grade for Employees</text>
+		<text key="TopMenu.Form1.NhapDuLieuCong">Push attendance</text>
 		<text key="TopMenu.Form1.payroll">SALARY CALCULATION</text>
 		<text key="TopMenu.Form1.Payroll Calculation Sheet - Monthly">Salary Calculation Sheet Monthly</text>
 		<text key="TopMenu.Form1.PayrollCalculationSheetMonthly">Salary Calculation Sheet Monthly</text>
@@ -2347,7 +2351,7 @@
 		<text key="TimeKeeping.frmDangKyNghiSinh.ThongTinPhepNam">연차휴가 안내</text>
 		<text key="TimeKeeping.frmDangKyPhepTheoGio">지각 및 조퇴</text>
 		<text key="TimeKeeping.frmDanhSachDangKyDiLam">휴일근무 신청자 목록</text>
-		<text key="TimeKeeping.frmDayVacationRemain">Day Vacation Remain</text>
+		<text key="TimeKeeping.frmDayVacationRemain">잔여 연차</text>
 		<text key="TimeKeeping.frmEmpRegisLeave">직원 휴가 등록</text>
 		<text key="TimeKeeping.frmEmpRegisPregnant">임신 및 출산</text>
 		<text key="TimeKeeping.frmEmpRegisPregnant.FromDate">임신 날짜</text>
@@ -2356,12 +2360,14 @@
 		<text key="TimeKeeping.frmGoOut">외출 및 출장</text>
 		<text key="TimeKeeping.frmHourLeaveException">예외 휴가</text>
 		<text key="TimeKeeping.frmHR_MaxOvertimeInPeriod">시간별 추가근무 등록</text>
+		<text key="TimeKeeping.frmNhapDuLieuCong">근태 데이터 입력</text>
 		<text key="TimeKeeping.frmRegisMaxOvertime">초과근무</text>
 		<text key="TimeKeeping.frmRegistEmployeePregnant">육아수당 등록</text>
 		<text key="TimeKeeping.frmRoundShift">교대근무 등록</text>
 		<text key="TimeKeeping.frmTienCom">식비</text>
 		<text key="TimeKeeping.frmWorkingDaySpecial">초과근무 등록</text>
 		<text key="TimeKeeping.frmWorkingTimeCompensation">보상</text>
+		<text key="TimeKeeping.NhapDuLieuCong">근태 데이터 입력</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong">선택권</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong.cbViewLeave">쇼 결석</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong.cbViewMaxOverTime">OT를 등록보기</text>
@@ -2471,7 +2477,7 @@
 		<text key="TopMenu.Form1.DanhSachBangCapChungChi">학위 / 자격증 목록</text>
 		<text key="TopMenu.Form1.DanhSachDangKyDiLam">휴일근무 신청자 목록</text>
 		<text key="TopMenu.Form1.DanhSachNguoiPhuThuoc">부양가족</text>
-		<text key="TopMenu.Form1.DayVacationRemain">Day Vacation Remain</text>
+		<text key="TopMenu.Form1.DayVacationRemain">잔여 연차</text>
 		<text key="TopMenu.Form1.De_IncreaseSepecial">특별보험 증가/감소</text>
 		<text key="TopMenu.Form1.DependentPerson">부양가족</text>
 		<text key="TopMenu.Form1.Disable">장애인 명단</text>
@@ -2492,6 +2498,7 @@
 		<text key="TopMenu.Form1.Factory">공장 설정</text>
 		<text key="TopMenu.Form1.File">시스템</text>
 		<text key="TopMenu.Form1.frmBankAccountOfEmployee">직원 은행 계좌</text>
+		<text key="TopMenu.Form1.frmNhapDuLieuCong">근태 데이터 입력</text>
 		<text key="TopMenu.Form1.gioithieu">Smartbooks - Human Resource 소개</text>
 		<text key="TopMenu.Form1.GoOut">외출 및 출장 </text>
 		<text key="TopMenu.Form1.Group">그룹</text>
@@ -2523,6 +2530,7 @@
 		<text key="TopMenu.Form1.MayChamCong">등록/기계작업 변경</text>
 		<text key="TopMenu.Form1.MucLuong">임금체계 설정 </text>
 		<text key="TopMenu.Form1.MucLuongNhanVien">직원별 기본급 설정 </text>
+		<text key="TopMenu.Form1.NhapDuLieuCong">근태 데이터 입력</text>
 		<text key="TopMenu.Form1.payroll">급여</text>
 		<text key="TopMenu.Form1.Payroll Calculation Sheet - Monthly">월별 급여 계산 시트</text>
 		<text key="TopMenu.Form1.PayrollCalculationSheetMonthly">월별 급여 계산 시트</text>
@@ -3652,12 +3660,14 @@
 		<text key="TimeKeeping.frmGoOut">Nhân Viên Xin Ra Ngoài</text>
 		<text key="TimeKeeping.frmHourLeaveException">Phép Ngoại Lệ</text>
 		<text key="TimeKeeping.frmHR_MaxOvertimeInPeriod">Đăng Ký Tăng Ca Theo Thời Gian</text>
+		<text key="TimeKeeping.frmNhapDuLieuCong">Nhập dữ liệu công</text>
 		<text key="TimeKeeping.frmRegisMaxOvertime">Đăng Ký Tăng Ca</text>
 		<text key="TimeKeeping.frmRegistEmployeePregnant">Đăng Ký Con Nhỏ</text>
 		<text key="TimeKeeping.frmRoundShift">Đăng Ký Ca</text>
 		<text key="TimeKeeping.frmTienCom">Phụ Cấp Bữa Ăn</text>
 		<text key="TimeKeeping.frmWorkingDaySpecial">Đăng Ký Ngày Công Đặc Biệt</text>
 		<text key="TimeKeeping.frmWorkingTimeCompensation">Bù Công</text>
+		<text key="TimeKeeping.NhapDuLieuCong">Nhập dữ liệu công</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong">Lựa chọn</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong.cbViewLeave">Hiển thị nghỉ phép</text>
 		<text key="TimeKeeping.para_BangLoaiGioCong.cbViewMaxOverTime">Hiển thị đăng ký tăng ca</text>
@@ -3788,6 +3798,7 @@
 		<text key="TopMenu.Form1.Factory">Tạo/Điều Xưởng</text>
 		<text key="TopMenu.Form1.File">&amp;Hệ Thống</text>
 		<text key="TopMenu.Form1.frmBankAccountOfEmployee">Tài Khoản Ngân Hàng Nhân Viên</text>
+		<text key="TopMenu.Form1.frmNhapDuLieuCong">Nhập dữ liệu công</text>
 		<text key="TopMenu.Form1.gioithieu">Giới Thiệu SmartBooks - Human Resource</text>
 		<text key="TopMenu.Form1.GoOut">Nhân Viên Xin Ra Ngoài</text>
 		<text key="TopMenu.Form1.Group">Nhóm</text>
@@ -3819,6 +3830,7 @@
 		<text key="TopMenu.Form1.MayChamCong">Tạo/Điều Chỉnh Máy Chấm Công</text>
 		<text key="TopMenu.Form1.MucLuong">Cài Đặt Mức Lương</text>
 		<text key="TopMenu.Form1.MucLuongNhanVien">Đăng Ký Mức Lương Cho Nhân Viên</text>
+		<text key="TopMenu.Form1.NhapDuLieuCong">Nhập dữ liệu công</text>
 		<text key="TopMenu.Form1.payroll">TÍNH LƯƠNG</text>
 		<text key="TopMenu.Form1.Payroll Calculation Sheet - Monthly">Tính Lương</text>
 		<text key="TopMenu.Form1.PayrollCalculationSheetMonthly">Tính Lương</text>

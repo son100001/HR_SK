@@ -10,3 +10,5 @@
 );
 
 ALTER TABLE [dbo].[HR_WTDaily] ADD CONSTRAINT [PK_HR_WTDaily_1] PRIMARY KEY ([Employee_ID] ASC, [Ngay] ASC, [MaCong] ASC, [InsertSource] ASC);
+
+CREATE NONCLUSTERED INDEX [IX_HR_WTDaily_Ngay] ON [dbo].[HR_WTDaily] ([Ngay] ASC) INCLUDE ([Employee_ID],[MaCong],[wt],[InsertSource]);

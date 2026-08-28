@@ -72,6 +72,7 @@ Partial Class frmNhapDuLieuCong
         Me.btnSave = New DevExpress.XtraEditors.SimpleButton()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.btnLuuDuLieuQuet = New DevExpress.XtraEditors.SimpleButton()
+        Me.ChuyenCan = New System.Windows.Forms.TextBox()
         CType(Me.XtraTabControl1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.XtraTabControl1.SuspendLayout()
         Me.General.SuspendLayout()
@@ -133,7 +134,7 @@ Partial Class frmNhapDuLieuCong
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle())
-        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 466.0!))
+        Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 468.0!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
         Me.TableLayoutPanel3.ColumnStyles.Add(New System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20.0!))
@@ -209,6 +210,7 @@ Partial Class frmNhapDuLieuCong
         '
         'pnDuLieuNhap
         '
+        Me.pnDuLieuNhap.Controls.Add(Me.ChuyenCan)
         Me.pnDuLieuNhap.Controls.Add(Me.Day28)
         Me.pnDuLieuNhap.Controls.Add(Me.Day29)
         Me.pnDuLieuNhap.Controls.Add(Me.Day30)
@@ -554,6 +556,14 @@ Partial Class frmNhapDuLieuCong
         Me.btnLuuDuLieuQuet.TabIndex = 2
         Me.btnLuuDuLieuQuet.Text = "Lưu dữ liệu quẹt"
         '
+        'ChuyenCan
+        '
+        Me.ChuyenCan.Location = New System.Drawing.Point(393, 7)
+        Me.ChuyenCan.Name = "ChuyenCan"
+        Me.ChuyenCan.Size = New System.Drawing.Size(11, 21)
+        Me.ChuyenCan.TabIndex = 1313
+        Me.ChuyenCan.Visible = False
+        '
         'frmNhapDuLieuCong
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -564,6 +574,7 @@ Partial Class frmNhapDuLieuCong
         Me.HRFORM_GridControl = Me.GridControl1
         Me.HRFORM_Gridview = Me.GridView1
         Me.HRFORM_TableName = "HR_GioDayDuLieu"
+        Me.HRFORM_VisibleControl_GetTemplate = False
         Me.HRFORM_VisibleControl_Sua = False
         Me.HRFORM_VisibleControl_ThemMoi = False
         Me.Name = "frmNhapDuLieuCong"
@@ -638,4 +649,5 @@ Partial Class frmNhapDuLieuCong
     Friend WithEvents LoaiGio As TextBox
     Friend WithEvents Nam As TextBox
     Friend WithEvents Thang As TextBox
+    Friend WithEvents ChuyenCan As TextBox
 End Class

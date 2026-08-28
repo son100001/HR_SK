@@ -81,3 +81,5 @@
 );
 
 ALTER TABLE [dbo].[SmartBooks_Employee] ADD CONSTRAINT [PK_SmartBooks_Employee] PRIMARY KEY ([Employee_ID] ASC);
+
+CREATE NONCLUSTERED INDEX [IX_SmartBooks_Employee_ID_number] ON [dbo].[SmartBooks_Employee] ([ID_number] ASC) INCLUDE ([Employee_ID]);

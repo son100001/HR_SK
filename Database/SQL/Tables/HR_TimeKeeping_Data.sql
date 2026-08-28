@@ -15,3 +15,5 @@
 );
 
 ALTER TABLE [dbo].[HR_TimeKeeping_Data] ADD CONSTRAINT [PK_HR_TimeKeeping_Data_1] PRIMARY KEY ([Employee_ID] ASC, [AccessTime] ASC, [CardNumber] ASC, [InsertSource] ASC);
+
+CREATE NONCLUSTERED INDEX [IX_HR_TimeKeeping_Data_AccessDate] ON [dbo].[HR_TimeKeeping_Data] ([AccessDate] ASC);

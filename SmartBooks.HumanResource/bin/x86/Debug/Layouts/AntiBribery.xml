@@ -128,11 +128,7 @@
       <property name="Name">colID_place</property>
       <property name="VisibleIndex">12</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">135</property>
-=======
-      <property name="Width">132</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -188,11 +184,7 @@
       <property name="Name">colNativePlace</property>
       <property name="VisibleIndex">20</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">106</property>
-=======
-      <property name="Width">95</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -208,11 +200,7 @@
       <property name="Name">colFactory_ID</property>
       <property name="VisibleIndex">23</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">74</property>
-=======
-      <property name="Width">75</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -228,11 +216,7 @@
       <property name="Name">colSectionCode</property>
       <property name="VisibleIndex">27</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">100</property>
-=======
-      <property name="Width">102</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -248,11 +232,7 @@
       <property name="Name">colposition</property>
       <property name="VisibleIndex">30</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">223</property>
-=======
-      <property name="Width">305</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -356,11 +336,7 @@
       <property name="Name">colTel</property>
       <property name="VisibleIndex">45</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">74</property>
-=======
-      <property name="Width">77</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -732,11 +708,7 @@
       <property name="Name">colPositionFullName</property>
       <property name="VisibleIndex">89</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">223</property>
-=======
-      <property name="Width">305</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -760,11 +732,7 @@
       <property name="Name">colLyDoNghi</property>
       <property name="VisibleIndex">95</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">97</property>
-=======
-      <property name="Width">115</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -821,11 +789,7 @@
       <property name="Name">colKhuVuc</property>
       <property name="VisibleIndex">106</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">74</property>
-=======
-      <property name="Width">75</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -953,11 +917,7 @@
       <property name="Name">colCCCDCu</property>
       <property name="VisibleIndex">90</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">125</property>
-=======
-      <property name="Width">83</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>
@@ -989,11 +949,7 @@
       <property name="Name">colSoNhaThonXom</property>
       <property name="VisibleIndex">98</property>
       <property name="Visible">true</property>
-<<<<<<< HEAD
       <property name="Width">260</property>
-=======
-      <property name="Width">246</property>
->>>>>>> dc0aaedfaaa5708ac0f3477a103e6c32266bb6f1
       <property name="MinWidth">20</property>
       <property name="MaxWidth">0</property>
     </property>

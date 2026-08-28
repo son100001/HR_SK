@@ -1,4 +1,30 @@
-﻿CREATE FUNCTION [dbo].[udf_BangPhepTheoNgayTinhPhep]
+/*
+    Mục đích: dbo.udf_BangPhepTheoNgayTinhPhep nhận tham số @emp (dùng để scope tính toán cho 1 nhân
+    viên) nhưng dòng DELETE cuối cùng (xoá nghỉ-không-phép '14' vào Chủ nhật cho nhân viên KHÔNG thuộc
+    phòng 'Production_Soi%') lại hardcode NULL cho tham số @Empl khi gọi dbo.udf_EmployeeFilter, khiến
+    hàm này LUÔN quét TOÀN BỘ công ty (~1.442 dòng active) bất kể @emp được truyền gì - đúng loại bug
+    "nhận tham số nhưng không dùng" đã gặp trên HR_KIDO_35 (sp_XuLyPhepNam/udf_BangPhepTheoNgay).
+    Fix: đổi tham số thứ 8 của lời gọi udf_EmployeeFilter ở dòng DELETE cuối từ NULL sang @emp.
+    An toàn về logic: @rtnBangPhepTheoNgayTinhPhep đã được lọc theo @emp từ câu INSERT chính phía trên
+    (dòng "and (case when @Emp is null or @emp='' then '' ... end)=..."), nên DELETE chỉ tác động tới
+    những dòng ĐÃ nằm trong phạm vi @emp từ trước - thêm @emp vào subquery filter chỉ làm subquery tính
+    nhanh hơn (ít nhân viên hơn), không đổi tập giao (intersection) cuối cùng. Nếu @emp = NULL, hành vi
+    giữ nguyên 100% (NULL truyền vào thay NULL literal = không đổi gì).
+    Áp dụng cho: HR_SnK_Dev_260811. Điều tra khi tối ưu dbo.sp_TinhCong (gọi qua
+    dbo.sp_Insert_HR_BangPhepDaNghi). Blast radius: chỉ 1 caller (sp_Insert_HR_BangPhepDaNghi).
+    Tham khảo: markdowns/SQL_PERFORMANCE_PLAYBOOK.md mục A8, markdowns/SQL_PERFORMANCE_HISTORY.md.
+    Verify: checksum output cho nhân viên test (C14118, 2026-06) khớp 100% trước/sau. Checksum các cột
+    xác định của HR_TimeIn_TimeOut (sau khi chạy trọn sp_TinhCong) cũng khớp 100% trước/sau.
+    Đo được: udf_BangPhepTheoNgayTinhPhep đứng riêng 3.580 ms -> ~2.400-2.545 ms (~30% nhanh hơn).
+    Idempotent: cùng loại object (MSTVF), có thể DROP+CREATE lại nhiều lần an toàn.
+*/
+IF OBJECT_ID('dbo.udf_BangPhepTheoNgayTinhPhep', 'TF') IS NOT NULL DROP FUNCTION [dbo].[udf_BangPhepTheoNgayTinhPhep];
+GO
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+CREATE FUNCTION [dbo].[udf_BangPhepTheoNgayTinhPhep]
 (
 	-- Add the parameters for the function here
 	--select * from [dbo].[udf_DanhSachNhanVienDuocHuongNghiLe]('2022-05-20','2022-05-20')
@@ -15,7 +41,7 @@
 	@emp nvarchar(50),
 	@ListOfLeaveType_ID varchar(100)
 )
-RETURNS  @rtnBangPhepTheoNgayTinhPhep TABLE 
+RETURNS  @rtnBangPhepTheoNgayTinhPhep TABLE
 (
     -- columns returned by the function
     [Employee_ID] nvarchar(50),[LeaveType_ID] nvarchar(50),DateLeave datetime,HourLeave float,Remark_ varchar(50),primary key ([Employee_ID],DateLeave)
@@ -49,7 +75,7 @@ BEGIN
 		on dkc.Employee_ID = empl.Employee_ID
 		where dkc.ShiftName in ('83-Shift3','93-Shift3','70-Shift0','80-Shift0') and dkc.ToDate between @fromdate and @todate and empl.DepartmentCode like N'Production_Soi%'
 				and empl.Employee_ID is not null
-	) dkc 
+	) dkc
 	where rn = 1
 
 	insert into @tabNghiMacDinh
@@ -64,9 +90,9 @@ BEGIN
 		on dkc.Employee_ID = empl.Employee_ID
 		where dkc.ShiftName in ('93-Shift3','80-Shift0') and dkc.ToDate between @fromdate and @todate and empl.DepartmentCode like N'Production_Soi%'
 				and empl.Employee_ID is not null
-	) dkc 
-	where rn = 1 
-	
+	) dkc
+	where rn = 1
+
 	declare @tabTimeInTimeOut table(Employee_ID nvarchar(50), Ngay datetime, RealTimeIn datetime, RealTimeOut datetime, primary key (Employee_ID, Ngay))
 	insert into @tabTimeInTimeOut
 	select Employee_ID,OT_date,RealTimeIn,RealTimeOut from HR_TimeIn_TimeOut where OT_date between @fromdate and @todate and (TimeIn is null or [TimeOut] is null)
@@ -84,7 +110,7 @@ BEGIN
 			when ngay.Date_<=DATEFROMPARTS(year(getdate()),month(getdate()),day(getdate())) and cong.Employee_ID is null then '14.' --nghỉ không phép
 		end) as LeaveType_ID
 	,ngay.Date_ as DateLeave
-	,case 
+	,case
 			when empl.ternimationdate is not null and empl.ternimationdate <= ngay.Date_ then 8
 			when phep.Employee_ID is not null then case when phep.LeaveType_ID in (31,32) then 4 else 8 end
 			when erl.Employee_ID is not null then erl.HourLeave
@@ -132,7 +158,7 @@ BEGIN
 	--			(case when isnull(@ListOfLeaveType_ID,'')='' then '' else phep.LeaveType_ID end) in (select data from [dbo].[Split](isnull(@ListOfLeaveType_ID,''),','))
 	--			or (case when isnull(@ListOfLeaveType_ID,'')='' then '' else PhepLe.TypeOfLeave end) in (select data from [dbo].[Split](isnull(@ListOfLeaveType_ID,''),','))
 	--			)
-	/*PhepLe.Employee_ID is not null or*/ (nmd.Employee_ID is not null or 
+	/*PhepLe.Employee_ID is not null or*/ (nmd.Employee_ID is not null or
 											/*tito.Employee_ID is not null or*/ (((((datename(weekday,ngay.Date_)<>'Sunday' and isnull(wds.WorkingDayType,'')<>'Sun') or empl.DepartmentCode like N'Production_Soi%') or (datename(weekday,ngay.Date_)='Sunday' or empl.DepartmentCode like N'Production_Soi%' and isnull(wds.WorkingDayType,'')<>'')) or (datename(weekday,ngay.Date_)<>'Sunday' and isnull(wds.WorkingDayType,'')<>'Sun'))
 	and
 	(
@@ -158,7 +184,7 @@ BEGIN
 	-- Cập nhật nghỉ không phép tự động 14_ thành 14
 	update @rtnBangPhepTheoNgayTinhPhep set LeaveType_ID=(case when LeaveType_ID like '%.' then replace(LeaveType_ID,'.','') else LeaveType_ID end),Remark_=LeaveType_ID
 	-- Return the result of the function
-	
+
 	--Đặc thù Shinsung sợi 9h
 	update bptntp
 	set bptntp.HourLeave = case when bptntp.HourLeave = 4 then 4.5 when bptntp.HourLeave = 8 then 9 else bptntp.HourLeave/8*9 end
@@ -177,7 +203,5 @@ BEGIN
 	RETURN
 
 END
-
-
 
 GO

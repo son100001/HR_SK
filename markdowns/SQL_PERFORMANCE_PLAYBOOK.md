@@ -243,9 +243,81 @@ không dùng, quy tắc "giữ MSTVF chỉ sửa nội bộ", index filtered cho
 `Kido_New/markdowns/SQL_PERFORMANCE_HISTORY.md` — **không portable, chỉ để tham khảo cách chẩn đoán**,
 vì `HR_SnK_Dev_260811` không có `sp_XuLyPhepNam`/`HR_BangPhepNam` với tên này (xem ghi chú đầu file).
 
-**Nếu tối ưu `sp_TinhCong` ở `HR_SnK_Dev_260811`:** áp dụng đúng quy trình chẩn đoán ở mục B bên dưới từ
-đầu (đo bằng `sys.dm_exec_procedure_stats` để tìm statement chậm nhất thật sự), không giả định bottleneck
-giống hệt `HR_KIDO_35` vì tên object khác nhau (`sp_XuLyPhepNam` không tồn tại ở đây).
+**Đã điều tra thật trên `HR_SnK_Dev_260811` (2026-08-12) — bottleneck khác hẳn `HR_KIDO_35`, xem mục A8.**
+
+---
+
+### A8. `dbo.sp_TinhCong` trên `HR_SnK_Dev_260811` — bottleneck thật là `udf_DangKyCa` bị gọi LẶP LẠI 4 lần, chỉ index là an toàn để sửa
+
+**Bối cảnh khác `HR_KIDO_35`:** DB này không có `sp_XuLyPhepNam`/`HR_BangPhepNam` nên bottleneck của mục
+A7 không áp dụng được. Đã điều tra lại từ đầu bằng Extended Events (không dùng
+`dm_exec_procedure_stats`/`dm_exec_query_stats` trực tiếp — xem lý do ở mục B bên dưới, mục mới).
+
+**Bottleneck thật (đo trên kịch bản 1 nhân viên/1 tháng, ~101 lượt quẹt thẻ):** `dbo.udf_DangKyCa`
+(MSTVF, gọi lồng `udf_BangThoiGian`/`udf_BangDangKyCaTheoViTri`/`udf_TraVeDangKyCaDuaVaoCaXoay`/
+`udf_DanhSachHuongCheDo` — **chính là chuỗi hàm mục A5**) bị gọi **4 LẦN riêng biệt** trong 1 lần chạy
+`sp_TinhCong`, mỗi lần ~1.5-1.9 giây (~65% tổng thời gian chạy):
+1. Bên trong `udf_TinhCong` (nguồn dữ liệu cursor chính của `sp_TinhCong`).
+2. Bên trong `udf_ReturnTableSetupHourTimeKeeping_List` (luôn truyền NULL cho @fact/@dept/... — khác
+   tham số filter thật của `sp_TinhCong` khi có filter phòng/ban).
+3. Trực tiếp trong `sp_TinhCong` — tham số **trùng hệt** lời gọi #1, nhưng #1 nằm trong function khác
+   nên không cache/gộp lại được mà không sửa `udf_TinhCong` (dùng chung, còn 2 caller khác).
+4. Trực tiếp trong `sp_TinhCong` — tham số khác (hardcode `@fact='SK2'`), xử lý case riêng, không gộp
+   được với 3 lời gọi trên.
+
+**KHÔNG sửa (dedupe) được các lời gọi trùng tham số mà không đổi logic/signature của hàm dùng chung** —
+đây chính xác là chuỗi hàm mục A5 đã ghi nhận gây regression khi thử sửa dù chỉ 3/4 hàm con trên
+`HR_KIDO_35`. Nếu DB khác có `sp_TinhCong` cùng pattern gọi lặp `udf_DangKyCa` nhiều lần, **đừng thử gộp
+mà không có xác nhận chấp nhận rủi ro từ người yêu cầu** — áp dụng cảnh báo mục E.
+
+**✅ Fix duy nhất an toàn tìm được:** `dbo.HR_WTDaily` chỉ có PK CLUSTERED dẫn đầu bằng `Employee_ID`,
+không có index nào hỗ trợ các truy vấn lọc CHỈ theo `Ngay` (không kèm `Employee_ID` — ví dụ: tổng hợp
+giờ tăng ca đã dùng trong CẢ NĂM cho toàn bộ nhân viên, để tính hạn mức còn lại — chạy full-ish scan mỗi
+lần gọi `sp_TinhCong`, bất kể đang tính cho 1 hay nhiều nhân viên). Thêm:
+```sql
+CREATE NONCLUSTERED INDEX [IX_HR_WTDaily_Ngay] ON [dbo].[HR_WTDaily] ([Ngay] ASC)
+    INCLUDE ([Employee_ID],[MaCong],[wt],[InsertSource]);
+```
+Đo được: 10.507 → 1.979 logical reads (~5.3 lần) cho truy vấn tổng hợp theo năm. Hiệu quả tổng thể lên
+`sp_TinhCong`: chỉ ~5-10% (vì phần này chỉ là 1 phần nhỏ so với chi phí `udf_DangKyCa` x4).
+
+**✅ Fix thứ 2 tìm được sau khi thử sâu hơn (chấp nhận rủi ro, DB test) — bug "nhận `@emp` nhưng 1 dòng
+không dùng" trong `dbo.udf_BangPhepTheoNgayTinhPhep`, đòn bẩy LỚN hơn cả index:** hàm này được gọi bởi
+`sp_Insert_HR_BangPhepDaNghi` (chính `sp_TinhCong` gọi ở dòng ~825) — đứng riêng chiếm **3.580ms**, phần
+lớn thời gian còn "mất tích" chưa giải thích được ở bản đo Extended Events. Đọc thân hàm: dùng đúng
+`@emp` ở hầu hết các JOIN, NGOẠI TRỪ 1 dòng DELETE cuối cùng hardcode `@Empl=NULL` khi gọi
+`udf_EmployeeFilter` → luôn quét TOÀN CÔNG TY (2.153ms, so với 245ms khi scope 1 nhân viên) bất kể `@emp`
+truyền gì — **đúng loại bug đã gặp 2 lần trên `HR_KIDO_35`** (`sp_XuLyPhepNam`, `udf_BangPhepTheoNgay`,
+xem `Kido_New/markdowns/SQL_PERFORMANCE_HISTORY.md`). An toàn để sửa vì kết quả trung gian
+(`@rtnBangPhepTheoNgayTinhPhep`) đã được lọc theo `@emp` từ trước ở câu INSERT chính — thêm `@emp` vào
+DELETE chỉ làm subquery tính nhanh hơn, không đổi tập giao cuối cùng. Fix: đổi tham số thứ 8 của lời gọi
+`udf_EmployeeFilter` ở DELETE cuối từ `null` thành `@emp`. Đo được: 3.580ms → ~2.400-2.545ms riêng hàm
+này (~30%); `sp_TinhCong` tổng thể (luỹ tích cả fix index + convert `udf_BangDangKyCaTheoViTri` + fix
+này): baseline gốc ~14.4s (trung bình) → ~11.7s (trung bình, ~19%). Verify: checksum output hàm này khớp
+100% trước/sau; checksum cột xác định (loại `RAND()`) của `HR_TimeIn_TimeOut` sau khi chạy trọn
+`sp_TinhCong` khớp 100% với TRƯỚC khi có bất kỳ thay đổi nào trong cả đợt. **Bài học tổng quát: khi 1
+function/proc dùng chung nhận tham số filter theo nhân viên (`@emp`/`@Empl`...), luôn `grep` xem CÓ dòng
+nào trong thân hàm quên dùng tham số đó không — đây là loại bug tái diễn nhiều lần trong hệ thống này,
+đáng kiểm tra CHỦ ĐỘNG (không chỉ khi tình cờ phát hiện) mỗi khi audit 1 function/proc filter theo
+Employee_ID.**
+
+**Chưa thử (rủi ro cao hơn nhiều, cần đầu tư riêng):** convert `udf_TraVeDangKyCaDuaVaoCaXoay` (cursor ca
+xoay thật) sang set-based để giảm nốt phần "keo dán" JOIN nội bộ còn lại của `udf_DangKyCa` (~1.1-1.9s) —
+đây là thuật toán ca xoay phức tạp, rủi ro nghiệp vụ cao, cần xác nhận với người nắm nghiệp vụ trước.
+
+**Phát hiện phụ — bug non-determinism có sẵn (không phải hiệu năng, KHÔNG tự ý sửa):**
+`ROW_NUMBER() OVER (PARTITION BY Employee_ID ORDER BY Employee_ID)` trong `sp_TinhCong` (dùng để chọn thứ
+tự xử lý ngân sách giờ tăng ca tối đa) có `ORDER BY` không phải tiebreaker duy nhất khi nhiều dòng cùng
+`Employee_ID` trong cùng partition → thứ tự chọn "dòng nào xử lý trước" có thể đổi giữa các lần chạy,
+xác nhận bằng cách chạy lại 2 lần liên tiếp cùng điều kiện, checksum `HR_WTDaily` khác nhau dù không đổi
+gì. Đúng loại bẫy Pattern C1 (ROW_NUMBER thiếu tiebreaker) nhưng có sẵn từ nguyên bản, không do việc tối
+ưu gây ra. Chi tiết đầy đủ: `markdowns/SQL_PERFORMANCE_HISTORY.md` (file của `HR_SnK_Dev_260811`, không
+portable).
+
+**Nếu tối ưu `sp_TinhCong` ở DB khác:** áp dụng đúng quy trình chẩn đoán ở mục B (đo bằng Extended Events
+nếu DB có nhiều người dùng đồng thời, không dùng thẳng `dm_exec_procedure_stats`/`dm_exec_query_stats`
+theo object_id — xem mục B.2 mới), không giả định bottleneck giống `HR_KIDO_35` hay `HR_SnK_Dev_260811`
+vì mỗi bản có thể đã tự sửa khác nhau qua thời gian.
 
 ---
 
@@ -280,8 +352,56 @@ giống hệt `HR_KIDO_35` vì tên object khác nhau (`sp_XuLyPhepNam` không t
      WHERE ps.object_id = OBJECT_ID('dbo.TenProc')
      ORDER BY qs.total_elapsed_time DESC;
      ```
+   - ⚠️ **Trên DB có nhiều người dùng/tiến trình khác đang hoạt động đồng thời, 2 DMV trên
+     (`dm_exec_procedure_stats`/`dm_exec_query_stats`) BỊ NHIỄU** — chúng cộng dồn số liệu của TẤT CẢ
+     session đã từng gọi proc đó kể từ lần compile plan gần nhất, không tách riêng được phần của session
+     đang test. Dấu hiệu nhận biết: `execution_count`/`total_elapsed_time` cao bất thường so với số lần
+     bạn tự gọi (case thực tế: `HR_SnK_Dev_260811` — tự gọi 1 lần cho 1 nhân viên/101 dòng, DMV báo
+     `execution_count`=162.036 cho 1 statement bên trong cursor loop, vô lý so với ~101 lần lặp thật).
+     **Cách đo sạch, cô lập đúng session của mình:** tạo Extended Events session tạm, lọc theo
+     `session_id = @@SPID`, target `ring_buffer` (không cần quyền ghi file), chạy proc, đọc lại, xoá
+     session — tất cả trong CÙNG 1 kết nối (để `@@SPID` không đổi giữa các bước):
+     ```sql
+     DECLARE @spid int = @@SPID, @sessname sysname = N'ProfileTemp';
+     IF EXISTS(SELECT 1 FROM sys.server_event_sessions WHERE name=@sessname)
+     BEGIN
+         IF EXISTS(SELECT 1 FROM sys.dm_xe_sessions WHERE name=@sessname)
+             EXEC('ALTER EVENT SESSION [' + @sessname + '] ON SERVER STATE=STOP');
+         EXEC('DROP EVENT SESSION [' + @sessname + '] ON SERVER');
+     END
+     DECLARE @sql nvarchar(max) = N'
+     CREATE EVENT SESSION [' + @sessname + N'] ON SERVER
+     ADD EVENT sqlserver.sp_statement_completed(
+         ACTION(sqlserver.session_id) WHERE sqlserver.session_id = ' + CAST(@spid AS nvarchar(10)) + N')
+     ADD TARGET package0.ring_buffer(SET max_memory=51200)
+     WITH (MAX_DISPATCH_LATENCY=1 SECONDS)';
+     EXEC sp_executesql @sql;
+     EXEC('ALTER EVENT SESSION [' + @sessname + '] ON SERVER STATE=START');
+     WAITFOR DELAY '00:00:00.300';
+     EXEC dbo.TenProc ...;                                   -- proc cần đo
+     WAITFOR DELAY '00:00:01.000';
+     SELECT CAST(st.target_data AS XML) AS xml_data INTO #xe
+     FROM sys.dm_xe_session_targets st JOIN sys.dm_xe_sessions s ON s.address=st.event_session_address
+     WHERE s.name=@sessname;
+     EXEC('ALTER EVENT SESSION [' + @sessname + '] ON SERVER STATE=STOP');
+     EXEC('DROP EVENT SESSION [' + @sessname + '] ON SERVER');
+     ;WITH ev AS (
+         SELECT x.n.value('(data[@name="duration"]/value)[1]','bigint') AS duration_us,
+                x.n.value('(data[@name="line_number"]/value)[1]','int') AS line_no,
+                x.n.value('(data[@name="statement"]/value)[1]','nvarchar(max)') AS stmt
+         FROM #xe CROSS APPLY xml_data.nodes('//event') AS x(n)
+     )
+     SELECT SUM(duration_us)/1000.0 AS TotalMs, COUNT(*) AS ExecCount, line_no, LEFT(MAX(stmt),200) AS Sample
+     FROM ev GROUP BY line_no ORDER BY TotalMs DESC;
+     DROP TABLE #xe;
+     ```
+     Cần quyền `ALTER ANY EVENT SESSION` (thường có sẵn với sysadmin trên DB dev/instance riêng). Yêu cầu
+     `SET QUOTED_IDENTIFIER ON;` ở đầu batch (dùng `.nodes()`). `line_no` là số dòng TRONG object đang
+     chạy statement đó — nếu statement nằm trong 1 function được gọi lồng bên trong, `line_no` sẽ là số
+     dòng của CHÍNH function con đó, không phải của proc cha — đối chiếu với source code từng object để
+     biết statement thuộc về đâu.
 
-3. **Trước khi sửa 1 function/proc dùng chung, tìm hết nơi đang gọi nó** (định lượng "blast radius"):
+4. **Trước khi sửa 1 function/proc dùng chung, tìm hết nơi đang gọi nó** (định lượng "blast radius"):
    ```sql
    SELECT o.name, o.type_desc
    FROM sys.sql_modules m JOIN sys.objects o ON o.object_id = m.object_id
@@ -291,19 +411,24 @@ giống hệt `HR_KIDO_35` vì tên object khác nhau (`sp_XuLyPhepNam` không t
    Có thể tra nhanh không cần connect DB bằng cách `grep` toàn bộ [`Database/SQL/`](../Database/SQL/)
    (đã export sẵn toàn bộ 176 table + 531 store/function của `HR_SnK_Dev_260811`).
 
-4. **Test bằng dữ liệu thật, đúng kịch bản đã báo lỗi/chậm** — không chỉ test "chạy không lỗi". Tìm 1
+5. **Test bằng dữ liệu thật, đúng kịch bản đã báo lỗi/chậm** — không chỉ test "chạy không lỗi". Tìm 1
    bản ghi thật khớp đúng điều kiện đang xử lý, so before/after từng dòng dữ liệu (dùng `EXCEPT` cả 2
    chiều giữa snapshot cũ và kết quả mới để bắt chính xác từng khác biệt, không chỉ so số dòng).
+   ⚠️ Nếu proc có dùng `RAND()` hoặc `ROW_NUMBER()`/`RANK()` thiếu tiebreaker duy nhất, checksum/kết quả
+   CÓ THỂ khác nhau giữa 2 lần chạy dù không sửa gì cả (non-determinism có sẵn từ nguyên bản) — trước khi
+   kết luận 1 thay đổi "làm sai kết quả", chạy lại 2 lần liên tiếp ở TRẠNG THÁI GIỐNG NHAU (cùng có/không
+   có thay đổi) để phân biệt "lệch do thay đổi của tôi" với "lệch có sẵn từ trước". Loại trừ các cột chịu
+   ảnh hưởng của `RAND()` khỏi phép so sánh checksum.
 
-5. **Sau khi sửa, LUÔN đo lại đúng object caller thực tế đang dùng — không chỉ đo function con vừa
+6. **Sau khi sửa, LUÔN đo lại đúng object caller thực tế đang dùng — không chỉ đo function con vừa
    sửa riêng lẻ.** Xem cảnh báo ở mục C — 1 fix đo nhanh hơn khi test riêng vẫn có thể làm chậm hơn khi
    ghép vào query thật.
 
-6. **Mọi thay đổi DB phải có file deploy đi kèm** trong `Database/DeployScripts/` (xem quy định ở
+7. **Mọi thay đổi DB phải có file deploy đi kèm** trong `Database/DeployScripts/` (xem quy định ở
    `markdowns/INDEX.md`) vì DB local/DB đang connect chỉ là 1 bản, thay đổi trực tiếp trên đó không tự
    có trên server khác.
 
-7. ⚠️ **Bẫy encoding khi chạy script chứa tiếng Việt**: `sqlcmd -i file.sql` (không kèm `-f 65001`) đọc
+8. ⚠️ **Bẫy encoding khi chạy script chứa tiếng Việt**: `sqlcmd -i file.sql` (không kèm `-f 65001`) đọc
    sai codepage, làm hỏng NVARCHAR tiếng Việt **thật trong DB** (không phải lỗi hiển thị). Không dùng
    `sqlcmd -i` cho script có tiếng Việt. Dùng ADO.NET:
    ```powershell
