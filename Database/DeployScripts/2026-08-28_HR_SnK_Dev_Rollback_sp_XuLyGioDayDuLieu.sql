@@ -1,6 +1,16 @@
-﻿
+﻿/*
+    ROLLBACK cho 2026-08-28_HR_SnK_Dev_sp_XuLyGioDayDuLieu_QuyDoiTangCa.sql
+    Khôi phục dbo.sp_XuLyGioDayDuLieu về bản trước ngày 2026-08-28 (chưa có khối quy đổi giờ tăng ca).
+    Nếu rollback script này thì PHẢI rollback kèm script tắt khối quy đổi trong sp_TinhCong, nếu không
+    sẽ KHÔNG CÒN AI quy đổi CN_wt3/CN_wt5 sang wt3/wt5.
+*/
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+
 --EXEC sp_XuLyGioDayDuLieu 6, 2026
-CREATE   proc [dbo].[sp_XuLyGioDayDuLieu]
+CREATE OR ALTER proc [dbo].[sp_XuLyGioDayDuLieu]
 	@Month int, 
 	@Year int,
 	@fact nvarchar(50)=null,
@@ -133,141 +143,6 @@ BEGIN
 				, 'Auto1', ConvertedValue, null, GETDATE(), ''
 		from
 		@tblNumericData
-
-		--==========================================================================================
-		-- XỬ LÝ GIỜ TĂNG CA ĐĂNG KÝ — quy đổi CN_wt3/CN_wt5 sang wt3/wt5 (2026-08-28)
-		--
-		-- Trước đây việc này nằm trong sp_TinhCong (khối `if @OldGioDayDuLieu is not null`), chạy
-		-- BÊN TRONG cursor nên làm sp_TinhCong chậm từ ~3 phút lên ~10 phút. Nay chuyển hẳn sang đây,
-		-- chạy 1 lần cho cả tháng, không còn ảnh hưởng tốc độ tính công.
-		--
-		-- Quy tắc nghiệp vụ:
-		--  - "CN_" = công ngoài (ngoài đăng ký). Ngày nào có đăng ký tăng ca thì chuyển bớt sang dạng
-		--    không có "CN_", lấy min(giờ thực tế, giờ đăng ký). Không đăng ký thì giữ nguyên CN_.
-		--  - Chỉ áp dụng cho CN_wt3 / CN_wt5. Mọi mã khác (wt1, wt9, CN_wt4/6/7/8) giữ nguyên.
-		--  - Thứ tự ưu tiên theo ca (lấy ca từ udf_DangKyCa):
-		--       ca ngày  (ShiftName KHÔNG chứa 'Shift3') -> quy đổi wt3 trước, hết mới tới wt5
-		--       ca đêm   (ShiftName chứa 'Shift3')       -> quy đổi wt5 trước, hết mới tới wt3
-		--  - Còn bị chặn bởi trần tháng và trần năm (đọc từ HR_SetUpFollowDate, cùng nguồn sp_TinhCong).
-		--    Hết trần thì phần còn lại giữ nguyên CN_ (tức quy đổi = 0).
-		--==========================================================================================
-
-		declare @TranNam float = 10000, @TranThang float = 40
-		select @TranNam   = [Value] from HR_SetUpFollowDate
-		 where Group_ = 'TangCaToiDaTheoNam'   and Fromdate <= @NgayCuoiThang and (Todate is null or Todate >= @NgayDauThang) order by Fromdate asc
-		select @TranThang = [Value] from HR_SetUpFollowDate
-		 where Group_ = 'TangCaToiDaTheoThang' and Fromdate <= @NgayCuoiThang and (Todate is null or Todate >= @NgayDauThang) order by Fromdate asc
-
-		-- Ca ngày / ca đêm theo từng (nhân viên, ngày)
-		declare @CaLamViec table (Employee_ID nvarchar(50), Ngay datetime, LaCaDem bit, primary key (Employee_ID, Ngay))
-		insert into @CaLamViec (Employee_ID, Ngay, LaCaDem)
-		select Employee_ID, AccessDate, case when ShiftName like '%Shift3%' then 1 else 0 end
-		from udf_DangKyCa (@NgayDauThang, @NgayCuoiThang, @SoNgayHuongCheDoSauKhiMangBau, @fact, @dept, @sect, @team, @pos, @posc, @Emp)
-
-		-- Giờ tăng ca ĐĂNG KÝ, quy về từng (nhân viên, ngày) theo Factory của nhân viên
-		declare @GioDangKy table (Employee_ID nvarchar(50), Ngay datetime, Gio float, primary key (Employee_ID, Ngay))
-		insert into @GioDangKy (Employee_ID, Ngay, Gio)
-		select e.Employee_ID, t.Ngay, max(t.Gio)
-		from udf_TongTangCaNgoaiLe (@NgayDauThang, @NgayCuoiThang) t
-		join SmartBooks_Employee e
-		  on (e.Factory_ID = t.Factory_ID or (e.Factory_ID = 'SK2' and t.Factory_ID = 'SK2-Assembly'))
-		where isnull(t.Gio,0) > 0
-		group by e.Employee_ID, t.Ngay
-
-		-- Giờ tăng ca ĐÃ dùng trong NĂM DƯƠNG LỊCH của @Year, KHÔNG tính tháng đang xử lý lại
-		declare @DaTangCaTrongNam table (Employee_ID nvarchar(50), Gio float, primary key (Employee_ID))
-		insert into @DaTangCaTrongNam (Employee_ID, Gio)
-		select Employee_ID, sum(wt)
-		from HR_WTDaily
-		where Ngay >= DATEFROMPARTS(@Year,1,1) and Ngay < DATEFROMPARTS(@Year+1,1,1)
-		  and not (Ngay between @NgayDauThang and @NgayCuoiThang)
-		  and MaCong in (select MaCong from HR_LoaiCong where isnull(isWorkingTime,0) = 0 and MaCong not like 'CN%')
-		group by Employee_ID
-
-		-- Bảng kết quả quy đổi
-		declare @QuyDoi table (Employee_ID nvarchar(50), Ngay datetime, MaCong varchar(50), GioQuyDoi float, primary key (Employee_ID, Ngay, MaCong))
-
-		;with src as (
-			-- các dòng có thể quy đổi, kèm thứ tự ưu tiên theo ca
-			select  g.Employee_ID, g.Ngay, g.MaCong, g.wt
-				  , UuTien = case when isnull(c.LaCaDem,0) = 1
-								  then case g.MaCong when 'CN_wt5' then 1 else 2 end   -- ca đêm : wt5 trước
-								  else case g.MaCong when 'CN_wt3' then 1 else 2 end   -- ca ngày: wt3 trước
-							 end
-			from HR_WTDaily_GioDayDuLieu g
-			left join @CaLamViec c on c.Employee_ID = g.Employee_ID and c.Ngay = g.Ngay
-			where g.Ngay between @NgayDauThang and @NgayCuoiThang
-			  and g.MaCong in ('CN_wt3','CN_wt5')
-			  and isnull(g.wt,0) > 0
-		),
-		theongay as (
-			-- B = giờ tối đa được quy đổi trong NGÀY = min(tổng giờ CN thực tế, giờ đăng ký)
-			select  s.Employee_ID, s.Ngay
-				  , B = case when isnull(dk.Gio,0) < sum(s.wt) then isnull(dk.Gio,0) else sum(s.wt) end
-			from src s
-			left join @GioDangKy dk on dk.Employee_ID = s.Employee_ID and dk.Ngay = s.Ngay
-			group by s.Employee_ID, s.Ngay, dk.Gio
-		),
-		luyke as (
-			-- C = trần còn lại của nhân viên = min(trần năm còn lại, trần tháng)
-			-- Luỹ kế B theo ngày tăng dần; A(ngày) = min(C, luỹ kế tới ngày) - min(C, luỹ kế trước ngày)
-			-- (tương đương đúng vòng lặp trừ dần trần sau mỗi ngày)
-			select  n.Employee_ID, n.Ngay, n.B
-				  , C = case when (@TranNam - isnull(dd.Gio,0)) < @TranThang
-							 then (@TranNam - isnull(dd.Gio,0)) else @TranThang end
-				  , cumTruoc = isnull(sum(n.B) over (partition by n.Employee_ID order by n.Ngay
-													 rows between unbounded preceding and 1 preceding), 0)
-				  , cumDen   =        sum(n.B) over (partition by n.Employee_ID order by n.Ngay
-													 rows between unbounded preceding and current row)
-			from theongay n
-			left join @DaTangCaTrongNam dd on dd.Employee_ID = n.Employee_ID
-		),
-		phanboNgay as (
-			select  Employee_ID, Ngay
-				  , A = case when C <= 0 then 0
-							 else (case when C < cumDen   then C else cumDen   end)
-								- (case when C < cumTruoc then C else cumTruoc end) end
-			from luyke
-		),
-		phanboDong as (
-			-- chia A của ngày cho từng dòng theo đúng thứ tự ưu tiên ca
-			select  s.Employee_ID, s.Ngay, s.MaCong, s.wt, p.A
-				  , truocDong = isnull(sum(s.wt) over (partition by s.Employee_ID, s.Ngay order by s.UuTien
-													   rows between unbounded preceding and 1 preceding), 0)
-			from src s
-			join phanboNgay p on p.Employee_ID = s.Employee_ID and p.Ngay = s.Ngay
-			where p.A > 0
-		)
-		insert into @QuyDoi (Employee_ID, Ngay, MaCong, GioQuyDoi)
-		select Employee_ID, Ngay, MaCong
-			 , case when (A - truocDong) <= 0 then 0
-					when wt < (A - truocDong) then wt
-					else (A - truocDong) end
-		from phanboDong
-		where case when (A - truocDong) <= 0 then 0
-				   when wt < (A - truocDong) then wt
-				   else (A - truocDong) end > 0
-
-		-- (1) Thêm dòng công KHÔNG có CN_ (phần đã đăng ký)
-		insert into HR_WTdaily_GioDayDuLieu (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
-		select Employee_ID, Ngay, REPLACE(MaCong,'CN_','') , 'AutoK', GioQuyDoi, null, GETDATE(), ''
-		from @QuyDoi
-
-		-- (2) Trừ đúng số giờ đó khỏi dòng CN_ tương ứng (thay cho cách chèn dòng CN_ âm bù trừ
-		--     của sp_TinhCong — cùng kết quả tổng, nhưng bảng công sạch hơn, không có dòng âm)
-		update g
-		set g.wt = g.wt - q.GioQuyDoi
-		from HR_WTdaily_GioDayDuLieu g
-		join @QuyDoi q
-		  on q.Employee_ID = g.Employee_ID and q.Ngay = g.Ngay and q.MaCong = g.MaCong
-		where g.InsertSource = 'Auto1'
-
-		-- (3) Bỏ các dòng CN_ đã bị trừ hết
-		delete g
-		from HR_WTdaily_GioDayDuLieu g
-		where g.Ngay between @NgayDauThang and @NgayCuoiThang
-		  and g.MaCong in ('CN_wt3','CN_wt5') and isnull(g.wt,0) = 0
-		--========================= HẾT XỬ LÝ GIỜ TĂNG CA ĐĂNG KÝ =========================
 
 		--Tạo bảng pivot dữ liêu công
 		insert into @tblNumericDataPV
@@ -528,5 +403,4 @@ BEGIN
 			ERROR_MESSAGE() as ThongBao;
 	END CATCH
 END
-
 GO

@@ -1,6 +1,49 @@
-﻿
+﻿/*
+    Mục đích: sửa cách dbo.sp_TinhCong tính "giờ ĐÃ tăng ca trong năm" (@TabTongGioDaTangCaTrongNam),
+    là con số dùng để trừ TRẦN NĂM. Bắt buộc phải sửa TRƯỚC khi hạ trần năm xuống 300 giờ.
+    Áp dụng cho: HR_SnK_Dev (113.161.180.44). Ngày: 2026-08-28.
+
+    HAI LỖI ĐƯỢC SỬA (đều là lỗi có sẵn, không phải do đợt tối ưu gây ra):
+
+    1) Cộng nhầm loại giờ. Câu insert vào @TabTongGioDaTangCaTrongNam lọc isWorkingTime = 1, tức
+       wt1/wt9 = GIỜ HÀNH CHÍNH, chứ không phải giờ tăng ca. Trong khi chỗ TRỪ trần (dòng ~420 và
+       ~536) lại dùng isWorkingTime = 0 and MaCong not like 'CN%' = đúng các mã tăng ca wt3..wt8.
+       Hai đầu không khớp nhau. Sửa thành isWorkingTime = 0.
+
+    2) Cửa sổ "năm" sai. @NgayDauNam = DATEFROMPARTS(year(@fromdate), MONTH(@fromdate), 1) là ngày
+       đầu THÁNG, cộng với @NgayCuoiNam = @NgayDauNam + 1 năm - 1 thành cửa sổ 12 tháng VỀ PHÍA
+       TRƯỚC kể từ đầu tháng đang tính -> trần năm không bao giờ cộng dồn đúng theo năm dương lịch.
+       Sửa thành ngày đầu năm.
+    (@NgayDauNam/@NgayCuoiNam chỉ được dùng đúng cho mục đích này trong toàn bộ proc — đã kiểm tra.)
+
+    VÌ SAO TRƯỚC GIỜ KHÔNG AI THẤY: trần năm đang cấu hình 10.000 giờ nên dù cộng nhầm loại giờ thì
+    vẫn không bao giờ chạm trần.
+
+    ĐO TÁC ĐỘNG THẬT (2026-08-28, dữ liệu HR_SnK_Dev):
+      - Giờ TĂNG CA thật của năm 2026 (cách tính đúng): trung bình 60,1 giờ/nhân viên, cao nhất 107
+        giờ. KHÔNG nhân viên nào vượt 300 giờ, cũng không ai trên 260 giờ -> trần 300 giờ an toàn,
+        không cắt của ai.
+      - Cách cũ (giờ hành chính, cửa sổ 06/2026->05/2027): trung bình 289,7 giờ, cao nhất 539 giờ,
+        892/1.265 nhân viên ĐÃ vượt 300 giờ.
+      - Cách cũ khi tính lại tháng 01/2026 (cửa sổ 01->12/2026): trung bình 787,5 giờ, 1.188/1.451
+        nhân viên vượt 300 giờ.
+      => Nếu chỉ hạ trần năm xuống 300 mà không sửa 2 lỗi trên thì 892 nhân viên bị cắt sạch giờ tăng
+      ca ngay lập tức, và tính lại tháng đầu năm thì gần như toàn bộ nhân viên bị cắt.
+
+    Người yêu cầu đã xác nhận nguyên tắc nghiệp vụ ngày 2026-08-28: "300h/năm, 40h/tháng. Không tính
+    wt1 và wt9 trong tổng này."
+
+    ⚠️ DEPLOY KÈM: 2026-08-28_HR_SnK_Dev_Config_TranTangCa_300Nam_40Thang.sql
+    Idempotent: CREATE OR ALTER.
+    Rollback: 2026-08-28_HR_SnK_Dev_Rollback_sp_TinhCong_GioDaTangCaTrongNam.sql
+*/
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+
 --exec [dbo].[sp_TinhCong] '2023-06-06','2023-06-06',N'admin',N'',N'',N'',N'',N'','','C10474'
-CREATE   PROCEDURE [dbo].[sp_TinhCong]
+CREATE OR ALTER PROCEDURE [dbo].[sp_TinhCong]
 	-- Add the parameters for the stored procedure here
 	--select * from HR_TimeIn_TimeOut where Employee_ID='2666' and OT_date='2020-2-22'
 	--select * from HR_WTDaily where Employee_ID='2666' and ngay between '2020-2-1' and '2020-2-29'
@@ -1026,5 +1069,4 @@ BEGIN
 	end
 	select @ThongBao as ThongBao
 END
-
 GO

@@ -147,14 +147,198 @@ cột `INCLUDE` viết liền không khoảng trắng sau dấu phẩy.
 **Kiểm tra encoding sau export:** `grep` toàn bộ 710 file có tiếng Việt → **không tìm thấy mojibake**
 (`Ã…`/`á»`/`â€`), chuỗi tiếng Việt đọc đúng (vd `--1: Lương chính thức, 2: Lương nghỉ việc 05`).
 
+### 2026-08-28 (tiếp) — `sp_TinhCong`: bỏ cursor `curXinRaNgoai` (xử lý giờ xin ra ngoài), nhanh hơn 55×
+
+Deploy: [`2026-08-28_HR_SnK_Dev_Optimize_sp_TinhCong_XinRaNgoai_setbased.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Optimize_sp_TinhCong_XinRaNgoai_setbased.sql)
+· Rollback: [`2026-08-28_HR_SnK_Dev_Rollback_sp_TinhCong_cursor_XinRaNgoai.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Rollback_sp_TinhCong_cursor_XinRaNgoai.sql)
+
+**Khối được sửa:** dòng 660-752 của bản cũ — cursor `curXinRaNgoai` duyệt từng dòng `HR_GoOut`, tính
+số giờ xin ra ngoài phải trừ vào công.
+
+**Nghiệp vụ của khối này (để lần sau khỏi đọc lại từ đầu):** lấy giờ cuối trừ giờ đầu; phần rơi vào
+**giờ hành chính** (`MaCong` = `wt1` 100% hoặc `wt9` 130% — 2 mã có `isWorkingTime = 1`) giữ nguyên mức
+làm tròn của `udf_TinhGioCongChiTiet` → `udf_TinhGioCong` dòng 25 `round(@GioCong/60.0, @Round)`, với
+`Round_ = 1` nghĩa là **làm tròn 0,1 giờ = 6 phút**. Phần **ngoài giờ hành chính** (`wt3`-`wt8`) áp
+`CEILING(wt * 2.0) / 2.0` = **làm tròn LÊN bội số 0,5 giờ (block 30 phút)** — 15p→0,5h; 35p→1h; 50p→1h.
+Dấu `-` đằng trước biến kết quả thành số giờ **trừ đi** khỏi công.
+
+#### Nút cổ chai: gọi lại `udf_TinhCong` 2 lần cho MỖI dòng
+
+Dòng 683-684 gọi `udf_TinhCong_QuetVao` / `udf_TinhCong_QuetRa` với `(@WorkingDay, @WorkingDay, ...,
+@Employee_ID)` — tức 1 nhân viên / 1 ngày. Cả 2 hàm đều bọc `udf_TinhCong` (hàm nặng nhất hệ thống).
+
+| Đo trên dữ liệu thật | Thời gian |
+|---|---|
+| `udf_TinhCong_QuetVao` (1 nv / 1 ngày) | 3.609 ms |
+| `udf_TinhCong_QuetRa` (1 nv / 1 ngày) | 1.828 ms |
+| **1 vòng lặp** | **5.437 ms** |
+| × 255 dòng `HR_GoOut` (tháng 6/2026) | **≈ 23 phút** |
+| Gọi **1 lần** cho cả kỳ + tất cả nhân viên (29.573 dòng kết quả) | **21,6 giây** |
+
+**Cách sửa:** nhấc 2 lời gọi ra ngoài, đổ vào 2 biến bảng khoá `(Employee_ID, TimeDate)`, rồi dịch thân
+vòng lặp thành chuỗi CTE `src → b1 → … → b5` và 1 câu `INSERT`. Cursor biến mất hoàn toàn.
+
+#### Cơ sở để nhấc lời gọi ra ngoài (đã đo, không suy đoán)
+
+- Trên 48 cặp (nhân viên, ngày) thật: **mỗi cặp cả 2 hàm đều trả về đúng 1 dòng** → phép gán vô hướng
+  `select @FirstTimeIn = AccessTime from ...` (không `ORDER BY`) **không hề mơ hồ**.
+- Giá trị khi gọi 1 lần cho cả kỳ + tất cả nhân viên **khớp 48/48** với khi gọi riêng từng cặp → mở rộng
+  dải ngày và mở rộng bộ lọc nhân viên đều **không** làm đổi kết quả từng cặp.
+- `udf_TinhCong` trả `tc.AccessDate AS TimeDate` (dòng 75) → `TimeDate` luôn bằng `AccessDate`, nên khoá
+  join `(Employee_ID, TimeDate)` là đúng và duy nhất.
+
+#### Verify tương đương (harness chạy CẢ HAI bản trên cùng dữ liệu thật, ghi ra bảng tạm)
+
+Kỳ **2026-06-01 → 2026-06-30**, 255 dòng `HR_GoOut`:
+
+| | Bản cursor | Bản set-based |
+|---|---|---|
+| Thời gian | **995.530 ms (~16 ph 36 s)** | **17.975 ms (~18 s)** — **nhanh hơn 55,4×** |
+| Số dòng ghi ra | 185 | 185 |
+| `EXCEPT` 2 chiều | 0 | 0 |
+
+Bản set-based sinh **185 dòng / 185 dòng DISTINCT** (không có dòng lặp) → cộng với `EXCEPT` 2 chiều = 0
+và tổng số dòng bằng nhau ⇒ **2 multiset bằng nhau tuyệt đối**, không chỉ bằng nhau về tập hợp.
+`SUM(wt)` lệch ở chữ số thứ 15 (`-148.5` vs `-148.50000000000006`) — chỉ do thứ tự cộng dồn `float`
+khác nhau, từng dòng đã khớp chính xác.
+
+#### Các điểm phải giữ nguyên để không đổi kết quả
+
+- **`CASE WHEN` thay `IF/ELSE`:** cả hai đều cho điều kiện `UNKNOWN` (do NULL) rơi vào nhánh `ELSE` →
+  giữ nguyên hành vi khi `@LeaveType_ID` / `@ShiftName` / `RealTimeIn`… là NULL. Đây là mấu chốt để
+  bản set-based tương đương chứ không chỉ "gần giống".
+- **`delete @HR_WTDAILY where wt = 0`** chỉ xoá `wt = 0`, **không** xoá `wt` NULL → điều kiện tương ứng
+  phải là `(w.wt is null or w.wt <> 0)`, không phải `w.wt <> 0`.
+- Sau dòng 752 **không còn chỗ nào đọc `@HR_WTDAILY`** (đã kiểm tra toàn bộ 40+ chỗ dùng biến bảng này)
+  → việc bản mới không đổ dữ liệu vào nó không ảnh hưởng phần sau của proc.
+
+#### 🐞 3 bug có sẵn phát hiện khi đọc khối này
+
+**① Dòng 739: `FETCH NEXT FROM cur` gọi nhầm cursor đã bị huỷ — ĐÃ SỬA cùng lần này.**
+`cur` đã `DEALLOCATE` từ dòng 646; đáng lẽ phải là `curXinRaNgoai`. Đã tái hiện chính xác trong sandbox:
+lỗi `Msg 16916`, và **`@@FETCH_STATUS` chuyển thành `-1`** → vòng `WHILE` **thoát sớm** → **mọi dòng xin
+ra ngoài còn lại của lần chạy đó bị bỏ qua âm thầm**. Proc **không** dừng hẳn nên rất khó phát hiện.
+Nhánh này chạm tới khi `LeaveType_ID = 'Business'` và cả `TimeIn` lẫn `TimeOut` nằm trong
+`[RealTimeIn, RealTimeOut]` — **hoặc** khi `RealTimeIn`/`RealTimeOut` là NULL (điều kiện ra `UNKNOWN`).
+DB hiện có **6 dòng `Business`** (tháng 8, 9, 10/2025) và **cả 6 đều không có** bản ghi
+`HR_TimeIn_TimeOut` → đều rơi đúng vào nhánh lỗi. Bản mới làm đúng ý định của lệnh `Continue`: bỏ qua
+dòng đó rồi **xử lý tiếp** các dòng còn lại. **Đây là khác biệt hành vi duy nhất so với bản cũ**, người
+yêu cầu đã xác nhận chấp nhận ngày 2026-08-28.
+
+**② `@MinOverTime` không bao giờ được gán → luôn NULL.** Khai báo ở dòng 49, không có lệnh `set` nào
+trong toàn bộ proc, nhưng vẫn được truyền vào `udf_DieuChinhGioQuetRa` (dòng 714 bản cũ). Hệ quả: hàm đó
+rút gọn thành "nếu giờ ∈ (16,17,19) và phút = 29 thì +1 phút, còn lại giữ nguyên".
+
+**③ `@SoNgaySauKhiMangBauDuocHuongThaiSan` cũng không bao giờ được gán → luôn NULL.** Được truyền vào
+`udf_DangKyCa` (dòng 658) và cả 2 lời gọi `udf_TinhCong_QuetVao/QuetRa` (dòng 683, 684). Biến thật sự
+được gán ở dòng 71 là biến **tên khác**: `@SoNgaySauKhiMangThaiDuocHuongCheDoThaiSan` (dùng ở dòng 111,
+169, 962). Gần như chắc chắn là gõ nhầm giữa 2 tên gần giống nhau.
+
+> ⚠️ **② và ③ CHƯA sửa** — người yêu cầu quyết định giữ nguyên và chỉ ghi tài liệu (2026-08-28), vì sửa
+> sẽ **làm đổi kết quả tính công/lương**, cần nghiệp vụ xác nhận trước. Bản set-based giữ y nguyên 2
+> hành vi NULL này để đảm bảo kết quả không đổi. Nếu sau này quyết định sửa, phải đo lại mức lệch trên
+> dữ liệu thật trước.
+
+---
+
+### 2026-08-28 (tiếp) — chuyển quy đổi giờ tăng ca đăng ký từ `sp_TinhCong` sang `sp_XuLyGioDayDuLieu`
+
+> Đây là thay đổi **nghiệp vụ**, không phải thuần hiệu năng — có làm đổi số liệu công. Ghi ở đây vì
+> nguyên nhân gốc là hiệu năng và nó gỡ nốt 1 vòng `WHILE` lồng trong cursor của `sp_TinhCong`.
+
+**Bối cảnh:** khách hàng xuất bảng công ra Excel, sửa tay rồi đẩy ngược lên (`HR_GioDayDuLieu`).
+`sp_XuLyGioDayDuLieu` đã xử lý đầy đủ phần giờ (`HR_WTDaily_GioDayDuLieu`), giờ quẹt
+(`HR_TimeKeeping_Data`) và phép (`HR_DangKyPhepTheoGio`). Nhưng phần **quy đổi giờ tăng ca đăng ký**
+vẫn nằm trong `sp_TinhCong`, chạy **bên trong cursor** → làm `sp_TinhCong` chậm từ ~3 phút lên ~10 phút.
+
+**Nghiệp vụ (ghi lại để khỏi phải đọc lại code):** công tăng ca tách làm 2 dạng — `wt3`/`wt5` (trong
+đăng ký) và `CN_wt3`/`CN_wt5` (**CN = công ngoài**, ngoài đăng ký). Không áp dụng cho `wt1`/`wt9` (giờ
+hành chính). Ngày nào Factory có đăng ký tăng ca (`udf_TongTangCaNgoaiLe`, theo `Factory_ID` + `Ngay`)
+thì chuyển bớt từ `CN_` sang dạng không `CN_`, lấy **min(giờ thực tế, giờ đăng ký)**. Không đăng ký thì
+giữ nguyên toàn bộ dạng `CN_`.
+
+**Điểm MỚI so với `sp_TinhCong`:** thứ tự ưu tiên theo ca. Bản cũ chọn dòng bằng
+`ROW_NUMBER() over (partition by Employee_ID order by Employee_ID)` — **không có tiêu chí sắp xếp thật**
+nên `wt3` hay `wt5` được quy đổi trước là tuỳ execution plan. Nay:
+- **ca ngày** (`ShiftName` không chứa `Shift3`) → quy đổi `wt3` trước, hết mới tràn sang `wt5`
+- **ca đêm** (`ShiftName` chứa `Shift3`) → quy đổi `wt5` trước, hết mới tràn sang `wt3`
+
+Ca lấy từ `udf_DangKyCa`. Vẫn chặn bởi trần tháng + trần năm, đọc từ `HR_SetUpFollowDate`.
+
+**Thuật toán:** viết set-based thay vì `WHILE`. Mấu chốt là phép rút gọn — với `A_d = min(B_d, C − S_{d−1})`
+và `S_d = S_{d−1} + A_d` thì `S_d = min(C, luỹ kế B tới ngày d)`, nên phân bổ theo trần cộng dồn tính
+được bằng **prefix sum** thay vì vòng lặp. Trong ngày thì chia theo `SUM() OVER (ORDER BY ưu_tiên)`.
+
+**Verify:**
+- Dữ liệu thật T6/2026 (18.323 dòng nguồn / 1.012 nhân viên): set-based vs bản `WHILE` tuần tự viết
+  đúng mô tả nghiệp vụ → **4.705 dòng / 18.217 giờ, `EXCEPT` 2 chiều = 0**. Nhanh hơn 4,6× (234 ms vs
+  1.079 ms).
+- ⚠️ Dữ liệu thật **không phủ được** 3 đường quan trọng: không có ngày ca đêm nào có cả 2 mã; đăng ký
+  luôn 4h ≤ `CN_wt3` nên **không bao giờ tràn** sang mã thứ 2; không ai chạm trần. → đã dựng **bộ test
+  tổng hợp 8 tình huống** so với kỳ vọng tính tay: khớp **11/11 dòng**, không dòng thừa. Bài học: khi
+  dữ liệu thật không phủ hết nhánh, phải tự dựng ca test, đừng coi "chạy thật không lệch" là đủ.
+- **39 cặp (nhân viên, ngày)** trong T6/2026 có cả 2 mã **và** có đăng ký → đây là chỗ kết quả có thể
+  khác bản cũ (bản cũ chia tuỳ plan).
+
+**Cách ghi kết quả — khác `sp_TinhCong`:** không chèn dòng `CN_` âm để bù trừ, mà **trừ thẳng** vào dòng
+`CN_` gốc rồi thêm dòng `wt3`/`wt5` (`InsertSource = 'AutoK'`). Tổng giờ giống hệt, bảng công sạch hơn.
+`sp_TinhCong` vẫn copy `HR_WTDaily_GioDayDuLieu` → `HR_WTDaily` như cũ nên không phải sửa phần đó.
+
+**4 script deploy (phải đi theo cặp):**
+
+| Script | Việc |
+|---|---|
+| [`..._sp_XuLyGioDayDuLieu_QuyDoiTangCa.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_sp_XuLyGioDayDuLieu_QuyDoiTangCa.sql) | thêm khối quy đổi |
+| [`..._Disable_sp_TinhCong_QuyDoiTangCa_GioDayDuLieu.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Disable_sp_TinhCong_QuyDoiTangCa_GioDayDuLieu.sql) | tắt khối cũ (thêm đúng `1 = 0 and`) — thiếu script này sẽ **quy đổi 2 lần** |
+| [`..._Fix_sp_TinhCong_GioDaTangCaTrongNam.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Fix_sp_TinhCong_GioDaTangCaTrongNam.sql) | sửa 2 lỗi tính "giờ đã tăng ca trong năm" (bên dưới) |
+| [`..._Config_TranTangCa_300Nam_40Thang.sql`](../Database/DeployScripts/2026-08-28_HR_SnK_Dev_Config_TranTangCa_300Nam_40Thang.sql) | hạ trần năm 10.000 → **300**, tháng giữ **40** |
+
+#### 🐞 2 lỗi có sẵn trong `sp_TinhCong` phát hiện khi làm việc này — ĐÃ SỬA
+
+Cả hai đều nằm ở bảng `@TabTongGioDaTangCaTrongNam`, tức con số dùng để **trừ trần năm**:
+
+**① Cộng nhầm loại giờ.** Câu insert lọc `isWorkingTime = 1` → đó là `wt1`/`wt9` = **giờ hành chính**,
+không phải giờ tăng ca. Trong khi chỗ **trừ** trần (dòng ~420/536) lại dùng `isWorkingTime = 0` (đúng
+các mã `wt3`..`wt8`). Hai đầu không khớp nhau.
+
+**② Cửa sổ "năm" sai.** `@NgayDauNam = DATEFROMPARTS(year(@fromdate), MONTH(@fromdate), 1)` là ngày đầu
+**THÁNG**, cộng `@NgayCuoiNam = +1 năm − 1` thành cửa sổ 12 tháng **về phía trước** kể từ đầu tháng đang
+tính — không phải năm dương lịch.
+
+**Vì sao trước giờ không ai thấy:** trần năm đang là 10.000 giờ nên dù cộng nhầm vẫn không chạm trần.
+Nhưng khi hạ trần xuống 300 giờ thì lỗi lộ ra ngay. Đo trên dữ liệu thật:
+
+| Cách tính | TB/nhân viên | Cao nhất | Số NV vượt 300h |
+|---|---|---|---|
+| Giờ **tăng ca** thật, năm dương lịch 2026 (cách đúng) | 60,1 h | 107 h | **0 / 1.230** |
+| Cách cũ (giờ **hành chính**, cửa sổ 06/2026→05/2027) | 289,7 h | 539 h | **892 / 1.265** |
+| Cách cũ khi tính lại tháng 01/2026 (cửa sổ 01→12/2026) | 787,5 h | 1.242 h | **1.188 / 1.451** |
+
+→ Nếu chỉ hạ trần mà không sửa, **892 nhân viên bị cắt sạch giờ tăng ca ngay**, tính lại tháng đầu năm
+thì gần như toàn bộ. Sau khi sửa: không ai chạm 300 giờ, hạ trần an toàn.
+Người yêu cầu xác nhận nguyên tắc: *"300h/năm, 40h/tháng. Không tính wt1 và wt9 trong tổng này."*
+
+#### 🐞 Lỗi khác phát hiện nhưng CHƯA sửa
+
+`sp_XuLyGioDayDuLieu` dòng ~119-135 đổ **toàn bộ** `@tblNumericData` vào `HR_WTDaily_GioDayDuLieu`,
+nhưng `CASE` ánh xạ `MaCong` không có nhánh cho `dGV`/`dGR` nên rơi vào `else LoaiGio` → đang ghi
+**463 dòng công có `MaCong = 'dGV'`/`'dGR'` với `wt` là số serial giờ của Excel** (tổng hơn 3,3 triệu
+giờ mỗi loại). Cách sửa: thêm `where LoaiGio not in ('dGV','dGR')` vào câu insert đó. Chưa làm vì tách
+khỏi phạm vi yêu cầu, cần xác nhận không có báo cáo nào đang dựa vào 2 mã rác này.
+
+---
+
 #### Việc còn lại (chưa làm)
 
 1. **Deploy `Split` inline** — script + verify đã xong, chỉ vướng classifier (mục Chi tiết 3).
 2. **`sp_BangPhepMultiple`** — proc tốn nhiều thời gian nhất theo `dm_exec_procedure_stats`
    (7 lần gọi, **trung bình 157,5 giây**, 223 triệu logical reads/lần). Chưa điều tra.
-3. **`sp_TinhCong`** — 434 giây cho 1 lần gọi, 134 triệu logical reads. Bản `HR_SnK_Dev` đã khác bản
-   `_260811` nên **phải điều tra lại từ đầu**, không dùng lại kết luận cũ.
-4. `usp_InsertUpdateHR_SalaryComponentFollowMonth` (1.907 lần gọi × 502 ms) và
+3. **`sp_TinhCong` — phần còn lại.** Khối xin-ra-ngoài đã xong, khối quy đổi tăng ca đã chuyển sang `sp_XuLyGioDayDuLieu`. Bottleneck còn lại là cursor
+   `cur` (dòng 162-646) — cursor chính, lớn hơn nhiều, chưa đụng tới. Cùng loại đòn bẩy: kiểm tra xem
+   trong thân nó có lời gọi hàm nặng nào chỉ phụ thuộc (nhân viên, ngày) mà đang bị gọi lặp không.
+4. **2 bug NULL trong `sp_TinhCong`** (`@MinOverTime`, `@SoNgaySauKhiMangBauDuocHuongThaiSan` — không bao giờ được gán) — cần nghiệp vụ xác nhận trước khi sửa.
+5. **Bug `dGV`/`dGR`** ghi rác vào `HR_WTDaily_GioDayDuLieu` (xem mục 2026-08-28 về quy đổi tăng ca).
+6. `usp_InsertUpdateHR_SalaryComponentFollowMonth` (1.907 lần gọi × 502 ms) và
    `sp_Approval_EscalatePending_Web` (3.332 lần × 366 ms) — số lần gọi lớn nên tổng chi phí cao.
 
 ---

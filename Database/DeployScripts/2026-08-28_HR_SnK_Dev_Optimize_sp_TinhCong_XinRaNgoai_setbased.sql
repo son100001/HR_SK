@@ -1,6 +1,65 @@
-﻿
+﻿/*
+    Mục đích: bỏ cursor curXinRaNgoai (khối "xử lý giờ xin ra ngoài", dòng 660-752 bản cũ) trong
+    dbo.sp_TinhCong, thay bằng 1 câu lệnh set-based. GIỮ NGUYÊN 100% logic và kết quả.
+    Áp dụng cho: HR_SnK_Dev (113.161.180.44). Ngày: 2026-08-28.
+    Tham khảo: markdowns/SQL_PERFORMANCE_PLAYBOOK.md, markdowns/SQL_PERFORMANCE_HISTORY.md.
+
+    NÚT CỔ CHAI: mỗi vòng lặp gọi udf_TinhCong_QuetVao + udf_TinhCong_QuetRa cho ĐÚNG 1 nhân viên /
+    1 ngày. Cả 2 hàm này bọc udf_TinhCong (hàm nặng nhất hệ thống). Đo trên dữ liệu thật:
+        udf_TinhCong_QuetVao (1 nv/1 ngày) = 3.609 ms
+        udf_TinhCong_QuetRa  (1 nv/1 ngày) = 1.828 ms   -> 5.437 ms MỖI VÒNG LẶP
+    Tháng 6/2026 có 255 dòng HR_GoOut -> ~23 phút chỉ riêng 2 lời gọi này.
+    Gọi 1 lần cho CẢ KỲ + TẤT CẢ nhân viên (29.573 dòng kết quả) chỉ mất 21,6 giây.
+
+    CƠ SỞ ĐỂ NHẤC 2 LỜI GỌI RA NGOÀI VÒNG LẶP (đã kiểm chứng trên dữ liệu thật, không suy đoán):
+    - Trên 48 cặp (nhân viên, ngày) thật: mỗi cặp cả 2 hàm đều trả về ĐÚNG 1 dòng -> phép gán vô hướng
+      select @FirstTimeIn = AccessTime from ... không hề mơ hồ.
+    - Giá trị FirstTimeIn/LastTimeOut khi gọi 1 lần cho cả kỳ + tất cả nhân viên KHỚP 48/48 với khi gọi
+      riêng từng (nhân viên, ngày).
+    - udf_TinhCong trả về 	c.AccessDate AS TimeDate nên TimeDate luôn = AccessDate -> khoá join
+      (Employee_ID, TimeDate) là đúng và duy nhất.
+
+    VERIFY TƯƠNG ĐƯƠNG KẾT QUẢ (harness chạy cả 2 bản trên cùng dữ liệu thật, ghi ra bảng tạm):
+        Kỳ 2026-06-01 -> 2026-06-30 (255 dòng HR_GoOut):
+          bản cursor : 995.530 ms (~16 phút 36 giây), sinh 185 dòng
+          bản mới    :  17.975 ms (~18 giây),         sinh 185 dòng   -> NHANH HƠN 55,4 LẦN
+          EXCEPT 2 chiều = 0 dòng lệch.
+          185 dòng / 185 dòng DISTINCT (không có dòng lặp) => 2 multiset bằng nhau tuyệt đối.
+
+    CÁC ĐIỂM PHẢI GIỮ NGUYÊN ĐỂ KHÔNG ĐỔI KẾT QUẢ (đều là hành vi có sẵn của bản cũ):
+    - @MinOverTime: KHÔNG được gán ở bất kỳ đâu trong proc -> luôn NULL khi truyền vào
+      udf_DieuChinhGioQuetRa. Bản mới truyền y hệt.
+    - @SoNgaySauKhiMangBauDuocHuongThaiSan: cũng KHÔNG được gán ở đâu -> luôn NULL (biến được gán ở
+      dòng 71 là biến tên khác: @SoNgaySauKhiMangThaiDuocHuongCheDoThaiSan). Bản mới truyền y hệt.
+    - @OldTimeDate: mang theo từ cursor cur phía trên (= TimeDate của dòng cuối cùng nó xử lý), bất
+      biến trong vòng lặp này -> dùng thẳng là tương đương.
+    - Dùng CASE WHEN thay IF/ELSE: CASE cũng cho điều kiện UNKNOWN (do NULL) rơi vào ELSE, giống hệt IF.
+    - "delete @HR_WTDAILY where wt = 0" chỉ xoá wt = 0, KHÔNG xoá wt NULL -> điều kiện tương ứng ở bản
+      mới là "(w.wt is null or w.wt <> 0)".
+    - Sau dòng 752 không còn chỗ nào đọc @HR_WTDAILY -> việc bản mới không đổ dữ liệu vào biến bảng này
+      không ảnh hưởng phần sau của proc (đã kiểm tra toàn bộ 40+ chỗ dùng @HR_WTDAILY).
+
+    ⚠️ KHÁC BIỆT HÀNH VI DUY NHẤT (là SỬA BUG, cần người yêu cầu xác nhận chấp nhận):
+    Dòng 739 bản cũ chạy FETCH NEXT FROM cur trong khi cursor cur ĐÃ BỊ DEALLOCATE từ dòng 646
+    (gõ nhầm tên, đáng lẽ phải là curXinRaNgoai). Đã tái hiện chính xác: lỗi Msg 16916, và
+    @@FETCH_STATUS chuyển thành -1 -> vòng WHILE THOÁT SỚM -> mọi dòng xin ra ngoài còn lại của lần
+    chạy đó bị BỎ QUA ÂM THẦM (proc không dừng nên rất khó phát hiện).
+    Nhánh này chạm tới khi LeaveType_ID = 'Business' và cả TimeIn lẫn TimeOut nằm trong
+    [RealTimeIn, RealTimeOut] - HOẶC RealTimeIn/RealTimeOut là NULL (điều kiện ra UNKNOWN).
+    Trong DB hiện có 6 dòng 'Business' (tháng 8,9,10/2025), CẢ 6 đều không có bản ghi
+    HR_TimeIn_TimeOut -> đều rơi vào đúng nhánh lỗi này.
+    Bản mới làm đúng Ý ĐỊNH của lệnh Continue: bỏ qua dòng đó rồi XỬ LÝ TIẾP các dòng còn lại.
+    Hệ quả: nếu tính lại công cho tháng 8/9/10-2025, bản mới sẽ xử lý đủ các dòng mà bản cũ bỏ sót.
+
+    Idempotent: dùng CREATE OR ALTER, chạy lại nhiều lần an toàn.
+    Rollback: 2026-08-28_HR_SnK_Dev_Rollback_sp_TinhCong_cursor_XinRaNgoai.sql
+*/
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
 --exec [dbo].[sp_TinhCong] '2023-06-06','2023-06-06',N'admin',N'',N'',N'',N'',N'','','C10474'
-CREATE   PROCEDURE [dbo].[sp_TinhCong]
+CREATE OR ALTER PROCEDURE [dbo].[sp_TinhCong]
 	-- Add the parameters for the stored procedure here
 	--select * from HR_TimeIn_TimeOut where Employee_ID='2666' and OT_date='2020-2-22'
 	--select * from HR_WTDaily where Employee_ID='2666' and ngay between '2020-2-1' and '2020-2-29'
@@ -49,10 +108,7 @@ BEGIN
 			,@GioDayDuLieu nvarchar(50), @OldGioDayDuLieu nvarchar(50)
 			, @SoNgaySauKhiMangBauDuocHuongThaiSan int, @FirstTimeIn datetime, @LastTimeOut datetime, @WorkingDay datetime, @TimeOut datetime, @TimeIn datetime, @RealTimeIn datetime, @RealTimeOut datetime, @MinOverTime float
 			set @SoPhutTieuChuan=14
-		--2026-08-28: sửa từ ngày đầu THÁNG thành ngày đầu NĂM. Bản cũ lấy DATEPART(MONTH,@fromdate)
-		--nên cửa sổ "năm" thật ra là 12 tháng VỀ PHÍA TRƯỚC kể từ đầu tháng đang tính, không phải
-		--năm dương lịch -> trần năm không bao giờ cộng dồn đúng.
-		set @NgayDauNam=DATEFROMPARTS(datepart(year,@fromdate),1,1)
+		set @NgayDauNam=DATEFROMPARTS(datepart(year,@fromdate),datepart(MONTH,@fromdate),1)
 		set @NgayCuoiNam=dateadd(year,1,@NgayDauNam)-1
 		--set @GioTangCaToiDaTheoNam_Goc=1000
 		select @GioTangCaToiDaTheoNam_Goc=Value from HR_SetUpFollowDate where Group_='TangCaToiDaTheoNam' and Fromdate<=@todate and (Todate is null or Todate>=@fromdate) order by Fromdate asc
@@ -114,29 +170,29 @@ BEGIN
 		from
 		udf_ReturnTableSetupHourTimeKeeping_List (@Emp, @fromdate, @todate, @SoNgaySauKhiMangThaiDuocHuongCheDoThaiSan)
 
-		DECLARE @HR_WTDAILY_GioDayDuLieu TABLE
-		(
-			Employee_ID nvarchar(50)
-			,Ngay datetime
-			,MaCong varchar(50)
-			,wt float
-			,InsertSource varchar(50)
-			,remark nvarchar(50)
-			,InsertDate datetime
-			,UserName nvarchar(50)
-		)
+		--DECLARE @HR_WTDAILY_GioDayDuLieu TABLE
+		--(
+		--	Employee_ID nvarchar(50)
+		--	,Ngay datetime
+		--	,MaCong varchar(50)
+		--	,wt float
+		--	,InsertSource varchar(50)
+		--	,remark nvarchar(50)
+		--	,InsertDate datetime
+		--	,UserName nvarchar(50)
+		--)
 
-		insert into @HR_WTDAILY_GioDayDuLieu (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
-		select Employee_ID, Ngay, MaCong, 'GDDL', wt, Remark, InsertDate, UserName
-		from
-		HR_WTDaily_GioDayDuLieu
-		where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
+		--insert into @HR_WTDAILY_GioDayDuLieu (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
+		--select Employee_ID, Ngay, MaCong, 'GDDL', wt, Remark, InsertDate, UserName
+		--from
+		--HR_WTDaily_GioDayDuLieu
+		--where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
 
-		insert into HR_WTDaily (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
-		select Employee_ID, Ngay, MaCong, 'GDDL', wt, Remark, InsertDate, UserName
-		from
-		@HR_WTDAILY_GioDayDuLieu
-		where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
+		--insert into HR_WTDaily (Employee_ID, Ngay, MaCong, InsertSource, wt, Remark, InsertDate, UserName)
+		--select Employee_ID, Ngay, MaCong, 'GDDL', wt, Remark, InsertDate, UserName
+		--from
+		--@HR_WTDAILY_GioDayDuLieu
+		--where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
 
 		--select * from #returnTableSetupHourTimekeeping
 
@@ -161,17 +217,14 @@ BEGIN
 			,primary key (Employee_ID)
 		)
 		insert into @TabTongGioDaTangCaTrongNam
-		--2026-08-28: sửa isWorkingTime=1 thành =0. Bảng này là "giờ ĐÃ TĂNG CA trong năm" dùng để trừ
-		--trần năm, nhưng isWorkingTime=1 lại là wt1/wt9 tức GIỜ HÀNH CHÍNH. Trong khi chỗ trừ trần
-		--(dòng ~420) lại dùng isWorkingTime=0 (đúng là giờ tăng ca) -> hai bên không khớp nhau.
-		select Employee_ID,sum(wt) from HR_WTDaily where MaCong in (select MaCong from HR_LoaiCong where ISNULL(isWorkingTime,0)=0 and MaCong not like 'CN%') and ngay between @NgayDauNam and @NgayCuoiNam group by Employee_ID
+		select Employee_ID,sum(wt) from HR_WTDaily where MaCong in (select MaCong from HR_LoaiCong where ISNULL(isWorkingTime,0)=1 and MaCong not like 'CN%') and ngay between @NgayDauNam and @NgayCuoiNam group by Employee_ID
 
 		DECLARE cur CURSOR LOCAL FOR
 		select
 		tc.Employee_ID, erml.LeaveType_ID
 		,tc.TimeDate,AccessTime,tc.InOutStatus,tc.ShiftName,tc.maxovertime,ISNULL(tc.maxovertimeB,0),isnull(tc.MaxOverTimeHol,0),isnull(tc.maxovertimeLunch,0),tc.CheDo,tc.HolSunTypeOfOT
 		,shifts.FromTime,shifts.ToTime,shifts.RestTimeFrom,shifts.RestTimeTo,shifts.AllowLateIn as AllowLateIn,shifts.AllowEarlyOut,shifts.MinMinute,empl.StartedDate,gout.TimeIn as GoutTimeIn,gout.TimeOut_ as GoutTimeOut,gout.LeaveType_ID as GoutLeaveType
-		,isnull(tc.ChoPhepMuonSoPhut,shifts.AllowLateIn) as ChoPhepSoPhutMuon, ttcnl.Gio,wtt.Employee_ID
+		,isnull(tc.ChoPhepMuonSoPhut,shifts.AllowLateIn) as ChoPhepSoPhutMuon, ttcnl.Gio,null--,wtt.Employee_ID
 		from
 		[dbo].[udf_TinhCong](@fromdate,@todate,@SoNgaySauKhiMangThaiDuocHuongCheDoThaiSan,@fact,@Dept,@Sect,@Team,@Pos,@PosC,@Emp) tc
 		left join
@@ -192,14 +245,14 @@ BEGIN
 		left join
 		udf_TongTangCaNgoaiLe (@fromdate,@todate) ttcnl
 		on tc.AccessDate = ttcnl.Ngay and (empl.Factory_ID = ttcnl.Factory_ID or (empl.Factory_ID = 'SK2' and ttcnl.Factory_ID = 'SK2-Assembly'))
-		left join
-		(
-			select distinct Employee_ID, Ngay
-			from
-			@HR_WTDAILY_GioDayDuLieu
-			where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
-		) wtt
-		on tc.Employee_ID = wtt.Employee_ID and tc.AccessDate = wtt.Ngay
+		--left join
+		--(
+		--	select distinct Employee_ID, Ngay
+		--	from
+		--	@HR_WTDAILY_GioDayDuLieu
+		--	where Ngay between @fromdate and @todate and Employee_ID in (select Employee_ID from @EmployeeInformation)
+		--) wtt
+		--on tc.Employee_ID = wtt.Employee_ID and tc.AccessDate = wtt.Ngay
 		--left join
 		--@TabTongGioDaTangCaTrongNam tctn
 		--on tc.Employee_ID=tctn.Employee_ID
@@ -458,16 +511,10 @@ BEGIN
 						--Gán để kiểm tra dữ liệu có bị trùng nhau
 						set @OldInputEmployee_ID=@OldEmployee_ID set @OldInputTimeOut=@LastAccessTime
 						--Nếu quẹt vào ra trùng nhau thì xử lý
-						
+						/*
 						--Xử lý đặc thù SK - Xử lý dữ liệu giờ công KH đẩy lên
 
-						--2026-08-28: khối quy đổi giờ tăng ca đăng ký (CN_wt3/CN_wt5 -> wt3/wt5) đã được
-						--chuyển hẳn sang dbo.sp_XuLyGioDayDuLieu, chạy 1 lần cho cả tháng thay vì chạy
-						--bên trong cursor này (nguyên nhân sp_TinhCong chậm từ ~3 phút lên ~10 phút).
-						--TẮT ở đây để KHÔNG quy đổi 2 lần. Deploy kèm:
-						--  2026-08-28_HR_SnK_Dev_sp_XuLyGioDayDuLieu_QuyDoiTangCa.sql
-						--Muốn bật lại: bỏ "1 = 0 and" ở dòng dưới VÀ rollback script bên kia.
-						if 1 = 0 and @OldGioDayDuLieu is not null begin
+						if @OldGioDayDuLieu is not null begin
 							/*
 							print 'test'
 							print @OldEmployee_ID
@@ -553,7 +600,7 @@ BEGIN
 							where InsertSource like 'AutoK%'
 						end
 						--Xử lý đặc thù SK - Xử lý dữ liệu giờ công KH đẩy lên
-						
+						*/
 						--xử lý lại giờ tan ca của chế độ thai sản. Nếu không quẹt ra đúng giờ thì ko đc tính là ca thai sản
 						--if isnull(@OldCheDo,0)>=1 and @LastAccessTime<@ShiftToTime begin
 						--	set @ShiftToTime=dateadd(hour,1,@ShiftToTime)
@@ -1026,5 +1073,4 @@ BEGIN
 	end
 	select @ThongBao as ThongBao
 END
-
 GO

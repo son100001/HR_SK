@@ -619,6 +619,59 @@ lần trong 1 lần chạy — dễ sai nếu làm ẩu.
 
 ---
 
+### C4b. Cursor gọi lặp 1 TVF NẶNG mà kết quả chỉ phụ thuộc khoá của dòng — ⭐ đòn bẩy lớn nhất đã gặp
+
+**Triệu chứng:** trong thân vòng lặp cursor có dạng
+`select @BienVoHuong = CotNaoDo from HamNang(@ngay, @ngay, ..., @nhanvien)` — tức gọi 1 TVF nặng với
+**cửa sổ hẹp bằng đúng khoá của dòng đang lặp**. Chi phí = (số vòng lặp) × (chi phí hàm nặng), trong khi
+kết quả chỉ phụ thuộc `(nhân viên, ngày)` chứ không phụ thuộc gì khác của vòng lặp.
+
+**Cách phát hiện nhanh:** đo hàm đó 1 lần cho 1 khoá, rồi đo chính nó 1 lần cho CẢ dải, so với số vòng
+lặp. Ví dụ thật (`sp_TinhCong` / `HR_SnK_Dev`, 2026-08-28): 5.437 ms/vòng × 255 vòng ≈ **23 phút**, trong
+khi gọi 1 lần cho cả tháng + tất cả nhân viên chỉ **21,6 giây**.
+
+**Cách sửa:** nhấc lời gọi ra NGOÀI vòng lặp, gọi 1 lần cho cả dải, đổ vào biến bảng có primary key là
+khoá join, rồi `LEFT JOIN` vào. Thường sau bước này cursor không còn lý do tồn tại → dịch nốt thân vòng
+lặp thành chuỗi CTE.
+
+**⚠️ BẮT BUỘC kiểm chứng 3 điều trước khi nhấc ra (đo, đừng đoán):**
+1. **Hàm có trả về đúng 1 dòng cho mỗi khoá không?** Nếu >1 dòng thì `select @x = Cot from Ham(...)`
+   (không `ORDER BY`) là **không xác định** — không thể tái hiện chính xác bằng set-based.
+2. **Mở rộng dải ngày có đổi kết quả từng ngày không?** Hàm có thể lấy dữ liệu kiểu `Ham(@from, @to+1)`
+   bên trong → cửa sổ rộng hơn có thể kéo thêm dữ liệu mà cửa sổ hẹp không thấy.
+3. **Mở rộng bộ lọc nhân viên có đổi kết quả từng nhân viên không?**
+
+Cách kiểm: chạy vòng lặp cũ ghi kết quả từng khoá vào bảng tạm, chạy bản gọi-1-lần vào bảng tạm khác,
+rồi so bằng `EXCEPT` 2 chiều. (Lần áp dụng thật: 48/48 cặp khớp cả 3 điều kiện.)
+
+**Dịch thân vòng lặp sang CTE — 2 cái bẫy đã gặp:**
+- **Dùng `CASE WHEN`, không dùng biểu thức boolean rút gọn.** `IF <đk>` và `CASE WHEN <đk> THEN..ELSE..`
+  đều cho `UNKNOWN` (do NULL) rơi vào nhánh `ELSE`. Giữ đúng cấu trúc `CASE WHEN` là cách rẻ nhất để
+  không đổi hành vi NULL. Ví dụ `if @LeaveType_ID <> 'Business'` với giá trị NULL sẽ **không** chạy —
+  bản set-based phải giữ y như vậy.
+- **`DELETE ... WHERE col = 0` không xoá dòng `col IS NULL`.** Khi chuyển thành điều kiện `WHERE` của
+  câu SELECT, phải viết `(col is null or col <> 0)`, không phải `col <> 0`.
+
+**Biến "mang theo" từ đoạn code phía trước:** liệt kê hết biến vô hướng mà thân vòng lặp ĐỌC nhưng KHÔNG
+GHI. Nếu bất biến trong vòng lặp → dùng thẳng trong câu set-based là tương đương tuyệt đối. Tiện thể
+kiểm tra luôn xem chúng có bao giờ được gán không — lần áp dụng thật phát hiện **2 biến chưa bao giờ
+được `set`** (luôn NULL), một trong đó do gõ nhầm tên biến gần giống.
+
+**Sau khi bỏ vòng lặp, kiểm tra biến bảng mà vòng lặp dùng làm chỗ chứa tạm** (kiểu `@HR_WTDAILY`): code
+phía sau vòng lặp có đọc lại nó không? Bản cursor để lại dữ liệu của lần lặp cuối, bản set-based để lại
+rỗng — nếu có chỗ đọc thì phải xử lý riêng.
+
+**Kết quả thật đạt được:** 995.530 ms → 17.975 ms (**nhanh hơn 55,4 lần**), 185 dòng ra giống hệt,
+`EXCEPT` 2 chiều = 0, và multiset bằng nhau (185 dòng / 185 dòng DISTINCT). Xem
+[SQL_PERFORMANCE_HISTORY.md](SQL_PERFORMANCE_HISTORY.md) mục 2026-08-28 `sp_TinhCong`.
+
+> **Chứng minh multiset bằng nhau mà không phải chạy lại bản cursor:** `EXCEPT` chỉ so tập hợp (bỏ trùng)
+> nên về lý thuyết vẫn có thể lệch số lần lặp. Nếu bản mới có `COUNT(*) = COUNT(DISTINCT toàn bộ cột)`
+> (không có dòng lặp) **và** tổng số dòng 2 bên bằng nhau **và** `EXCEPT` 2 chiều = 0 thì 2 multiset chắc
+> chắn bằng nhau — chỉ cần chạy lại bản MỚI (rẻ) để đếm distinct, khỏi chạy lại bản cũ (đắt).
+
+---
+
 ### C5. Scalar function bị gọi ngay trong điều kiện JOIN/WHERE
 
 **Triệu chứng:** 1 scalar UDF (function trả về 1 giá trị đơn, không phải bảng) được gọi trực tiếp bên

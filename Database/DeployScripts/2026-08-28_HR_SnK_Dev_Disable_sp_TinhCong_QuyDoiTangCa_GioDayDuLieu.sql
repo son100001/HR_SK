@@ -1,6 +1,35 @@
-﻿
+﻿/*
+    Mục đích: TẮT khối quy đổi giờ tăng ca đăng ký trong dbo.sp_TinhCong (khối
+    if @OldGioDayDuLieu is not null, chạy bên trong cursor cur), vì việc này đã được chuyển hẳn
+    sang dbo.sp_XuLyGioDayDuLieu.
+    Áp dụng cho: HR_SnK_Dev (113.161.180.44). Ngày: 2026-08-28.
+
+    ⚠️ PHẢI DEPLOY KÈM (và deploy TRƯỚC hoặc cùng lúc):
+       2026-08-28_HR_SnK_Dev_sp_XuLyGioDayDuLieu_QuyDoiTangCa.sql
+    Nếu chỉ chạy script này mà bên kia chưa chạy thì sẽ KHÔNG CÒN AI quy đổi CN_wt3/CN_wt5 sang
+    wt3/wt5 -> toàn bộ giờ tăng ca đăng ký sẽ nằm hết ở dạng CN_ (công ngoài).
+
+    Thay đổi duy nhất: thêm 1 = 0 and vào điều kiện if @OldGioDayDuLieu is not null. Giữ nguyên
+    toàn bộ code bên trong để dễ đối chiếu/bật lại, không xoá.
+
+    Các phần KHÔNG đụng tới, vẫn chạy như cũ:
+      - Đoạn đầu proc copy HR_WTDaily_GioDayDuLieu -> HR_WTDaily (InsertSource 'GDDL'). Sau khi
+        sp_XuLyGioDayDuLieu chạy, bảng nguồn đã chứa sẵn các dòng wt3/wt5 đã quy đổi nên chúng được
+        mang sang HR_WTDaily tự động, không phải sửa gì.
+      - Điều kiện @OldGioDayDuLieu is null ở dòng ~335 (bỏ qua tính công thường cho những ngày khách
+        hàng đã đẩy dữ liệu lên) vẫn giữ nguyên.
+
+    Lợi ích phụ về hiệu năng: bỏ được 1 vòng WHILE lồng trong cursor chính.
+    Idempotent: CREATE OR ALTER.
+    Rollback: 2026-08-28_HR_SnK_Dev_Rollback_sp_TinhCong_QuyDoiTangCa_GioDayDuLieu.sql
+*/
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+
 --exec [dbo].[sp_TinhCong] '2023-06-06','2023-06-06',N'admin',N'',N'',N'',N'',N'','','C10474'
-CREATE   PROCEDURE [dbo].[sp_TinhCong]
+CREATE OR ALTER PROCEDURE [dbo].[sp_TinhCong]
 	-- Add the parameters for the stored procedure here
 	--select * from HR_TimeIn_TimeOut where Employee_ID='2666' and OT_date='2020-2-22'
 	--select * from HR_WTDaily where Employee_ID='2666' and ngay between '2020-2-1' and '2020-2-29'
@@ -49,10 +78,7 @@ BEGIN
 			,@GioDayDuLieu nvarchar(50), @OldGioDayDuLieu nvarchar(50)
 			, @SoNgaySauKhiMangBauDuocHuongThaiSan int, @FirstTimeIn datetime, @LastTimeOut datetime, @WorkingDay datetime, @TimeOut datetime, @TimeIn datetime, @RealTimeIn datetime, @RealTimeOut datetime, @MinOverTime float
 			set @SoPhutTieuChuan=14
-		--2026-08-28: sửa từ ngày đầu THÁNG thành ngày đầu NĂM. Bản cũ lấy DATEPART(MONTH,@fromdate)
-		--nên cửa sổ "năm" thật ra là 12 tháng VỀ PHÍA TRƯỚC kể từ đầu tháng đang tính, không phải
-		--năm dương lịch -> trần năm không bao giờ cộng dồn đúng.
-		set @NgayDauNam=DATEFROMPARTS(datepart(year,@fromdate),1,1)
+		set @NgayDauNam=DATEFROMPARTS(datepart(year,@fromdate),datepart(MONTH,@fromdate),1)
 		set @NgayCuoiNam=dateadd(year,1,@NgayDauNam)-1
 		--set @GioTangCaToiDaTheoNam_Goc=1000
 		select @GioTangCaToiDaTheoNam_Goc=Value from HR_SetUpFollowDate where Group_='TangCaToiDaTheoNam' and Fromdate<=@todate and (Todate is null or Todate>=@fromdate) order by Fromdate asc
@@ -161,10 +187,7 @@ BEGIN
 			,primary key (Employee_ID)
 		)
 		insert into @TabTongGioDaTangCaTrongNam
-		--2026-08-28: sửa isWorkingTime=1 thành =0. Bảng này là "giờ ĐÃ TĂNG CA trong năm" dùng để trừ
-		--trần năm, nhưng isWorkingTime=1 lại là wt1/wt9 tức GIỜ HÀNH CHÍNH. Trong khi chỗ trừ trần
-		--(dòng ~420) lại dùng isWorkingTime=0 (đúng là giờ tăng ca) -> hai bên không khớp nhau.
-		select Employee_ID,sum(wt) from HR_WTDaily where MaCong in (select MaCong from HR_LoaiCong where ISNULL(isWorkingTime,0)=0 and MaCong not like 'CN%') and ngay between @NgayDauNam and @NgayCuoiNam group by Employee_ID
+		select Employee_ID,sum(wt) from HR_WTDaily where MaCong in (select MaCong from HR_LoaiCong where ISNULL(isWorkingTime,0)=1 and MaCong not like 'CN%') and ngay between @NgayDauNam and @NgayCuoiNam group by Employee_ID
 
 		DECLARE cur CURSOR LOCAL FOR
 		select
@@ -1026,5 +1049,4 @@ BEGIN
 	end
 	select @ThongBao as ThongBao
 END
-
 GO

@@ -1,6 +1,69 @@
-﻿
+﻿/*
+    Mục đích: chuyển toàn bộ việc QUY ĐỔI GIỜ TĂNG CA ĐĂNG KÝ (CN_wt3/CN_wt5 -> wt3/wt5) từ
+    dbo.sp_TinhCong sang dbo.sp_XuLyGioDayDuLieu.
+    Áp dụng cho: HR_SnK_Dev (113.161.180.44). Ngày: 2026-08-28.
+
+    LÝ DO: khi khách hàng sửa tay bảng công rồi đẩy ngược lên (HR_GioDayDuLieu), việc quy đổi vẫn đang
+    nằm trong cursor của sp_TinhCong (khối if @OldGioDayDuLieu is not null, dòng ~458-542), làm
+    sp_TinhCong chậm từ ~3 phút lên ~10 phút. Chuyển sang đây thì chạy 1 lần cho cả tháng, không còn
+    ảnh hưởng tốc độ tính công.
+
+    QUY TẮC NGHIỆP VỤ (giữ đúng như sp_TinhCong, chỉ bổ sung thứ tự ưu tiên theo ca):
+      - "CN_" = công ngoài (ngoài đăng ký). Ngày nào Factory có đăng ký tăng ca (udf_TongTangCaNgoaiLe)
+        thì chuyển bớt sang dạng không có "CN_", lấy min(giờ thực tế, giờ đăng ký).
+        Không đăng ký (hoặc đăng ký 0 giờ) -> giữ nguyên toàn bộ dạng CN_.
+      - CHỈ áp dụng cho CN_wt3 và CN_wt5. wt1, wt9 và các mã CN_wt4/6/7/8 giữ nguyên.
+      - THỨ TỰ ƯU TIÊN THEO CA (điểm MỚI so với sp_TinhCong - bản cũ dùng ROW_NUMBER() không có tiêu
+        chí sắp xếp nên thứ tự là tuỳ execution plan):
+            ca ngày (ShiftName KHÔNG chứa 'Shift3') -> quy đổi wt3 trước, hết wt3 mới tràn sang wt5
+            ca đêm  (ShiftName CÓ chứa 'Shift3')    -> quy đổi wt5 trước, hết wt5 mới tràn sang wt3
+        Ca lấy từ udf_DangKyCa.
+      - Vẫn chặn bởi trần THÁNG và trần NĂM, đọc từ HR_SetUpFollowDate (cùng nguồn với sp_TinhCong:
+        Group_ = 'TangCaToiDaTheoThang' / 'TangCaToiDaTheoNam'). Hết trần thì quy đổi = 0.
+
+    ⚠️ PHẢI DEPLOY KÈM: 2026-08-28_HR_SnK_Dev_Disable_sp_TinhCong_QuyDoiTangCa_GioDayDuLieu.sql
+    Nếu chỉ chạy script này mà không tắt khối quy đổi cũ trong sp_TinhCong thì sẽ QUY ĐỔI 2 LẦN
+    (sp_TinhCong sẽ lại quy đổi tiếp trên phần CN_ còn dư).
+
+    CÁCH GHI KẾT QUẢ: khác sp_TinhCong ở chỗ KHÔNG chèn dòng CN_ âm để bù trừ, mà trừ thẳng vào dòng
+    CN_ gốc rồi thêm dòng wt3/wt5 (InsertSource = 'AutoK'). Tổng giờ giống hệt nhưng bảng công sạch,
+    không có dòng âm. sp_TinhCong vẫn copy HR_WTDaily_GioDayDuLieu -> HR_WTDaily như cũ, không phải sửa.
+
+    KIỂM CHỨNG (2026-08-28, chạy trên dữ liệu thật + bộ test tổng hợp, mọi thứ trên bảng tạm):
+      - Dữ liệu thật tháng 6/2026: 18.323 dòng nguồn / 1.012 nhân viên. Bản set-based (dùng ở đây) so
+        với bản WHILE tuần tự viết đúng theo mô tả nghiệp vụ: 4.705 dòng / 18.217 giờ, EXCEPT 2 chiều
+        = 0 dòng lệch. Set-based nhanh hơn 4,6 lần (234 ms so với 1.079 ms).
+      - Dữ liệu thật KHÔNG phủ được 3 đường quan trọng (không có ngày ca đêm nào có cả 2 mã; đăng ký
+        luôn 4h <= CN_wt3 nên không bao giờ tràn sang mã thứ 2; không ai chạm trần) -> đã dựng bộ test
+        tổng hợp 8 tình huống, so với KỲ VỌNG TÍNH TAY: khớp 11/11 dòng, không có dòng thừa.
+        Gồm: ca ngày tràn wt3->wt5; ca đêm wt5 trước rồi tràn sang wt3; ca đêm wt5 ít phần còn lại vào
+        wt3; lấy min(thực tế, đăng ký); không đăng ký -> không quy đổi; chạm trần tháng (4+4+2+0);
+        chạm trần năm (còn 2h thì chỉ quy đổi 2h).
+
+    GHI CHÚ VỀ TRẦN: DB đang cấu hình TangCaToiDaTheoNam = 10000, TangCaToiDaTheoThang = 40.
+    Người yêu cầu nói muốn năm 300h / tháng 40h. Script này ĐỌC TỪ CẤU HÌNH nên chỉ cần UPDATE
+    HR_SetUpFollowDate, không phải sửa lại proc.
+
+    ⚠️ KHÁC BIỆT SO VỚI sp_TinhCong khi tính "giờ đã tăng ca trong năm" (cố ý, vì bản cũ SAI):
+      - sp_TinhCong dòng 161 cộng các mã có isWorkingTime = 1, tức wt1/wt9 (GIỜ HÀNH CHÍNH), trong khi
+        dòng 420/536 lại trừ trần bằng isWorkingTime = 0 (đúng là giờ tăng ca).
+      - sp_TinhCong dòng 52 đặt @NgayDauNam = ngày đầu THÁNG rồi +1 năm, tức cửa sổ 12 tháng VỀ PHÍA
+        TRƯỚC chứ không phải năm hiện tại.
+      Với trần 10.000h thì không ai thấy, nhưng nếu hạ trần năm xuống 300h thì lỗi này sẽ làm mọi nhân
+      viên cháy trần sau ~1,5 tháng. Ở đây tính đúng: cộng giờ TĂNG CA (isWorkingTime = 0, không CN_)
+      trong NĂM DƯƠNG LỊCH của @Year, trừ đi tháng đang xử lý lại.
+
+    Idempotent: dùng CREATE OR ALTER. Bản thân proc đã tự xoá + dựng lại HR_WTDaily_GioDayDuLieu cho
+    tháng được truyền vào nên chạy lại nhiều lần cho cùng 1 tháng là an toàn.
+    Rollback: 2026-08-28_HR_SnK_Dev_Rollback_sp_XuLyGioDayDuLieu.sql
+*/
+SET ANSI_NULLS ON;
+GO
+SET QUOTED_IDENTIFIER ON;
+GO
+
 --EXEC sp_XuLyGioDayDuLieu 6, 2026
-CREATE   proc [dbo].[sp_XuLyGioDayDuLieu]
+CREATE OR ALTER proc [dbo].[sp_XuLyGioDayDuLieu]
 	@Month int, 
 	@Year int,
 	@fact nvarchar(50)=null,
@@ -528,5 +591,4 @@ BEGIN
 			ERROR_MESSAGE() as ThongBao;
 	END CATCH
 END
-
 GO
